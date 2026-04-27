@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Frisbeegolfkalenteri</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <h1>Frisbeegolfkalenteri</h1>
+
+  <h2>Tulevat kisat</h2>
+  <ul id="events"></ul>
+
+  <script>
+    const events = [
+      { course: "Tali", date: "2026-05-10", event: "Viikkokisa" },
+      { course: "Kivikko", date: "2026-05-12", event: "PDGA-kisa" }
+    ];
+
+    const list = document.getElementById("events");
+
+    events.forEach(e => {
+      const li = document.createElement("li");
+      li.textContent = `${e.date} - ${e.course} - ${e.event}`;
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>
