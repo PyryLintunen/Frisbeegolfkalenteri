@@ -1,69 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Frisbeegolf Kalenteri</title>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
-  <!-- FullCalendar CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  // 👉 LIITÄ METRIX DATA TÄHÄN
+  const rawData = `
+NBDG Extra™ Kivikko
+Uusimaa, Helsinki	29/04/2026 18:00	C - PDGA	Kivikon frisbeegolfrata → 2023 Blue 18 - Par 56
+Laakspohja DGC viikkokilpailu → Best Shot Parikisakierros
+Uusimaa, Lohja	29/04/2026 18:00	Parikilpailu	Laakspohja Disc Golf Course → Kesä2025-Par62
+Loviisan viikkokisat 2026 → #7 Parikilpailu
+Uusimaa, Loviisa	29/04/2026 18:00	Parikilpailu Viikoittain	Loviisan frisbeegolfrata → Loviisa 21 b väylät
+Puolarmaarin viikkokilpailut 2026 → Yksilökisat 29.4
+Uusimaa, Espoo	29/04/2026 18:00	Viikoittain	Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout
+FRISBEEGOLFCLUB HYRYLÄ VIIKKOKILPAILUT FORD AMATEUR DISCGOLFPARKISSA → Ford Amateur DGP viikkokilpailut 29.4.2026
+Uusimaa, Tuusula	29/04/2026 18:00	Viikoittain	Ford Amateur DiscGolfPark (A1) → 1
+Mäntsälän viikkokisat 2026 → MegaMäny Parikisa
+Uusimaa, Mäntsälä	29/04/2026 18:00	Parikilpailu Viikoittain	Mäntsälän frisbeegolfpuisto → MegaMäny 2021
+Sb-Hem - Veckotävling / Viikkokisa - VÄSTERBY - A (AM) → 29.04
+Uusimaa, Raasepori	29/04/2026 18:00		Västerby, Tammisaari → VÄSTERBY - A (AM)
+  `;
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background: #f4f6f8;
-    }
+  const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
 
-    h1 {
-      text-align: center;
-    }
+  const events = [];
 
-    #calendar {
-      max-width: 900px;
-      margin: 40px auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-  </style>
-</head>
-<body>
+  for (let i = 0; i < lines.length; i += 2) {
+    const titleLine = lines[i];
+    const infoLine = lines[i + 1];
 
-  <h1>Frisbeegolf Kalenteri</h1>
+    if (!infoLine) continue;
 
-  <div id="calendar"></div>
+    const parts = infoLine.split("\t");
 
-  <!-- FullCalendar JS -->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    const dateTime = parts[1]; // 29/04/2026 18:00
+    const coursePart = parts[3]; // rata
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    if (!dateTime || !coursePart) continue;
 
-      const calendarEl = document.getElementById('calendar');
+    const [date, time] = dateTime.split(" ");
+    const [day, month, year] = date.split("/");
 
-      const calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'dayGridMonth',
+    const formattedDate = `${year}-${month}-${day}T${time}`;
 
-        events: [
-          {
-            title: 'Viikkokisa - Tali',
-            start: '2026-05-10'
-          },
-          {
-            title: 'PDGA-kisa - Kivikko',
-            start: '2026-05-12'
-          },
-          {
-            title: 'Kisapäivä - Kaatis',
-            start: '2026-05-15'
-          }
-        ]
-      });
+    const course = coursePart.split("→")[0].trim();
 
-      calendar.render();
+    events.push({
+      title: `${titleLine} - ${course}`,
+      start: formattedDate
     });
-  </script>
+  }
 
-</body>
-</html>
+  const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    initialView: 'dayGridMonth',
+    events: events,
+
+    eventClick: function(info) {
+      alert(info.event.title);
+    }
+  });
+
+  calendar.render();
+});
+</script>
