@@ -1,28 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Frisbeegolfkalenteri</title>
   <meta charset="UTF-8">
+  <title>Frisbeegolf Kalenteri</title>
+
+  <!-- FullCalendar CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f6f8;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-  <h1>Frisbeegolfkalenteri</h1>
 
-  <h2>Tulevat kisat</h2>
-  <ul id="events"></ul>
+  <h1>Frisbeegolf Kalenteri</h1>
+
+  <div id="calendar"></div>
+
+  <!-- FullCalendar JS -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
   <script>
-    const events = [
-      { course: "Tali", date: "2026-05-10", event: "Viikkokisa" },
-      { course: "Kivikko", date: "2026-05-12", event: "PDGA-kisa" }
-    ];
+    document.addEventListener('DOMContentLoaded', function() {
 
-    const list = document.getElementById("events");
+      const calendarEl = document.getElementById('calendar');
 
-    events.forEach(e => {
-      const li = document.createElement("li");
-      li.textContent = `${e.date} - ${e.course} - ${e.event}`;
-      list.appendChild(li);
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+
+        events: [
+          {
+            title: 'Viikkokisa - Tali',
+            start: '2026-05-10'
+          },
+          {
+            title: 'PDGA-kisa - Kivikko',
+            start: '2026-05-12'
+          },
+          {
+            title: 'Kisapäivä - Kaatis',
+            start: '2026-05-15'
+          }
+        ]
+      });
+
+      calendar.render();
     });
   </script>
+
 </body>
 </html>
