@@ -77,7 +77,6 @@
 <body>
 
 <h1>Frisbeegolf Kalenteri</h1>
-<button id="todayCoursesBtn">Vapaat radat tänään</button>
 <div id="calendar"></div>
 
 <!-- MODAL -->
@@ -350,19 +349,7 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
   `;
 
   const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
-  let events = []; //
-
-function getTodayEvents(events) {
-  const today = new Date().toISOString().split("T")[0];
-  return events.filter(event => event.start.startsWith(today));
-}
-
-function showFreeToday() {
-  const todayEvents = getTodayEvents(events);
-  console.log(todayEvents);
-}
-
-document.addEventListener('DOMContentLoaded', function () {
+  const events = [];
 
   for (let i = 0; i < lines.length; i += 2) {
     const titleLine = lines[i];
@@ -413,9 +400,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   calendar.render();
-
-document.getElementById("todayCoursesBtn")
-  .addEventListener("click", showFreeToday);
 });
 
 // sulje modal
@@ -430,28 +414,6 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
-
-function getTodayEvents(events) {
-  const today = new Date().toISOString().split("T")[0];
-  return events.filter(event => event.start.startsWith(today));
-}
-
-function showFreeToday() {
-  const todayEvents = getTodayEvents(events);
-
-  if (todayEvents.length === 0) {
-    alert("Ei tapahtumia tänään");
-    return;
-  }
-
-  let message = "Tämän päivän radat:\n\n";
-
-  todayEvents.forEach(e => {
-    message += `${e.extendedProps.course} klo ${e.extendedProps.time}\n`;
-  });
-
-  alert(message);
-}
 </script>
 
 </body>
