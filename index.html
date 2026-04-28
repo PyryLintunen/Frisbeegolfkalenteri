@@ -77,6 +77,25 @@
 <body>
 
 <h1>Frisbeegolf Kalenteri</h1>
+
+<select id="cityFilter">
+  <option value="all">Kaikki</option>
+  <option value="Helsinki">Helsinki</option>
+  <option value="Espoo">Espoo</option>
+  <option value="Vantaa">Vantaa</option>
+  <option value="Tuusula">Tuusula</option>
+  <option value="Järvenpää">Järvenpää</option>
+  <option value="Hyvinkää">Hyvinkää</option>
+  <option value="Nurmijärvi">Nurmijärvi</option>
+  <option value="Vihti">Vihti</option>
+  <option value="Lohja">Lohja</option>
+  <option value="Raasepori">Raasepori</option>
+</select>
+
+<button onclick="showFreeToday()">Vapaat radat tänään</button>
+
+<div id="freeCoursesList" style="margin:20px;"></div>
+  
 <div id="calendar"></div>
 
 <!-- MODAL -->
@@ -351,6 +370,129 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
   const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
   const events = [];
 
+  // =======================
+// ALL COURSES
+// =======================
+  const allCourses = [
+  // HANKO
+  { name: "Hanko Lillmärsan", city: "Hanko" },
+  { name: "Lappohja", city: "Hanko" },
+
+  // RAASEPORI
+  { name: "Skogby", city: "Raasepori" },
+  { name: "Västerby", city: "Raasepori" },
+  { name: "Gumnäs", city: "Raasepori" },
+  { name: "Lande", city: "Raasepori" },
+  { name: "Härkävuori", city: "Raasepori" },
+
+  // KARJAA
+  { name: "Karjaan frisbeegolfrata", city: "Raasepori" },
+
+  // INKOO
+  { name: "Inkoon frisbeegolfrata", city: "Inkoo" },
+
+  // LOHJA
+  { name: "Sammatti", city: "Lohja" },
+  { name: "Kantarelli", city: "Lohja" },
+  { name: "Laakspohja", city: "Lohja" },
+
+  // KIRKKONUMMI
+  { name: "Kirkkonummi (VOLS)", city: "Kirkkonummi" },
+  { name: "Veikkolan frisbeegolfrata", city: "Kirkkonummi" },
+
+  // VIHTI
+  { name: "Kaatis", city: "Vihti" },
+  { name: "Rock Valley", city: "Vihti" },
+  { name: "Nummelanharju", city: "Vihti" },
+
+  // KARKKILA
+  { name: "Karkkilan frisbeegolfrata", city: "Karkkila" },
+
+  // NURMIJÄRVI
+  { name: "Nurmijärvi Golf", city: "Nurmijärvi" },
+  { name: "Herusten frisbeegolfrata", city: "Nurmijärvi" },
+  { name: "Nurmijärven frisbeegolfrata (Maaniitty-Ihantola)", city: "Nurmijärvi" },
+  { name: "Nukarin frisbeegolfrata", city: "Nurmijärvi" },
+
+  // HYVINKÄÄ
+  { name: "Sahanmäki", city: "Hyvinkää" },
+  { name: "Nummenmäki", city: "Hyvinkää" },
+
+  // MÄNTSÄLÄ
+  { name: "Mäntsälän frisbeegolfpuisto", city: "Mäntsälä" },
+
+  // JÄRVENPÄÄ
+  { name: "Lemmenlaakso", city: "Järvenpää" },
+
+  // TUUSULA
+  { name: "Ford Amateur", city: "Tuusula" },
+  { name: "Ford disc golf park", city: "Tuusula" },
+
+  // KERAVA
+  { name: "Keinukallio", city: "Kerava" },
+
+  // VANTAA
+  { name: "Varistonniitty", city: "Vantaa" },
+
+  // HELSINKI
+  { name: "Kivikko frisbeegolf park", city: "Helsinki" },
+  { name: "Siltamäki", city: "Helsinki" },
+  { name: "Paloheinän frisbeegolfrata", city: "Helsinki" },
+  { name: "Talin frisbeegolfpuisto", city: "Helsinki" },
+
+  // ESPOO
+  { name: "Äijänpelto", city: "Espoo" },
+  { name: "Puolarmaari", city: "Espoo" },
+  { name: "Lakisto", city: "Espoo" },
+  { name: "Oittaa Kalliometsä", city: "Espoo" },
+  { name: "Oittaa Camping", city: "Espoo" },
+  { name: "Velskolan", city: "Espoo" },
+
+  // SIPOO
+  { name: "Talma DGP", city: "Sipoo" },
+  { name: "Pornainen DGP", city: "Sipoo" },
+  { name: "Sibbe Disc Golf", city: "Sipoo" },
+
+  // PORVOO
+  { name: "Virvik", city: "Porvoo" },
+
+  // LOVIISA
+  { name: "Pernå", city: "Loviisa" },
+  { name: "Loviisan frisbeegolfrata", city: "Loviisa" },
+  { name: "Liljendal frisbeegolf", city: "Loviisa" }
+];
+
+// =======================
+// NORMALIZE
+// =======================
+function normalize(str) {
+  return str
+    .toLowerCase()
+    .replace("frisbeegolfrata", "")
+    .replace("frisbeegolfpuisto", "")
+    .replace("disc golf", "")
+    .replace("dgp", "")
+    .replace(/[()]/g, "")
+    .trim();
+}
+
+// =======================
+// FREE COURSES
+// =======================
+function getFreeCourses(dateStr, selectedCity = "all") {
+
+  const busy = events
+    .filter(e => e.start.startsWith(dateStr))
+    .map(e => normalize(e.title));
+
+  return allCourses.filter(c => {
+    const matchesCity = selectedCity === "all" || c.city === selectedCity;
+    const isBusy = busy.some(b => b.includes(normalize(c.name)));
+
+    return matchesCity && !isBusy;
+  });
+}
+
   for (let i = 0; i < lines.length; i += 2) {
     const titleLine = lines[i];
     const infoLine = lines[i + 1];
@@ -414,6 +556,24 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
+
+function showFreeToday() {
+  const today = new Date().toISOString().split("T")[0];
+  const city = document.getElementById("cityFilter").value;
+
+  const free = getFreeCourses(today, city);
+
+  const container = document.getElementById("freeCoursesList");
+
+  if (free.length === 0) {
+    container.innerHTML = "Ei vapaita ratoja";
+    return;
+  }
+
+  container.innerHTML = free
+    .map(c => `<div>✅ ${c.name} (${c.city})</div>`)
+    .join("");
+}
 </script>
 
 </body>
