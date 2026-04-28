@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Frisbeegolfkalenteri</title>
+  <title>Frisbeegolf Kalenteri</title>
 
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 
@@ -76,25 +76,7 @@
 
 <body>
 
-  <select id="cityFilter">
-  <option value="all">Kaikki</option>
-  <option value="Helsinki">Helsinki</option>
-  <option value="Espoo">Espoo</option>
-  <option value="Vantaa">Vantaa</option>
-  <option value="Tuusula">Tuusula</option>
-  <option value="Järvenpää">Järvenpää</option>
-  <option value="Hyvinkää">Hyvinkää</option>
-  <option value="Nurmijärvi">Nurmijärvi</option>
-  <option value="Vihti">Vihti</option>
-  <option value="Lohja">Lohja</option>
-  <option value="Raasepori">Raasepori</option>
-</select>
-
-<button onclick="showFreeToday()">Vapaat radat tänään</button>
-
-<div id="freeCoursesList" style="margin:20px;"></div>
-
-<h1>Frisbeegolfkalenteri</h1>
+<h1>Frisbeegolf Kalenteri</h1>
 <div id="calendar"></div>
 
 <!-- MODAL -->
@@ -109,99 +91,9 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <script>
-function getFreeCourses(events) {
-  const today = new Date().toISOString().split("T")[0];
-
-  return events.filter(event => event.start.startsWith(today));
-}
+document.addEventListener('DOMContentLoaded', function () {
 
   const rawData = `
-  const allCourses = [
-  // HANKO
-  { name: "Hanko Lillmärsan", city: "Hanko" },
-  { name: "Lappohja", city: "Hanko" },
-
-  // RAASEPORI
-  { name: "Skogby", city: "Raasepori" },
-  { name: "Västerby", city: "Raasepori" },
-  { name: "Gumnäs", city: "Raasepori" },
-  { name: "Lande", city: "Raasepori" },
-  { name: "Härkävuori", city: "Raasepori" },
-  { name: "Karjaan frisbeegolfrata", city: "Raasepori" },
-
-  // INKOO
-  { name: "Inkoon frisbeegolfrata", city: "Inkoo" },
-
-  // LOHJA
-  { name: "Sammatti", city: "Lohja" },
-  { name: "Kantarelli", city: "Lohja" },
-  { name: "Laakspohja", city: "Lohja" },
-
-  // KIRKKONUMMI
-  { name: "Kirkkonummi (VOLS)", city: "Kirkkonummi" },
-  { name: "Veikkolan frisbeegolfrata", city: "Kirkkonummi" },
-
-  // VIHTI
-  { name: "Kaatis", city: "Vihti" },
-  { name: "Rock Valley", city: "Vihti" },
-  { name: "Nummelanharju", city: "Vihti" },
-
-  // KARKKILA
-  { name: "Karkkilan frisbeegolfrata", city: "Karkkila" },
-
-  // NURMIJÄRVI
-  { name: "Nurmijärvi Golf", city: "Nurmijärvi" },
-  { name: "Herusten frisbeegolfrata", city: "Nurmijärvi" },
-  { name: "Nurmijärven frisbeegolfrata (Maaniitty-Ihantola)", city: "Nurmijärvi" },
-  { name: "Nukarin frisbeegolfrata", city: "Nurmijärvi" },
-
-  // HYVINKÄÄ
-  { name: "Sahanmäki", city: "Hyvinkää" },
-  { name: "Nummenmäki", city: "Hyvinkää" },
-
-  // MÄNTSÄLÄ
-  { name: "Mäntsälän frisbeegolfpuisto", city: "Mäntsälä" },
-
-  // JÄRVENPÄÄ
-  { name: "Lemmenlaakso", city: "Järvenpää" },
-
-  // TUUSULA
-  { name: "Ford Amateur", city: "Tuusula" },
-  { name: "Ford disc golf park", city: "Tuusula" },
-
-  // KERAVA
-  { name: "Keinukallio", city: "Kerava" },
-
-  // VANTAA
-  { name: "Varistonniitty", city: "Vantaa" },
-
-  // HELSINKI
-  { name: "Kivikko frisbeegolf park", city: "Helsinki" },
-  { name: "Siltamäki", city: "Helsinki" },
-  { name: "Paloheinän frisbeegolfrata", city: "Helsinki" },
-  { name: "Talin frisbeegolfpuisto", city: "Helsinki" },
-
-  // ESPOO
-  { name: "Äijänpelto", city: "Espoo" },
-  { name: "Puolarmaari", city: "Espoo" },
-  { name: "Lakisto", city: "Espoo" },
-  { name: "Oittaa Kalliometsä", city: "Espoo" },
-  { name: "Oittaa Camping", city: "Espoo" },
-  { name: "Velskolan", city: "Espoo" },
-
-  // SIPOO
-  { name: "Talma DGP", city: "Sipoo" },
-  { name: "Pornainen DGP", city: "Sipoo" },
-  { name: "Sibbe Disc Golf", city: "Sipoo" },
-
-  // PORVOO
-  { name: "Virvik", city: "Porvoo" },
-
-  // LOVIISA
-  { name: "Pernå", city: "Loviisa" },
-  { name: "Loviisan frisbeegolfrata", city: "Loviisa" },
-  { name: "Liljendal frisbeegolf", city: "Loviisa" }
-];
 Kivikon viikkokisat 2026 → Kivikon viikkokisat 2026 - Blue #2
 Uusimaa, Helsinki	27/04/2026 18:00	Viikoittain	Kivikon frisbeegolfrata → 2023 Blue 18 - Par 56	48	1-850 851-900 Avoin	Kaikki ryhmässä kirjaavat tulokset!	Alku: 26/04/2026 12:00 Päättyy: 27/04/2026 16:00
 Disc Golf Hyvinkää viikkokisat → Nummenmäki → Yksilökilpailu → #2
@@ -276,7 +168,6 @@ SKOGBY KUUKAUSIKISAT
 Uusimaa, Raasepori	02/05/2026 - 12/09/2026		Skogby, → A1 Skogby18	8	Naiset Naiset 60+ Masters 40+ Masters 60+ Avoin Juniorit 16 ja alle	Kaikille avoin ja ilmainen!	Alku: 30/03/2026 18:00 Päättyy: 12/09/2026 10:00
 SKOGBY KUUKAUSIKISAT → TOUKOKUU
 Uusimaa, Raasepori	02/05/2026 11:00		Skogby, → A1 Skogby18	6	Naiset Naiset 60+ Masters 40+ Masters 60+ Avoin Juniorit 16 ja alle	Kaikille avoin ja ilmainen!	Alku: 04/04/2026 11:00 Päättyy: 02/05/2026 10:00
-
 FRISBEEGOLFCLUB HYRYLÄ VIIKKOKILPAILUT FORD DISCGOLFPARKISSA → Ford DGP viikkokilpailut 2.5.2026 SININEN LAYOUT
 Uusimaa, Tuusula	02/05/2026 11:00	Viikoittain	Ford DiscGolfPark → Siniset koripaikat	1	Avoin Rating 870-919 Rating 1-869 Rating 0	KOKO RATA SULJETTU JA VAIN KILPAILIJOIDEN KÄYTÖSSÄ. TD Esa 0504125640	Alku: 28/03/2026 18:00 Päättyy: 02/05/2026 09:00
 Startti #1 (Nummenmäki) → 1-Kierros
@@ -305,7 +196,6 @@ VIIKKOKISAT 2026 → inkoo viikkokisat 2026 Sjöbloms tankservice ab oy
 Uusimaa, Inkoo	05/05/2026 18:00	Viikoittain	Inkoo discgolf → Inkoo discgolf 2021	1	Pro 0 ja 930+ semi 860-929 Harraste 1-859		Alku: 05/04/2026 20:09 Päättyy: 05/05/2026 16:00
 Karjaan parikisa 2026 → 4. Kierros
 Uusimaa, Raasepori	05/05/2026 18:00	Parikilpailu Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Sekapari Rating yht. alle 1800 Juniors	Pelimuoto: Bestshot. Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Holaripotti 2€/pari (pisin holari voittaa - vain käteinen).	Päättyy: 05/05/2026 16:30
-
 Kkp Bats Viikkokisat 2026 → Kisa #4
 Uusimaa, Nurmijärvi	05/05/2026 18:00	Viikoittain	Nurmijärvi-Herusten frisbeegolfrata → 2023	0	Pro Aktiivi Harraste Aloittelija Kilpa		
 Lohi viikkokisat → 4. Kierros
@@ -430,7 +320,6 @@ Pääkaupunkiseudun junior cup 2026 → Osakilpailu #3, Puolarmaari
 Uusimaa, Espoo	23/05/2026 13:00		Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	4	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12		Alku: 19/04/2026 16:00 Päättyy: 23/05/2026 12:00
 Battle of the Three Forests 2026 → Kierros1 Skogby DGP
 Uusimaa, Raasepori	23/05/2026 10:00	B - PDGA	Skogby, → Skogby-18 kisarata 2025	0	MPO MP40 MP50 FPO FP40 FP50	Ensimmäinen kierros Skogby kisaradalla	
-
 Battle of the Three Forests 2026 → Kierros2 Inkoo frisbeegolfrata normaali layout
 Uusimaa, Inkoo	23/05/2026 14:30	B - PDGA	Inkoo discgolf → Inkoo discgolf 2021	0	MPO MP40 MP50 FPO FP40 FP50	Toinen kierros yhteislähdöllä ilman pelaajakokousta.
 Battle of the Three Forests 2026 → Kierros3 Kantarelli DGP
@@ -461,42 +350,6 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
 
   const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
   const events = [];
-
-  // =======================
-// ALL COURSES
-// =======================
-const allCourses = [ /* koko lista jonka annoin */ ];
-
-// =======================
-// NORMALIZE
-// =======================
-function normalize(str) {
-  return str
-    .toLowerCase()
-    .replace("frisbeegolfrata", "")
-    .replace("frisbeegolfpuisto", "")
-    .replace("disc golf", "")
-    .replace("dgp", "")
-    .replace(/[()]/g, "")
-    .trim();
-}
-
-// =======================
-// FREE COURSES
-// =======================
-function getFreeCourses(dateStr, selectedCity = "all") {
-
-  const busy = events
-    .filter(e => e.start.startsWith(dateStr))
-    .map(e => normalize(e.title));
-
-  return allCourses.filter(c => {
-    const matchesCity = selectedCity === "all" || c.city === selectedCity;
-    const isBusy = busy.some(b => b.includes(normalize(c.name)));
-
-    return matchesCity && !isBusy;
-  });
-}
 
   for (let i = 0; i < lines.length; i += 2) {
     const titleLine = lines[i];
@@ -561,24 +414,6 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 };
-
-  function showFreeToday() {
-  const today = new Date().toISOString().split("T")[0];
-  const city = document.getElementById("cityFilter").value;
-
-  const free = getFreeCourses(today, city);
-
-  const container = document.getElementById("freeCoursesList");
-
-  if (free.length === 0) {
-    container.innerHTML = "Ei vapaita ratoja";
-    return;
-  }
-
-  container.innerHTML = free
-    .map(c => `<div>✅ ${c.name} (${c.city})</div>`)
-    .join("");
-}
 </script>
 
 </body>
