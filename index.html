@@ -109,6 +109,11 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <script>
+  function getFreeCourses(events) {
+  const today = new Date().toISOString().split("T")[0];
+
+  return events.filter(event => event.start.startsWith(today));
+}
   function getFreeCourses() {
   console.log("getFreeCourses kutsuttu");
   return [];
