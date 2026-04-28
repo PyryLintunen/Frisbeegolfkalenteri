@@ -350,7 +350,19 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
   `;
 
   const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
-  let events = [];
+  let events = []; //
+
+function getTodayEvents(events) {
+  const today = new Date().toISOString().split("T")[0];
+  return events.filter(event => event.start.startsWith(today));
+}
+
+function showFreeToday() {
+  const todayEvents = getTodayEvents(events);
+  console.log(todayEvents);
+}
+
+document.addEventListener('DOMContentLoaded', function () {
 
   for (let i = 0; i < lines.length; i += 2) {
     const titleLine = lines[i];
