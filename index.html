@@ -34,6 +34,8 @@
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.12);
   min-width: 300px;    /* Estää listaa menemästä liian kapeaksi */
+  max-height: 80vh; /* Vie korkeintaan 80% ruudun korkeudesta */
+  overflow-y: auto; /* Lisää rullauspalkin jos lista on liian pitkä */
 }
 
 /* Jos näyttö on kapea (kuten kännykkä), laitetaan ne taas päällekkäin */
