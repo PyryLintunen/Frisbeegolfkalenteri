@@ -64,6 +64,26 @@
   overflow-y: auto; /* Lisää rullauspalkin jos lista on liian pitkä */
 }
 
+@media (max-width: 900px) {
+      .main-container {
+        flex-direction: column; /* Kalenteri ja lista allekkain */
+      }
+
+      .side-panel, #calendar {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .fc {
+        font-size: 12px; /* Teksti vähän pienemmäksi puhelimella */
+      }
+
+      .fc-toolbar {
+        flex-direction: column; /* Kalenterin napit ja otsikko pystyyyn */
+        gap: 10px;
+      }
+    }
+
 /* Jos näyttö on kapea (kuten kännykkä), laitetaan ne taas päällekkäin */
 @media (max-width: 900px) {
   .main-container {
@@ -599,9 +619,19 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
   }
 
   const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-    initialView: 'dayGridMonth',
-    firstDay: 1,
-    locale: 'fi',
+  // Tarkistetaan ruudun leveys: jos alle 768px, käytetään listakuukautta
+  initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
+  
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: window.innerWidth < 768 ? '' : 'dayGridMonth,listMonth' // Piilotetaan napit puhelimessa tilan säästämiseksi
+  },
+  
+  firstDay: 1,
+  locale: 'fi',
+  events: events,
+  // ... eventClick pysyy samana kuin ennen ...
 
     events: events,
 
