@@ -7,6 +7,38 @@
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 
   <style>
+    /* Tämä komentaa kalenterin ja paneelin vierekkäin */
+.main-container {
+  display: flex;
+  flex-direction: row; /* Vierekkäin */
+  gap: 20px;           /* Väli kalenterin ja listan välille */
+  max-width: 1600px;
+  margin: 0 auto;
+  align-items: flex-start; /* Pitää molemmat yläreunassa */
+}
+
+/* Kalenteri vie suurimman osan tilasta */
+#calendar {
+  flex: 3;             /* Suurempi luku = vie enemmän tilaa */
+  margin: 0 !important; /* Poistetaan aiempi keskitysmuotoilu */
+}
+
+/* Sivupaneelin tyylit */
+.side-panel {
+  flex: 1;             /* Vie vähemmän tilaa kuin kalenteri */
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  min-width: 300px;    /* Estää listaa menemästä liian kapeaksi */
+}
+
+/* Jos näyttö on kapea (kuten kännykkä), laitetaan ne taas päällekkäin */
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+  }
+}
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
@@ -99,12 +131,24 @@
 <div id="calendar"></div>
 
 <!-- MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <div class="event-title" id="modalTitle"></div>
-    <div class="event-info" id="modalInfo"></div>
+<div class="main-container">
+  
+  <div id="calendar"></div>
+
+  <div class="side-panel">
+    <h2>Suodata & vapaat radat</h2>
+    
+    <label for="cityFilter">Valitse kaupunki:</label>
+    <select id="cityFilter">
+      <option value="all">Kaikki</option>
+      </select>
+
+    <button onclick="showFreeToday()">Vapaat radat tänään</button>
+    
+    <div id="freeCoursesList">
+      </div>
   </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
