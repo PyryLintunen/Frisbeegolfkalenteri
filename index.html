@@ -17,10 +17,13 @@
   align-items: flex-start; /* Pitää molemmat yläreunassa */
 }
 
-/* Kalenteri vie suurimman osan tilasta */
 #calendar {
-  flex: 3;             /* Suurempi luku = vie enemmän tilaa */
-  margin: 0 !important; /* Poistetaan aiempi keskitysmuotoilu */
+  flex: 3;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  /* Poistettu max-width ja margin auto */
 }
 
 /* Sivupaneelin tyylit */
@@ -108,29 +111,10 @@
 
 <body>
 
+  <body>
+
 <h1>Frisbeegolf Kalenteri</h1>
 
-<select id="cityFilter">
-  <option value="all">Kaikki</option>
-  <option value="Helsinki">Helsinki</option>
-  <option value="Espoo">Espoo</option>
-  <option value="Vantaa">Vantaa</option>
-  <option value="Tuusula">Tuusula</option>
-  <option value="Järvenpää">Järvenpää</option>
-  <option value="Hyvinkää">Hyvinkää</option>
-  <option value="Nurmijärvi">Nurmijärvi</option>
-  <option value="Vihti">Vihti</option>
-  <option value="Lohja">Lohja</option>
-  <option value="Raasepori">Raasepori</option>
-</select>
-
-<button onclick="showFreeToday()">Vapaat radat tänään</button>
-
-<div id="freeCoursesList" style="margin:20px;"></div>
-  
-<div id="calendar"></div>
-
-<!-- MODAL -->
 <div class="main-container">
   
   <div id="calendar"></div>
@@ -141,14 +125,32 @@
     <label for="cityFilter">Valitse kaupunki:</label>
     <select id="cityFilter">
       <option value="all">Kaikki</option>
-      </select>
+      <option value="Helsinki">Helsinki</option>
+      <option value="Espoo">Espoo</option>
+      <option value="Vantaa">Vantaa</option>
+      <option value="Tuusula">Tuusula</option>
+      <option value="Järvenpää">Järvenpää</option>
+      <option value="Hyvinkää">Hyvinkää</option>
+      <option value="Nurmijärvi">Nurmijärvi</option>
+      <option value="Vihti">Vihti</option>
+      <option value="Lohja">Lohja</option>
+      <option value="Raasepori">Raasepori</option>
+    </select>
 
-    <button onclick="showFreeToday()">Vapaat radat tänään</button>
+    <button onclick="showFreeToday()" style="margin-top: 10px; width: 100%;">Vapaat radat tänään</button>
     
-    <div id="freeCoursesList">
+    <div id="freeCoursesList" style="margin-top: 20px;">
       </div>
   </div>
 
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="modalTitle" class="event-title"></div>
+    <div id="modalInfo" class="event-info"></div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
