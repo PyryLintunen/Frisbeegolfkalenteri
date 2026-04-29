@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>Frisbeegolf Kalenteri</title>
 
@@ -15,6 +16,31 @@
   max-width: 1600px;
   margin: 0 auto;
   align-items: flex-start; /* Pitää molemmat yläreunassa */
+}
+    /* Perusasetus: asiat ovat vierekkäin (tietokone) */
+.main-container {
+  display: flex;
+  flex-direction: row; /* Tämä tarkoittaa "rivissä" */
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* PUHELIN-ASETUS: kun ruutu on kapeampi kuin 900 pikseliä */
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column; /* Muutetaan rivi sarakkeeksi (allekkain) */
+  }
+
+  .side-panel {
+    width: 100%;       /* Paneeli vie koko leveyden */
+    min-width: unset;  /* Poistetaan aiempi minimileveys */
+    box-sizing: border-box;
+  }
+
+  #calendar {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 #calendar {
