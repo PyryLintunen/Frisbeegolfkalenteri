@@ -36,6 +36,27 @@
     min-width: unset;  /* Poistetaan aiempi minimileveys */
     box-sizing: border-box;
   }
+  
+  .info-box {
+  background-color: #f8f9fa; /* Vaaleanharmaa tausta */
+  border-left: 5px solid #007bff; /* Sininen korostusviiva vasemmassa reunassa */
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 4px;
+  font-size: 0.95em;
+  line-height: 1.4;
+  color: #333;
+}
+
+.info-box h3 {
+  margin-top: 0;
+  color: #007bff;
+  font-size: 1.1em;
+}
+
+.info-box p {
+  margin-bottom: 8px;
+}
 
   #calendar {
     width: 100%;
@@ -168,6 +189,15 @@
   <div id="calendar"></div>
 
   <div class="side-panel">
+    <div class="info-box">
+    <h3>Tietoa kalenterista</h3>
+    <p>- Kalenterin tarkoitus on helpottaa kasuaalin fribaaja elämää, ettei eksy kisojen takia suljetulle radalle.</p>
+    <p>- Tällä hetkellä kalenterissa vain Uusimaa.</p>
+    <p>- Kalenteri näyttää kaikki tämän päivän kilpailut.</p>
+    <p>- Vapaat radat haulla voit tarkastaa millä radoilla ei ole tänään kisoja.</p>
+    <p>- Kalenteri ei vielä tunnista kellonaikaa.</p>
+    <p><small>Päivitetty: 5.5.2024</small></p>
+  </div>
     <h2>Suodata & vapaat radat</h2>
     
     <label for="cityFilter">Valitse kaupunki:</label>
