@@ -335,6 +335,8 @@
   document.addEventListener('DOMContentLoaded', function() {
     // METRIX DATA
     const rawData = `
+    #uusimaa
+    #vk19
 Frisbeegolf club Keinukallio 2026 → Viikkokisa 5.5
 Uusimaa, Kerava	05/05/2026 18:00	Viikoittain	Keinukallio 2024 → Normaali layout	54	metrix rating 0 metrix rating 1-875 metrix rating 876-915 metrix rating 916-949 metrix rating 950-avoin		Alku: 29/04/2026 05:30 Päättyy: 05/05/2026 16:30
 Kkp Bats Viikkokisat 2026 → Kisa #4
@@ -406,6 +408,7 @@ Uusimaa, Vihti	10/05/2026 12:00	Viikoittain	Vihtijärvi Frisbeegolf → 9 väyl�
 Oittaan viikkokilpailut 2026 → Yksilökisat 10.5
 Uusimaa, Espoo	10/05/2026 18:00	Viikoittain	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	0	Metrix rating 1-930 Metrix rating 1-889 Metrix rating 1-839 Metrix rating 0-1200 Metrix rating 0		Alku: 05/05/2026 08:00 Päättyy: 10/05/2026 16:00
 Karjaan juniors viikkokisa
+#vk20
 Uusimaa, Raasepori	11/05/2026 - 08/06/2026	Viikoittain	Karjaan Frisbeegolf Park → Selcast - (etutiit)	7	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	
 Karjaan juniors viikkokisa → 1. Kierros
 Uusimaa, Raasepori	11/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	6	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
@@ -478,6 +481,7 @@ Uusimaa, Tuusula	17/05/2026 10:00	C - PDGA	Ford Amateur DiscGolfPark (A1) → 1	
 Lauri Hämäläisen Heittoklinikka & Fundraiser Parikilpailu → Parikilpailu
 Uusimaa, Loviisa	17/05/2026 12:00	Parikilpailu	Loviisan frisbeegolfrata → Loviisa 21 b väylät	3	Open => 1775 (yhteisrating) Amateur < 1775 (yhteisrating) +50v Sekaparit	B-väylät, lisätiedot tarkentuu myöhemmin!	Päättyy: 17/05/2026 11:00
 Karjaan juniors viikkokisa → 2. Kierros
+#vk21
 Uusimaa, Raasepori	18/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	1	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
 Länsi-Uusimaan FribbeTour 2026 → Pohja: Gumnäs
 Uusimaa, Hanko	18/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	RPA RAD RAE RAF		Alku: 05/05/2026 00:00 Päättyy: 18/05/2026 17:00
@@ -516,6 +520,7 @@ Uusimaa, Inkoo	23/05/2026 14:30	B - PDGA	Inkoo discgolf → Inkoo discgolf 2021	
 Battle of the Three Forests 2026 → Kierros3 Kantarelli DGP
 Uusimaa, Lohja	24/05/2026 09:00	B - PDGA	Kantarelli DGC	0	MPO MP40 MP50 FPO FP40 FP50	Finaali kierros Golf lähdöin
 Länsi-Uusimaan FribbeTour 2026 → Karjaa: Maasilta
+#vk22
 Uusimaa, Hanko	25/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	RPA RAD RAE RAF		Alku: 12/05/2026 00:00 Päättyy: 25/05/2026 17:00
 Karkkilan viikkokilpailut 2026 → Parikisa 25.5
 Uusimaa, Karkkila	25/05/2026 18:00	Parikilpailu Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	0	Avoin Avoin+junnu/nainen (<=15v)	Info kilpailun pääsivun alareunassa. 36 paria mahtuu mukaan. 10e/pari (junnut ilmaiseksi). Holaripotissa 110e+.	Alku: 18/05/2026 21:00 Päättyy: 25/05/2026 17:00
@@ -545,6 +550,7 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
 
     const lines = rawData.trim().split("\n");
     lines.forEach(line => {
+      if (line.startsWith("#") || !line.trim()) return;
       const parts = line.split("\t");
       if (parts.length < 4) return;
       const locationPart = parts[0];
