@@ -140,7 +140,7 @@
     { name: "Lemmenlaakso", city: "Järvenpää", region: "Uusimaa" },
     { name: "Karkkilan frisbeegolfrata", city: "Karkkila", region: "Uusimaa" },
     { name: "Keinukallio", city: "Kerava", region: "Uusimaa" },
-    { name: "Kirkkonummi (VOLS)", city: "Kirkkonummi", region: "Uusimaa" },
+    { name: "Kirkkonummen frisbeegolfrata", city: "Kirkkonummi", region: "Uusimaa" },
     { name: "Veikkolan frisbeegolfrata", city: "Kirkkonummi", region: "Uusimaa" },
     { name: "Kantarelli", city: "Lohja", region: "Uusimaa" },
     { name: "Laakspohja", city: "Lohja", region: "Uusimaa" },
@@ -622,6 +622,7 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
     const calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'fi',
+      firstDay: 1,
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
       eventClick: function(info) {
