@@ -76,7 +76,6 @@
   .fc-view-harness {
     height: 500px !important; /* Kiinteä korkeus auttaa hallitsemaan sivun rullausta */
   }
-}
 
 /* Tehdään syöttökentistä mobiiliystävällisempiä */
 select, button {
@@ -160,6 +159,7 @@ select, button {
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <script>
+  let calendar; // Lisää tämä rivi
   let events = [];
 
   const allCourses = [
@@ -435,23 +435,23 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
     `;
 
     const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
-    // Käydään Metrix-data läpi
+    // KORVAA VANHA FOR-SILMUKKA TÄLLÄ:
     for (let i = 0; i < lines.length; i += 2) {
       const titleLine = lines[i];
       const infoLine = lines[i + 1];
       if (!infoLine) continue;
 
-      const parts = infoLine.split("\t"); // Jaetaan sarakkeisiin
+      const parts = infoLine.split("\t"); 
       const locationPart = parts[0];      // Esim. "Uusimaa, Kerava"
-      const dateTime = parts[1];          // Esim. "05/05/2026 18:00"
-      const coursePart = parts[3];        // Esim. "Keinukallio 2024 -> Normaali"
+      const dateTime = parts[1];          
+      const coursePart = parts[3];        
 
       if (!dateTime || !coursePart) continue;
 
-      // --- UUSI MAAKUNNAN TUNNISTUS ---
+      // Maakunnan tunnistus pilkun perusteella
       let region = "Tuntematon";
       if (locationPart.includes(",")) {
-        region = locationPart.split(",")[0].trim(); // Poimitaan pilkkua edeltävä osa
+        region = locationPart.split(",")[0].trim();
       }
 
       const [date, time] = dateTime.split(" ");
@@ -463,13 +463,13 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
         extendedProps: { 
           fullTitle: titleLine, 
           time: time,
-          region: region // Tallennetaan maakunta kisan tietoihin
+          region: region // Tämä on tärkeä suodatukselle!
         }
       });
     }
 
     const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       locale: 'fi',
       firstDay: 1,
@@ -588,6 +588,9 @@ function applyFilters() {
   calendar.removeAllEvents();
   calendar.addEventSource(calendarEvents);
 }
+
+  // Päivittää kaupunkilistan heti kun sivu latautuu
+  updateCityFilter();
   
 </script>
 
