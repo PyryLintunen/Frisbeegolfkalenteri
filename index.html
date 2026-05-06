@@ -623,6 +623,7 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
     calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'fi',
       firstDay: 1,
+      weekNumbers: true,
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
       eventClick: function(info) {
