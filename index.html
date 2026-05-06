@@ -337,6 +337,28 @@
   { name: "Liljendal frisbeegolf", city: "Loviisa" }
 ];
 
+  const neighbors = {
+  "Espoo": ["Helsinki", "Vantaa", "Kirkkonummi", "Vihti"],
+  "Hanko": ["Raasepori"],
+  "Helsinki": ["Espoo", "Vantaa", "Sipoo"],
+  "Hyvinkää": ["Riihimäki", "Tuusula", "Nurmijärvi", "Vihti", "Mäntsälä"],
+  "Inkoo": ["Raasepori", "Lohja", "Siuntio", "Kirkkonummi"],
+  "Järvenpää": ["Tuusula", "Sipoo", "Mäntsälä", "Kerava"],
+  "Karkkila": ["Vihti", "Lohja"],
+  "Kerava": ["Tuusula", "Vantaa", "Sipoo", "Järvenpää"],
+  "Kirkkonummi": ["Espoo", "Siuntio", "Inkoo", "Vihti"],
+  "Lohja": ["Vihti", "Raasepori", "Siuntio", "Inkoo", "Karkkila"],
+  "Loviisa": ["Porvoo", "Lapinjärvi", "Pyhtää"],
+  "Mäntsälä": ["Hyvinkää", "Järvenpää", "Tuusula", "Pukkila", "Askola"],
+  "Nurmijärvi": ["Vantaa", "Espoo", "Vihti", "Hyvinkää", "Tuusula"],
+  "Porvoo": ["Sipoo", "Loviisa", "Askola", "Pornainen"],
+  "Raasepori": ["Lohja", "Hanko", "Inkoo"],
+  "Sipoo": ["Helsinki", "Vantaa", "Porvoo", "Kerava", "Järvenpää"],
+  "Tuusula": ["Vantaa", "Kerava", "Järvenpää", "Nurmijärvi", "Hyvinkää", "Sipoo"],
+  "Vantaa": ["Helsinki", "Espoo", "Tuusula", "Kerava", "Sipoo", "Nurmijärvi"],
+  "Vihti": ["Espoo", "Lohja", "Karkkila", "Hyvinkää", "Nurmijärvi", "Kirkkonummi"]
+};
+
 // =======================
 // NORMALIZE
 // =======================
@@ -657,14 +679,57 @@ window.onclick = function(event) {
 
 function showFreeToday() {
   const today = new Date().toISOString().split("T")[0];
-  const city = document.getElementById("cityFilter").value;
-  const free = getFreeCourses(today, city);
+  const selectedCity = document.getElementById("cityFilter").value;
   const container = document.getElementById("freeCoursesList");
+  
+  container.innerHTML = "";
 
-  if (free.length === 0) {
-    container.innerHTML = "<p>Ei vapaita ratoja tälle päivälle.</p>";
+  if (selectedCity === "all") {
+    container.innerHTML = "<p style='color: #666;'>Valitse kaupunki nähdäksesi vapaat radat ja naapurit.</p>";
     return;
   }
+
+  // 1. PÄÄKAUPUNKI
+  const freeMain = getFreeCourses(today, selectedCity);
+  let html = `<h3 style="margin-bottom: 10px; color: #2c3e50;">📍 ${selectedCity}</h3>`;
+  
+  if (freeMain.length > 0) {
+    freeMain.sort((a, b) => a.name.localeCompare(b.name));
+    freeMain.forEach(c => {
+      html += `<div style="padding: 5px 10px; background: #e8f4fd; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #007bff;">✅ ${c.name}</div>`;
+    });
+  } else {
+    html += "<p style='font-style: italic; color: #888;'>Kaikilla radoilla on kisoja tänään.</p>";
+  }
+
+  // 2. NAAPURIKUNNAT
+  const myNeighbors = neighbors[selectedCity] || [];
+  let neighborHtml = "";
+
+  myNeighbors.forEach(nCity => {
+    const freeInNeighbor = getFreeCourses(today, nCity);
+    if (freeInNeighbor.length > 0) {
+      neighborHtml += `<div style="margin-top: 12px;">
+                        <span style="font-weight: bold; font-size: 0.85em; color: #555; display: block; border-bottom: 1px solid #eee; margin-bottom: 5px;">
+                          ${nCity.toUpperCase()}
+                        </span>`;
+      freeInNeighbor.sort((a, b) => a.name.localeCompare(b.name));
+      freeInNeighbor.forEach(c => {
+        neighborHtml += `<div style="padding-left: 8px; font-size: 0.9em; margin-bottom: 2px;">• ${c.name}</div>`;
+      });
+      neighborHtml += `</div>`;
+    }
+  });
+
+  if (neighborHtml !== "") {
+    html += `<div style="margin-top: 25px; padding-top: 15px; border-top: 2px dashed #ddd;">`;
+    html += `<h4 style="color: #666; font-size: 0.9em; margin-bottom: 10px;">Vapaat radat naapurikunnissa:</h4>`;
+    html += neighborHtml;
+    html += `</div>`;
+  }
+
+  container.innerHTML = html;
+}
 
   // 1. Aakkostetaan radat nimen mukaan
   free.sort((a, b) => a.name.localeCompare(b.name));
