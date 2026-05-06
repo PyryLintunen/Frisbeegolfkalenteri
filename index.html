@@ -8,81 +8,37 @@
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
 
   <style>
-    /* CSS-tyylit */
-    /* 1. LAAJENNETAAN PÄÄSÄILIÖTÄ */
-.main-container {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  max-width: 98%; /* Nostetaan 1600px -> 98%, jotta se täyttää ison näytön */
-  margin: 0 auto;
-  align-items: flex-start;
-}
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f8; }
+    h1 { text-align: center; }
 
-/* 2. SÄÄDETÄÄN SUHTEITA */
-#calendar {
-  flex: 4; /* Nostetaan suhdetta (oli 3), jotta kalenteri saa enemmän tilaa suhteessa sivupaneeliin */
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-  min-height: 800px; /* Varmistetaan, että kalenteri on korkea tietokoneella */
-}
+    .main-container {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      max-width: 98%;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
 
-.side-panel {
-  flex: 1;
-  min-width: 320px; /* Pidetään paneeli sopivan levyisenä */
-  max-height: 85vh;
-  overflow-y: auto;
-  position: sticky; /* Paneeli pysyy näkyvissä, kun kalenteria rullataan alas */
-  top: 20px;
-}
+    #calendar {
+      flex: 4;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      min-height: 800px;
+    }
 
-/* 3. MOBIILIOPTIMOINTI (Media Query) */
-@media (max-width: 1100px) { /* Nostetaan rajaa hieman, jotta kapeat läppäritkin hyötyvät */
-  .main-container {
-    flex-direction: column;
-    padding: 10px;
-  }
-
-  .side-panel {
-    width: 100% !important;
-    max-height: none;
-    position: static;
-    order: 2;
-  }
-
-  #calendar {
-    width: 100% !important;
-    min-height: 500px; /* Mobiilissa matalampi on parempi */
-    order: 1;
-    padding: 10px;
-  }
-}
-
-  /* FullCalendarin mobiilioptimointi */
-  .fc-header-toolbar {
-    display: flex !important;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-  }
-
-  .fc-toolbar-chunk {
-    display: flex;
-    justify-content: center;
-  }
-
-  .fc-view-harness {
-    height: 500px !important; /* Kiinteä korkeus auttaa hallitsemaan sivun rullausta */
-  }
-
-/* Tehdään syöttökentistä mobiiliystävällisempiä */
-select, button {
-  font-size: 16px !important; /* Estää iOS-laitteita zoomaamasta automaattisesti kenttään */
-  padding: 12px !important;
-  border-radius: 8px !important;
-}
+    .side-panel {
+      flex: 1;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      min-width: 320px;
+      position: sticky;
+      top: 20px;
+    }
 
     .info-box {
       background-color: #f8f9fa;
@@ -91,16 +47,22 @@ select, button {
       margin-bottom: 25px;
       border-radius: 4px;
       font-size: 0.9em;
-      line-height: 1.4;
+      white-space: pre-line;
     }
 
-    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f6f8; }
-    h1 { text-align: center; }
+    @media (max-width: 1100px) {
+      .main-container { flex-direction: column; }
+      .side-panel { width: 100%; position: static; order: 2; }
+      #calendar { width: 100%; min-height: 500px; order: 1; }
+    }
 
-    /* MODAL */
-    .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-    .modal-content { background-color: white; margin: 10% auto; padding: 20px; width: 90%; max-width: 400px; border-radius: 12px; }
-    .close { float: right; font-size: 22px; cursor: pointer; }
+    /* Modal tyylit */
+    .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+    .modal-content { background: white; margin: 15% auto; padding: 20px; width: 90%; max-width: 400px; border-radius: 12px; }
+    .close { float: right; font-size: 24px; cursor: pointer; }
+    
+    select, button { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    button { cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -113,37 +75,33 @@ select, button {
   <div class="side-panel">
     <div class="info-box">
       <h3>Tietoa kalenterista</h3>
-      <p>- Näyttää Uudenmaan kisat ja vapaat radat.</p>
-      <p>- "Vapaat radat" tarkistaa vain täyspitkät radat.</p>
-      <p><small>Päivitetty: 6.5.2026</small></p>
+      Tämä kalenteri kokoaa yhteen frisbeegolf-kilpailut. 
+      Voit suodattaa kisoja maakunnan ja kunnan mukaan.
+      <small>Päivitetty: 6.5.2026</small>
     </div>
 
-    <!-- UUSI RAKENNE MAAKUNNILLA -->
-<h2>Suodatus & vapaat radat</h2>
+    <h2>Suodatus & vapaat radat</h2>
 
-<!-- Maakuntavalinta -->
-<label for="regionFilter">Valitse maakunta:</label>
-<select id="regionFilter" onchange="updateCityFilter()" style="width: 100%; padding: 8px; margin-bottom: 15px;">
-  <option value="all">Kaikki maakunnat</option>
-  <option value="Uusimaa">Uusimaa</option>
-  <option value="Varsinais-Suomi">Varsinais-Suomi</option>
-</select>
+    <label>Valitse maakunta:</label>
+    <select id="regionFilter" onchange="updateCityFilter()">
+      <option value="all">Kaikki maakunnat</option>
+      <option value="Uusimaa">Uusimaa</option>
+      <option value="Varsinais-Suomi">Varsinais-Suomi</option>
+    </select>
 
-<!-- Kunta- ja lähikuntavalinta -->
-<label for="cityFilter">Valitse kunta:</label>
-<select id="cityFilter" style="width: 100%; padding: 8px; margin-bottom: 10px;">
-  <option value="all">Kaikki kunnat</option>
-</select>
+    <label>Valitse kunta:</label>
+    <select id="cityFilter">
+      <option value="all">Kaikki kunnat</option>
+    </select>
 
-<div style="margin-bottom: 15px; font-size: 0.9em;">
-  <input type="checkbox" id="includeNeighbors" checked>
-  <label for="includeNeighbors">Näytä myös naapurikunnat</label>
-</div>
+    <div style="margin-bottom: 15px;">
+      <input type="checkbox" id="includeNeighbors" checked>
+      <label for="includeNeighbors">Näytä myös naapurikunnat</label>
+    </div>
 
-<button onclick="applyFilters()" style="width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px; font-weight: bold;">Päivitä kalenteri</button>
+    <button onclick="applyFilters()" style="background: #28a745; color: white; border: none;">Päivitä kalenteri</button>
+    <button onclick="showFreeToday()" style="background: #007bff; color: white; border: none;">Hae vapaat radat tänään</button>
 
-<button onclick="showFreeToday()" style="width: 100%; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Hae vapaat radat tänään</button>
-    
     <div id="freeCoursesList" style="margin-top: 20px;"></div>
   </div>
 </div>
@@ -151,7 +109,7 @@ select, button {
 <div id="modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">&times;</span>
-    <div id="modalTitle" style="font-weight: bold; margin-bottom: 10px;"></div>
+    <h3 id="modalTitle"></h3>
     <div id="modalInfo"></div>
   </div>
 </div>
@@ -159,33 +117,56 @@ select, button {
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
 <script>
-  let calendar; // Lisää tämä rivi
+  let calendar;
   let events = [];
 
   const allCourses = [
-    { name: "Lillmärsanin metsä", city: "Hanko", region: "Uusimaa" }, { name: "Lappohja", city: "Hanko", region: "Uusimaa" },
-    { name: "Skogby", city: "Raasepori", region: "Uusimaa" }, { name: "Västerby", city: "Raasepori", region: "Uusimaa" },
-    { name: "Gumnäs", city: "Raasepori", region: "Uusimaa" }, { name: "Lande", city: "Raasepori", region: "Uusimaa" },
-    { name: "Härkävuori", city: "Raasepori", region: "Uusimaa" }, { name: "Karjaan frisbeegolfrata", city: "Raasepori", region: "Uusimaa" },
-    { name: "Inkoo discgolf", city: "Inkoo", region: "Uusimaa" }, { name: "Sammatti", city: "Lohja", region: "Uusimaa" },
-    { name: "Kantarelli", city: "Lohja", region: "Uusimaa" }, { name: "Laakspohja", city: "Lohja", region: "Uusimaa" },
-    { name: "Kirkkonummi (VOLS)", city: "Kirkkonummi", region: "Uusimaa" }, { name: "Veikkolan frisbeegolfrata", city: "Kirkkonummi", region: "Uusimaa" },
-    { name: "Kaatis", city: "Vihti", region: "Uusimaa" }, { name: "Rock Valley", city: "Vihti", region: "Uusimaa" },
-    { name: "Nummelanharju", city: "Vihti", region: "Uusimaa" }, { name: "Karkkilan frisbeegolfrata", city: "Karkkila", region: "Uusimaa" },
-    { name: "Nurmijärvi Golf", city: "Nurmijärvi", region: "Uusimaa" }, { name: "Herusten frisbeegolfrata", city: "Nurmijärvi", region: "Uusimaa" },
-    { name: "Nurmijärven frisbeegolfrata (Maaniitty-Ihantola)", city: "Nurmijärvi", region: "Uusimaa" }, { name: "Nukarin frisbeegolfrata", city: "Nurmijärvi", region: "Uusimaa" },
-    { name: "Sahanmäki DGP", city: "Hyvinkää", region: "Uusimaa" }, { name: "Nummenmäki DiscGolfPark", city: "Hyvinkää", region: "Uusimaa" },
-    { name: "Mäntsälän frisbeegolfpuisto", city: "Mäntsälä", region: "Uusimaa" }, { name: "Lemmenlaakso", city: "Järvenpää", region: "Uusimaa" },
-    { name: "Ford Amateur", city: "Tuusula", region: "Uusimaa" }, { name: "Ford DiscGolfPark", city: "Tuusula", region: "Uusimaa" },
-    { name: "Keinukallio", city: "Kerava", region: "Uusimaa" }, { name: "Varistonniitty", city: "Vantaa", region: "Uusimaa" },
-    { name: "Kivikon frisbeegolfrata", city: "Helsinki", region: "Uusimaa" }, { name: "Siltamäki", city: "Helsinki", region: "Uusimaa" },
-    { name: "Paloheinän frisbeegolfrata", city: "Helsinki", region: "Uusimaa" }, { name: "Talin frisbeegolfpuisto", city: "Helsinki", region: "Uusimaa" },
-    { name: "Äijänpelto", city: "Espoo", region: "Uusimaa" }, { name: "Puolarmaari", city: "Espoo", region: "Uusimaa" },
-    { name: "Lakisto", city: "Espoo", region: "Uusimaa" }, { name: "Oittaa Kalliometsä", city: "Espoo", region: "Uusimaa" },
-    { name: "Oittaa Camping", city: "Espoo", region: "Uusimaa" }, { name: "Velskolan", city: "Espoo", region: "Uusimaa" },
-    { name: "Talma DGP", city: "Sipoo", region: "Uusimaa" }, { name: "Pornainen DGP", city: "Sipoo", region: "Uusimaa" },
-    { name: "Sibbe Disc Golf", city: "Sipoo", region: "Uusimaa" }, { name: "Virvik", city: "Porvoo", region: "Uusimaa" },
-    { name: "Pernå", city: "Loviisa", region: "Uusimaa" }, { name: "Loviisan frisbeegolfrata", city: "Loviisa", region: "Uusimaa" },
+    { name: "Lillmärsanin metsä", city: "Hanko", region: "Uusimaa" },
+    { name: "Lappohja", city: "Hanko", region: "Uusimaa" },
+    { name: "Skogby", city: "Raasepori", region: "Uusimaa" },
+    { name: "Västerby", city: "Raasepori", region: "Uusimaa" },
+    { name: "Gumnäs", city: "Raasepori", region: "Uusimaa" },
+    { name: "Lande", city: "Raasepori", region: "Uusimaa" },
+    { name: "Härkävuori", city: "Raasepori", region: "Uusimaa" },
+    { name: "Karjaan frisbeegolfrata", city: "Raasepori", region: "Uusimaa" },
+    { name: "Inkoo discgolf", city: "Inkoo", region: "Uusimaa" },
+    { name: "Sammatti", city: "Lohja", region: "Uusimaa" },
+    { name: "Kantarelli", city: "Lohja", region: "Uusimaa" },
+    { name: "Laakspohja", city: "Lohja", region: "Uusimaa" },
+    { name: "Kirkkonummi (VOLS)", city: "Kirkkonummi", region: "Uusimaa" },
+    { name: "Veikkolan frisbeegolfrata", city: "Kirkkonummi", region: "Uusimaa" },
+    { name: "Kaatis", city: "Vihti", region: "Uusimaa" },
+    { name: "Rock Valley", city: "Vihti", region: "Uusimaa" },
+    { name: "Nummelanharju", city: "Vihti", region: "Uusimaa" },
+    { name: "Karkkilan frisbeegolfrata", city: "Karkkila", region: "Uusimaa" },
+    { name: "Nurmijärvi Golf", city: "Nurmijärvi", region: "Uusimaa" },
+    { name: "Herusten frisbeegolfrata", city: "Nurmijärvi", region: "Uusimaa" },
+    { name: "Nurmijärven frisbeegolfrata (Maaniitty-Ihantola)", city: "Nurmijärvi", region: "Uusimaa" },
+    { name: "Nukarin frisbeegolfrata", city: "Nurmijärvi", region: "Uusimaa" },
+    { name: "Sahanmäki DGP", city: "Hyvinkää", region: "Uusimaa" },
+    { name: "Nummenmäki DiscGolfPark", city: "Hyvinkää", region: "Uusimaa" },
+    { name: "Mäntsälän frisbeegolfpuisto", city: "Mäntsälä", region: "Uusimaa" },
+    { name: "Lemmenlaakso", city: "Järvenpää", region: "Uusimaa" },
+    { name: "Ford Amateur", city: "Tuusula", region: "Uusimaa" },
+    { name: "Ford DiscGolfPark", city: "Tuusula", region: "Uusimaa" },
+    { name: "Keinukallio", city: "Kerava", region: "Uusimaa" },
+    { name: "Varistonniitty", city: "Vantaa", region: "Uusimaa" },
+    { name: "Kivikon frisbeegolfrata", city: "Helsinki", region: "Uusimaa" },
+    { name: "Siltamäki", city: "Helsinki", region: "Uusimaa" },
+    { name: "Paloheinän frisbeegolfrata", city: "Helsinki", region: "Uusimaa" },
+    { name: "Talin frisbeegolfpuisto", city: "Helsinki", region: "Uusimaa" },
+    { name: "Äijänpelto", city: "Espoo", region: "Uusimaa" },
+    { name: "Puolarmaari", city: "Espoo", region: "Uusimaa" },
+    { name: "Lakisto", city: "Espoo", region: "Uusimaa" },
+    { name: "Oittaa Kalliometsä", city: "Espoo", region: "Uusimaa" },
+    { name: "Oittaa Camping", city: "Espoo", region: "Uusimaa" },
+    { name: "Velskolan", city: "Espoo", region: "Uusimaa" },
+    { name: "Talma DGP", city: "Sipoo", region: "Uusimaa" },
+    { name: "Pornainen DGP", city: "Sipoo", region: "Uusimaa" },
+    { name: "Sibbe Disc Golf", city: "Sipoo", region: "Uusimaa" },
+    { name: "Virvik", city: "Porvoo", region: "Uusimaa" },
+    { name: "Pernå", city: "Loviisa", region: "Uusimaa" },
+    { name: "Loviisan frisbeegolfrata", city: "Loviisa", region: "Uusimaa" },
     { name: "Liljendal frisbeegolf", city: "Loviisa", region: "Uusimaa" }
   ];
 
@@ -212,19 +193,79 @@ select, button {
   };
 
   function normalize(str) {
+    if (!str) return "";
     return str.toLowerCase().replace(/frisbeegolfrata|frisbeegolfpuisto|disc golf|dgp|[()]/g, "").trim();
   }
 
-  function getFreeCourses(dateStr, selectedCity = "all") {
-    const busy = events.filter(e => e.start.startsWith(dateStr)).map(e => normalize(e.title));
-    return allCourses.filter(c => {
-      const matchesCity = (selectedCity === "all" || c.city === selectedCity);
-      const isBusy = busy.some(b => b.includes(normalize(c.name)) || normalize(c.name).includes(b));
-      return matchesCity && !isBusy;
+  function updateCityFilter() {
+    const region = document.getElementById("regionFilter").value;
+    const citySelect = document.getElementById("cityFilter");
+    const uniqueCities = [...new Set(allCourses
+      .filter(c => region === "all" || c.region === region)
+      .map(c => c.city))].sort();
+
+    citySelect.innerHTML = '<option value="all">Kaikki kunnat</option>';
+    uniqueCities.forEach(city => {
+      citySelect.innerHTML += `<option value="${city}">${city}</option>`;
     });
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function applyFilters() {
+    const selectedRegion = document.getElementById("regionFilter").value;
+    const selectedCity = document.getElementById("cityFilter").value;
+    const includeNeighbors = document.getElementById("includeNeighbors").checked;
+
+    const filteredEvents = events.filter(event => {
+      const matchesRegion = (selectedRegion === "all" || event.extendedProps.region === selectedRegion);
+      let matchesCity = true;
+      if (selectedCity !== "all") {
+        const courseInfo = allCourses.find(c => normalize(c.name) === normalize(event.title));
+        const eventCity = courseInfo ? courseInfo.city : "";
+        let targetCities = [selectedCity];
+        if (includeNeighbors && neighbors[selectedCity]) {
+          targetCities = [selectedCity, ...neighbors[selectedCity]];
+        }
+        matchesCity = targetCities.includes(eventCity);
+      }
+      return matchesRegion && matchesCity;
+    });
+
+    calendar.removeAllEvents();
+    calendar.addEventSource(filteredEvents);
+  }
+
+  function getFreeCourses(dateStr, selectedCity) {
+    const busy = events.filter(e => e.start.startsWith(dateStr)).map(e => normalize(e.title));
+    return allCourses.filter(c => {
+      if (selectedCity !== "all" && c.city !== selectedCity) return false;
+      return !busy.some(b => b.includes(normalize(c.name)) || normalize(c.name).includes(b));
+    });
+  }
+
+  function showFreeToday() {
+    const today = new Date().toISOString().split("T")[0];
+    const selectedCity = document.getElementById("cityFilter").value;
+    const container = document.getElementById("freeCoursesList");
+    if (selectedCity === "all") { container.innerHTML = "<p>Valitse kunta ensin.</p>"; return; }
+
+    const freeMain = getFreeCourses(today, selectedCity);
+    let html = `<h3>📍 ${selectedCity}</h3>`;
+    freeMain.forEach(c => html += `<div style="padding:5px; background:#e8f4fd; margin-bottom:4px; border-left:3px solid #007bff;">✅ ${c.name}</div>`);
+    if(freeMain.length === 0) html += "<p>Ei vapaita ratoja.</p>";
+
+    const myNeighbors = neighbors[selectedCity] || [];
+    let neighborHtml = "";
+    myNeighbors.forEach(nCity => {
+      const freeInNeighbor = getFreeCourses(today, nCity);
+      if (freeInNeighbor.length > 0) {
+        neighborHtml += `<p><strong>${nCity}:</strong> ${freeInNeighbor.map(c => c.name).join(", ")}</p>`;
+      }
+    });
+    if (neighborHtml) html += "<hr><h4>Naapurit:</h4>" + neighborHtml;
+    container.innerHTML = html;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
     const rawData = `
 Frisbeegolf club Keinukallio 2026 → Viikkokisa 5.5
 Uusimaa, Kerava	05/05/2026 18:00	Viikoittain	Keinukallio 2024 → Normaali layout	54	metrix rating 0 metrix rating 1-875 metrix rating 876-915 metrix rating 916-949 metrix rating 950-avoin		Alku: 29/04/2026 05:30 Päättyy: 05/05/2026 16:30
@@ -434,164 +475,40 @@ NBDG Amateurs™ Oittaa
 Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	33	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Oittaan Kalliometsässä, Espoossa.	Alku: 31/03/2026 19:00 Päättyy: 27/05/2026 23:00
     `;
 
-    const lines = rawData.split("\n").map(l => l.trim()).filter(l => l);
-    // KORVAA VANHA FOR-SILMUKKA TÄLLÄ:
-    for (let i = 0; i < lines.length; i += 2) {
-      const titleLine = lines[i];
-      const infoLine = lines[i + 1];
-      if (!infoLine) continue;
-
-      const parts = infoLine.split("\t"); 
-      const locationPart = parts[0];      // Esim. "Uusimaa, Kerava"
-      const dateTime = parts[1];          
-      const coursePart = parts[3];        
-
-      if (!dateTime || !coursePart) continue;
-
-      // Maakunnan tunnistus pilkun perusteella
-      let region = "Tuntematon";
-      if (locationPart.includes(",")) {
-        region = locationPart.split(",")[0].trim();
-      }
-
+    const lines = rawData.trim().split("\n");
+    lines.forEach(line => {
+      const parts = line.split("\t");
+      if (parts.length < 4) return;
+      const locationPart = parts[0];
+      const dateTime = parts[1];
+      const coursePart = parts[3];
+      
+      const region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "Uusimaa";
       const [date, time] = dateTime.split(" ");
-      const [day, month, year] = date.split("/");
-
+      const [d, m, y] = date.split("/");
+      
       events.push({
         title: coursePart.split("→")[0].trim(),
-        start: `${year}-${month}-${day}T${time}`,
-        extendedProps: { 
-          fullTitle: titleLine, 
-          time: time,
-          region: region // Tämä on tärkeä suodatukselle!
-        }
+        start: `${y}-${m}-${d}T${time}`,
+        extendedProps: { region: region, time: time }
       });
-    }
+    });
 
-    const calendarEl = document.getElementById('calendar');
-    calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
+    calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
       locale: 'fi',
-      firstDay: 1,
+      initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
-      headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listMonth' },
       eventClick: function(info) {
-        document.getElementById("modalTitle").innerText = info.event.extendedProps.fullTitle;
-        document.getElementById("modalInfo").innerHTML = `<b>Aika:</b> ${info.event.extendedProps.time}`;
+        document.getElementById("modalTitle").innerText = info.event.title;
+        document.getElementById("modalInfo").innerHTML = `<b>Maakunta:</b> ${info.event.extendedProps.region}<br><b>Aika:</b> ${info.event.extendedProps.time}`;
         document.getElementById("modal").style.display = "block";
-        // Lisää tämä kalenterin asetuksiin (new FullCalendar.Calendar-kohtaan)
-window.addEventListener('resize', function() {
-  if (window.innerWidth < 768) {
-    calendar.changeView('listMonth');
-  } else {
-    calendar.changeView('dayGridMonth');
-  }
-});
       }
     });
     calendar.render();
+    updateCityFilter();
   });
-
-  function showFreeToday() {
-    const today = new Date().toISOString().split("T")[0];
-    const selectedCity = document.getElementById("cityFilter").value;
-    const container = document.getElementById("freeCoursesList");
-    
-    if (selectedCity === "all") {
-      container.innerHTML = "<p>Valitse kaupunki nähdäksesi vapaat radat.</p>";
-      return;
-    }
-
-    const freeMain = getFreeCourses(today, selectedCity);
-    let html = `<h3>📍 ${selectedCity}</h3>`;
-    
-    if (freeMain.length > 0) {
-      freeMain.sort((a, b) => a.name.localeCompare(b.name));
-      freeMain.forEach(c => {
-        html += `<div style="padding: 5px; background: #e8f4fd; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #007bff;">✅ ${c.name}</div>`;
-      });
-    } else {
-      html += "<p>Ei vapaita ratoja tänään.</p>";
-    }
-
-    const myNeighbors = neighbors[selectedCity] || [];
-    let neighborHtml = "";
-    myNeighbors.forEach(nCity => {
-      const freeInNeighbor = getFreeCourses(today, nCity);
-      if (freeInNeighbor.length > 0) {
-        neighborHtml += `<p><strong>${nCity}:</strong> ${freeInNeighbor.map(c => c.name).join(", ")}</p>`;
-      }
-    });
-
-    if (neighborHtml) {
-      html += `<hr><h4 style="color: #666;">Naapurikunnat:</h4>` + neighborHtml;
-    }
-
-    container.innerHTML = html;
-  }
 
   function closeModal() { document.getElementById("modal").style.display = "none"; }
-  // Päivittää kalenterin koon, kun ikkunaa säädetään
-window.addEventListener('resize', function() {
-    setTimeout(function() {
-        calendar.updateSize();
-    }, 200);
-});
-
-  // Päivittää kuntalistan valitun maakunnan perusteella
-function updateCityFilter() {
-  const region = document.getElementById("regionFilter").value;
-  const citySelect = document.getElementById("cityFilter");
-  const uniqueCities = [...new Set(allCourses
-    .filter(c => region === "all" || c.region === region)
-    .map(c => c.city))].sort();
-
-  citySelect.innerHTML = '<option value="all">Kaikki kunnat</option>';
-  uniqueCities.forEach(city => {
-    citySelect.innerHTML += `<option value="${city}">${city}</option>`;
-  });
-}
-
-function applyFilters() {
-  const selectedRegion = document.getElementById("regionFilter").value;
-  const selectedCity = document.getElementById("cityFilter").value;
-  const includeNeighbors = document.getElementById("includeNeighbors").checked;
-
-  // Suodatetaan tapahtumat
-  const filteredEvents = events.filter(event => {
-    // 1. Maakuntasuodatus (katsotaan kisan omista tiedoista)
-    const matchesRegion = (selectedRegion === "all" || event.extendedProps.region === selectedRegion);
-    
-    // 2. Kuntasuodatus
-    let matchesCity = true;
-    if (selectedCity !== "all") {
-      // Etsitään kisan rata allCourses-listasta, jotta tiedetään kunta
-      const courseInfo = allCourses.find(c => normalize(c.name) === normalize(event.title));
-      const eventCity = courseInfo ? courseInfo.city : "";
-
-      let targetCities = [selectedCity];
-      if (includeNeighbors && neighbors[selectedCity]) {
-        targetCities = [selectedCity, ...neighbors[selectedCity]];
-      }
-      matchesCity = targetCities.includes(eventCity);
-    }
-
-    return matchesRegion && matchesCity;
-  });
-
-  // Tyhjennetään kalenteri ja lisätään vain suodatetut
-  calendar.removeAllEvents();
-  calendar.addEventSource(filteredEvents);
-}
-
-  // Päivitä kalenteri (olettaen että 'calendar' on globaali muuttuja)
-  calendar.removeAllEvents();
-  calendar.addEventSource(calendarEvents);
-}
-
-  // Päivittää kaupunkilistan heti kun sivu latautuu
-  updateCityFilter();
-  
 </script>
 
 </body>
