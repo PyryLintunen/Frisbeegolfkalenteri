@@ -56,13 +56,12 @@
       #calendar { width: 100%; min-height: 500px; order: 1; }
     }
 
-    /* Modal tyylit */
     .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
     .modal-content { background: white; margin: 15% auto; padding: 20px; width: 90%; max-width: 400px; border-radius: 12px; }
     .close { float: right; font-size: 24px; cursor: pointer; }
     
     select, button { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
-    button { cursor: pointer; font-weight: bold; }
+    button { cursor: pointer; font-weight: bold; border: none; }
   </style>
 </head>
 <body>
@@ -83,11 +82,11 @@
     <h2>Suodatus & vapaat radat</h2>
 
     <label>Valitse maakunta:</label>
-<select id="regionFilter" onchange="updateCityFilter()">
-  <option value="all">Kaikki maakunnat</option>
-  <option value="Uusimaa">Uusimaa</option>
-  <option value="Varsinais-Suomi">Varsinais-Suomi</option>
-</select>
+    <select id="regionFilter" onchange="updateCityFilter()">
+      <option value="all">Kaikki maakunnat</option>
+      <option value="Uusimaa">Uusimaa</option>
+      <option value="Varsinais-Suomi">Varsinais-Suomi</option>
+    </select>
 
     <label>Valitse kunta:</label>
     <select id="cityFilter">
@@ -99,8 +98,8 @@
       <label for="includeNeighbors">Näytä myös naapurikunnat</label>
     </div>
 
-    <button onclick="applyFilters()" style="background: #28a745; color: white; border: none;">Päivitä kalenteri</button>
-    <button onclick="showFreeToday()" style="background: #007bff; color: white; border: none;">Hae vapaat radat tänään</button>
+    <button onclick="applyFilters()" style="background: #28a745; color: white;">Päivitä kalenteri</button>
+    <button onclick="showFreeToday()" style="background: #007bff; color: white;">Hae vapaat radat tänään</button>
 
     <div id="freeCoursesList" style="margin-top: 20px;"></div>
   </div>
@@ -292,6 +291,8 @@
     if (neighborHtml) html += "<hr><h4>Naapurit:</h4>" + neighborHtml;
     container.innerHTML = html;
   }
+
+  function closeModal() { document.getElementById("modal").style.display = "none"; }
 
   document.addEventListener('DOMContentLoaded', function() {
     const rawData = `
@@ -522,7 +523,8 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
       });
     });
 
-    calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    const calendarEl = document.getElementById('calendar');
+    calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'fi',
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
@@ -535,8 +537,6 @@ Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliome
     calendar.render();
     updateCityFilter();
   });
-
-  function closeModal() { document.getElementById("modal").style.display = "none"; }
 </script>
 
 </body>
