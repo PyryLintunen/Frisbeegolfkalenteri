@@ -9,38 +9,56 @@
 
   <style>
     /* CSS-tyylit */
-    .main-container {
-      display: flex;
-      flex-direction: row;
-      gap: 20px;
-      max-width: 1600px;
-      margin: 0 auto;
-      align-items: flex-start;
-    }
+    /* 1. LAAJENNETAAN PÄÄSÄILIÖTÄ */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  max-width: 98%; /* Nostetaan 1600px -> 98%, jotta se täyttää ison näytön */
+  margin: 0 auto;
+  align-items: flex-start;
+}
 
-    /* Lisää tai korvaa nämä koodisi style-osioon */
+/* 2. SÄÄDETÄÄN SUHTEITA */
+#calendar {
+  flex: 4; /* Nostetaan suhdetta (oli 3), jotta kalenteri saa enemmän tilaa suhteessa sivupaneeliin */
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  min-height: 800px; /* Varmistetaan, että kalenteri on korkea tietokoneella */
+}
 
-@media (max-width: 900px) {
+.side-panel {
+  flex: 1;
+  min-width: 320px; /* Pidetään paneeli sopivan levyisenä */
+  max-height: 85vh;
+  overflow-y: auto;
+  position: sticky; /* Paneeli pysyy näkyvissä, kun kalenteria rullataan alas */
+  top: 20px;
+}
+
+/* 3. MOBIILIOPTIMOINTI (Media Query) */
+@media (max-width: 1100px) { /* Nostetaan rajaa hieman, jotta kapeat läppäritkin hyötyvät */
   .main-container {
     flex-direction: column;
-    padding: 10px; /* Lisätään vähän marginaalia reunoille */
+    padding: 10px;
   }
 
   .side-panel {
     width: 100% !important;
-    min-width: unset !important;
-    max-height: none; /* Sallitaan paneelin kasvaa sisällön mukaan mobiilissa */
-    box-sizing: border-box;
-    margin-top: 20px;
-    order: 2; /* Siirretään lista kalenterin alapuolelle */
+    max-height: none;
+    position: static;
+    order: 2;
   }
 
   #calendar {
     width: 100% !important;
-    order: 1; /* Kalenteri ensin */
+    min-height: 500px; /* Mobiilissa matalampi on parempi */
+    order: 1;
     padding: 10px;
-    box-sizing: border-box;
   }
+}
 
   /* FullCalendarin mobiilioptimointi */
   .fc-header-toolbar {
@@ -498,6 +516,12 @@ window.addEventListener('resize', function() {
   }
 
   function closeModal() { document.getElementById("modal").style.display = "none"; }
+  // Päivittää kalenterin koon, kun ikkunaa säädetään
+window.addEventListener('resize', function() {
+    setTimeout(function() {
+        calendar.updateSize();
+    }, 200);
+});
 </script>
 
 </body>
