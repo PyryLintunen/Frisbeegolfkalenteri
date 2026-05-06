@@ -677,6 +677,17 @@ window.onclick = function(event) {
   }
 };
 
+  function showFreeToday() {
+  const today = new Date().toISOString().split("T")[0];
+  const city = document.getElementById("cityFilter").value;
+  const free = getFreeCourses(today, city);
+  const container = document.getElementById("freeCoursesList");
+
+  if (free.length === 0) {
+    container.innerHTML = "<p>Ei vapaita ratoja tälle päivälle.</p>";
+    return;
+  }
+
 function showFreeToday() {
   const today = new Date().toISOString().split("T")[0];
   const selectedCity = document.getElementById("cityFilter").value;
