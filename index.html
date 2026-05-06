@@ -18,30 +18,54 @@
       align-items: flex-start;
     }
 
-    @media (max-width: 900px) {
-      .main-container { flex-direction: column; }
-      .side-panel { width: 100%; box-sizing: border-box; }
-      #calendar { width: 100%; box-sizing: border-box; }
-    }
+    /* Lisää tai korvaa nämä koodisi style-osioon */
 
-    #calendar {
-      flex: 3;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-    }
+@media (max-width: 900px) {
+  .main-container {
+    flex-direction: column;
+    padding: 10px; /* Lisätään vähän marginaalia reunoille */
+  }
 
-    .side-panel {
-      flex: 1;
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-      min-width: 300px;
-      max-height: 85vh;
-      overflow-y: auto;
-    }
+  .side-panel {
+    width: 100% !important;
+    min-width: unset !important;
+    max-height: none; /* Sallitaan paneelin kasvaa sisällön mukaan mobiilissa */
+    box-sizing: border-box;
+    margin-top: 20px;
+    order: 2; /* Siirretään lista kalenterin alapuolelle */
+  }
+
+  #calendar {
+    width: 100% !important;
+    order: 1; /* Kalenteri ensin */
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  /* FullCalendarin mobiilioptimointi */
+  .fc-header-toolbar {
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+  .fc-view-harness {
+    height: 500px !important; /* Kiinteä korkeus auttaa hallitsemaan sivun rullausta */
+  }
+}
+
+/* Tehdään syöttökentistä mobiiliystävällisempiä */
+select, button {
+  font-size: 16px !important; /* Estää iOS-laitteita zoomaamasta automaattisesti kenttään */
+  padding: 12px !important;
+  border-radius: 8px !important;
+}
 
     .info-box {
       background-color: #f8f9fa;
