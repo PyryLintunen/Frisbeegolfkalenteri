@@ -284,7 +284,10 @@
   }
 
   function showFreeToday() {
-    const today = new Date().toISOString().split("T")[0];
+    const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+  const localISOTime = new Date(now - offset).toISOString().split("T")[0];
+  const today = localISOTime;
     const selectedRegion = document.getElementById("regionFilter").value;
     const selectedCity = document.getElementById("cityFilter").value;
     const container = document.getElementById("freeCoursesList");
