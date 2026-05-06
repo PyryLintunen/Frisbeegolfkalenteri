@@ -274,14 +274,58 @@
 
   function showFreeToday() {
     const today = new Date().toISOString().split("T")[0];
+    const selectedRegion = document.getElementById("regionFilter").value;
     const selectedCity = document.getElementById("cityFilter").value;
     const container = document.getElementById("freeCoursesList");
-    if (selectedCity === "all") { container.innerHTML = "<p>Valitse kunta ensin.</p>"; return; }
+    
+    let html = `<h2>Vapaat radat ${today}</h2>`;
 
-    const freeMain = getFreeCourses(today, selectedCity);
-    let html = `<h3>📍 ${selectedCity}</h3>`;
-    freeMain.forEach(c => html += `<div style="padding:5px; background:#e8f4fd; margin-bottom:4px; border-left:3px solid #007bff;">✅ ${c.name}</div>`);
-    if(freeMain.length === 0) html += "<p>Ei vapaita ratoja.</p>";
+    if (selectedCity !== "all") {
+      // NÄYTETÄÄN YKSITTÄINEN KUNTA JA NAAPURIT (kuten tähänkin asti)
+      const freeMain = getFreeCourses(today, selectedCity);
+      html += `<h3>📍 ${selectedCity}</h3>`;
+      
+      if (freeMain.length === 0) {
+        html += "<p>Ei täysin vapaita ratoja (kisoja kaikilla radoilla).</p>";
+      } else {
+        freeMain.forEach(c => {
+          html += `<div style="padding:5px; background:#e8f4fd; margin-bottom:4px; border-left:3px solid #007bff;">✅ ${c.name}</div>`;
+        });
+      }
+
+      const myNeighbors = neighbors[selectedCity] || [];
+      let neighborHtml = "";
+      myNeighbors.forEach(nCity => {
+        const freeInNeighbor = getFreeCourses(today, nCity);
+        if (freeInNeighbor.length > 0) {
+          neighborHtml += `<p><strong>${nCity}:</strong> ${freeInNeighbor.map(c => c.name).join(", ")}</p>`;
+        }
+      });
+      if (neighborHtml) html += "<hr><h4>Naapurikunnat:</h4>" + neighborHtml;
+
+    } else {
+      // NÄYTETÄÄN KOKO MAAKUNTA (Uusi ominaisuus)
+      if (selectedRegion === "all") {
+        html += "<p>Valitse maakunta nähdäksesi kaikki vapaat radat.</p>";
+      } else {
+        html += `<h3>🌍 Maakunta: ${selectedRegion}</h3>`;
+        
+        // Haetaan kaikki maakunnan kunnat, joissa on ratoja
+        const citiesInRegion = [...new Set(allCourses
+          .filter(c => c.region === selectedRegion)
+          .map(c => c.city))].sort();
+
+        citiesInRegion.forEach(city => {
+          const freeInCity = getFreeCourses(today, city);
+          if (freeInCity.length > 0) {
+            html += `<div style="margin-top:10px;"><strong>${city}:</strong><br>`;
+            html += freeInCity.map(c => `<span style="display:inline-block; background:#e8f4fd; padding:2px 8px; margin:2px; border-radius:4px; font-size:0.85em;">${c.name}</span>`).join(" ");
+            html += `</div>`;
+          }
+        });
+      }
+    }
+    
     container.innerHTML = html;
   }
 
