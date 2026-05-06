@@ -679,17 +679,6 @@ window.onclick = function(event) {
 
   function showFreeToday() {
   const today = new Date().toISOString().split("T")[0];
-  const city = document.getElementById("cityFilter").value;
-  const free = getFreeCourses(today, city);
-  const container = document.getElementById("freeCoursesList");
-
-  if (free.length === 0) {
-    container.innerHTML = "<p>Ei vapaita ratoja tälle päivälle.</p>";
-    return;
-  }
-
-function showFreeToday() {
-  const today = new Date().toISOString().split("T")[0];
   const selectedCity = document.getElementById("cityFilter").value;
   const container = document.getElementById("freeCoursesList");
   
@@ -700,7 +689,7 @@ function showFreeToday() {
     return;
   }
 
-  // 1. PÄÄKAUPUNKI
+  // 1. VALITTU KAUPUNKI
   const freeMain = getFreeCourses(today, selectedCity);
   let html = `<h3 style="margin-bottom: 10px; color: #2c3e50;">📍 ${selectedCity}</h3>`;
   
@@ -710,7 +699,7 @@ function showFreeToday() {
       html += `<div style="padding: 5px 10px; background: #e8f4fd; border-radius: 4px; margin-bottom: 4px; border-left: 3px solid #007bff;">✅ ${c.name}</div>`;
     });
   } else {
-    html += "<p style='font-style: italic; color: #888;'>Kaikilla radoilla on kisoja tänään.</p>";
+    html += "<p style='font-style: italic; color: #888;'>Kaikilla kaupungin radoilla on kisoja tänään.</p>";
   }
 
   // 2. NAAPURIKUNNAT
@@ -742,39 +731,9 @@ function showFreeToday() {
   container.innerHTML = html;
 }
 
-  // 1. Aakkostetaan radat nimen mukaan
-  free.sort((a, b) => a.name.localeCompare(b.name));
-
-  // 2. Ryhmitellään radat kaupungeittain
-  const grouped = {};
-  free.forEach(c => {
-    if (!grouped[c.city]) {
-      grouped[c.city] = [];
-    }
-    grouped[c.city].push(c.name);
-  });
-
-  // 3. Luodaan HTML-sisältö
-  // Aakkostetaan myös kaupungit (avaimet)
-  const sortedCities = Object.keys(grouped).sort();
-  
-  let html = "<h3>Vapaat radat tänään:</h3>";
-  
-  sortedCities.forEach(cityName => {
-    html += `<div style="margin-top: 15px;">
-              <strong style="color: #2c3e50; text-transform: uppercase; font-size: 0.9em; border-bottom: 1px solid #ddd; display: block; margin-bottom: 5px;">
-                📍 ${cityName}
-              </strong>`;
-    
-    grouped[cityName].forEach(courseName => {
-      html += `<div style="padding-left: 10px; margin-bottom: 3px;">✅ ${courseName}</div>`;
-    });
-    
-    html += `</div>`;
-  });
-
   container.innerHTML = html;
 }
+
 </script>
 
 </body>
