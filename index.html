@@ -640,12 +640,17 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
       const [date, time] = dateTime.split(" ");
       const [d, m, y] = date.split("/");
       
-      events.push({
-        title: coursePart.split("→")[0].trim(),
-        start: `${y}-${m}-${d}T${time}`,
-        extendedProps: { region: region, time: time }
-      });
-    });
+      const eventDate = new Date(`${y}-${m}-${d}T${time}`);
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1); // Sallitaan vielä tämän päivän kisat
+
+      if (eventDate >= yesterday) {
+        events.push({
+          title: coursePart.split("→")[0].trim(),
+          start: `${y}-${m}-${d}T${time}`,
+          extendedProps: { region: region, time: time }
+        });
+      }
 
     const calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
@@ -653,6 +658,10 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
       firstDay: 1,
       weekNumbers: true,
       weekText: 'vk',
+      nowIndicator: true, // Näyttää viivan nykyhetken kohdalla
+      validRange: {
+        start: new Date().toISOString().split("T")[0] // Estää skrollaamisen menneisiin kuukausiin
+      },
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
       eventClick: function(info) {
