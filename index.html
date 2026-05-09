@@ -188,7 +188,6 @@
     { name: "Oripään OKRA-rata", city: "Oripää", region: "Varsinais-Suomi" },
     { name: "Vampulan Frisbeegolfrata", city: "Oripää", region: "Varsinais-Suomi" },
     { name: "Paimio DiscGolfPark", city: "Paimio", region: "Varsinais-Suomi" },
-    { name: "Mossala Island Resort DiscGolfPark", city: "Parainen", region: "Varsinais-Suomi"},
     { name: "Kirikallio DiscGolfPark", city: "Pyhäranta", region: "Varsinais-Suomi" },
     { name: "Pyhäranta DiscGolfPark", city: "Pyhäranta", region: "Varsinais-Suomi" },
     { name: "Haukkavuori DiscGolfPark", city: "Pöytyä", region: "Varsinais-Suomi" },
@@ -212,52 +211,25 @@
 
   // 2. NAAPURIKUNNAT
   const neighbors = {
-    // === UUSIMAA ===
-    "Espoo": ["Helsinki", "Vantaa", "Kirkkonummi", "Vihti"],
+    "Espoo": ["Helsinki", "Vantaa", "Kirkkonummi", "Vihti", "Kauniainen"],
     "Hanko": ["Raasepori"],
     "Helsinki": ["Espoo", "Vantaa", "Sipoo"],
-    "Hyvinkää": ["Tuusula", "Nurmijärvi", "Vihti", "Mäntsälä"],
-    "Inkoo": ["Raasepori", "Lohja", "Kirkkonummi"],
+    "Hyvinkää": ["Tuusula", "Nurmijärvi", "Vihti", "Mäntsälä", "Riihimäki", "Hausjärvi"],
+    "Inkoo": ["Raasepori", "Lohja", "Kirkkonummi", "Siuntio"],
     "Järvenpää": ["Tuusula", "Sipoo", "Mäntsälä", "Kerava"],
-    "Karkkila": ["Vihti", "Lohja"],
+    "Karkkila": ["Vihti", "Lohja", "Tammela", "Loppi"],
     "Kerava": ["Tuusula", "Vantaa", "Sipoo", "Järvenpää"],
-    "Kirkkonummi": ["Espoo", "Inkoo", "Vihti"],
-    "Lohja": ["Vihti", "Raasepori", "Inkoo", "Karkkila", "Salo", "Somero"],
-    "Loviisa": ["Porvoo"],
-    "Mäntsälä": ["Hyvinkää", "Järvenpää", "Tuusula"],
+    "Kirkkonummi": ["Espoo", "Inkoo", "Vihti", "Siuntio"],
+    "Lohja": ["Vihti", "Raasepori", "Inkoo", "Karkkila", "Salo", "Siuntio", "Somero"],
+    "Loviisa": ["Porvoo", "Lapinjärvi", "Pyhtää", "Kouvola", "Iitti"],
+    "Mäntsälä": ["Hyvinkää", "Järvenpää", "Tuusula", "Hausjärvi", "Kärkölä", "Orimattila", "Pukkila", "Askola"],
     "Nurmijärvi": ["Vantaa", "Espoo", "Vihti", "Hyvinkää", "Tuusula"],
-    "Porvoo": ["Sipoo", "Loviisa", "Pornainen"],
-    "Raasepori": ["Lohja", "Hanko", "Inkoo", "Salo"],
-    "Sipoo": ["Helsinki", "Vantaa", "Porvoo", "Kerava", "Järvenpää"],
+    "Porvoo": ["Sipoo", "Loviisa", "Askola", "Pornainen", "Myrskylä"],
+    "Raasepori": ["Lohja", "Hanko", "Inkoo", "Salo", "Kemiönsaari"],
+    "Sipoo": ["Helsinki", "Vantaa", "Porvoo", "Kerava", "Järvenpää", "Pornainen"],
     "Tuusula": ["Vantaa", "Kerava", "Järvenpää", "Nurmijärvi", "Hyvinkää", "Sipoo"],
     "Vantaa": ["Helsinki", "Espoo", "Tuusula", "Kerava", "Sipoo", "Nurmijärvi"],
-    "Vihti": ["Espoo", "Lohja", "Karkkila", "Hyvinkää", "Nurmijärvi", "Kirkkonummi"],
-
-    // === VARSINAIS-SUOMI ===
-    "Turku": ["Kaarina", "Lieto", "Naantali", "Raisio", "Rusko", "Parainen"],
-    "Kaarina": ["Turku", "Lieto", "Parainen", "Paimio"],
-    "Lieto": ["Turku", "Kaarina", "Paimio", "Marttila", "Pöytyä", "Rusko"],
-    "Raisio": ["Turku", "Naantali", "Rusko", "Masku"],
-    "Naantali": ["Turku", "Raisio", "Masku", "Taivassalo"],
-    "Rusko": ["Turku", "Raisio", "Masku", "Nousiainen", "Lieto"],
-    "Masku": ["Raisio", "Rusko", "Nousiainen", "Mynämäki", "Naantali"],
-    "Nousiainen": ["Masku", "Rusko", "Mynämäki", "Pöytyä"],
-    "Mynämäki": ["Masku", "Nousiainen", "Vehmaa", "Laitila", "Pöytyä"],
-    "Paimio": ["Kaarina", "Lieto", "Salo", "Marttila"],
-    "Salo": ["Paimio", "Marttila", "Somero", "Lohja", "Raasepori"],
-    "Marttila": ["Paimio", "Salo", "Koski Tl", "Lieto", "Pöytyä"],
-    "Koski Tl": ["Marttila", "Loimaa", "Pöytyä", "Somero"],
-    "Loimaa": ["Koski Tl", "Pöytyä", "Oripää", "Somero"],
-    "Pöytyä": ["Lieto", "Marttila", "Koski Tl", "Loimaa", "Oripää", "Nousiainen", "Mynämäki"],
-    "Oripää": ["Pöytyä", "Loimaa"],
-    "Somero": ["Salo", "Koski Tl", "Loimaa", "Lohja"],
-    "Laitila": ["Mynämäki", "Uusikaupunki", "Pyhäranta", "Vehmaa"],
-    "Vehmaa": ["Mynämäki", "Laitila", "Uusikaupunki", "Taivassalo"],
-    "Uusikaupunki": ["Laitila", "Pyhäranta", "Vehmaa", "Taivassalo"],
-    "Pyhäranta": ["Laitila", "Uusikaupunki"],
-    "Taivassalo": ["Uusikaupunki", "Vehmaa", "Kustavi", "Naantali"],
-    "Kustavi": ["Taivassalo"],
-    "Parainen": ["Turku", "Kaarina"]
+    "Vihti": ["Espoo", "Lohja", "Karkkila", "Hyvinkää", "Nurmijärvi", "Kirkkonummi", "Loppi"]
   };
 
   // 3. APUFUNKTIOT
@@ -640,28 +612,17 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
       const [date, time] = dateTime.split(" ");
       const [d, m, y] = date.split("/");
       
-      const eventDate = new Date(`${y}-${m}-${d}T${time}`);
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1); // Sallitaan vielä tämän päivän kisat
-
-      if (eventDate >= yesterday) {
-        events.push({
-          title: coursePart.split("→")[0].trim(),
-          start: `${y}-${m}-${d}T${time}`,
-          extendedProps: { region: region, time: time }
-        });
-      }
+      events.push({
+        title: coursePart.split("→")[0].trim(),
+        start: `${y}-${m}-${d}T${time}`,
+        extendedProps: { region: region, time: time }
+      });
+    });
 
     const calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'fi',
       firstDay: 1,
-      weekNumbers: true,
-      weekText: 'vk',
-      nowIndicator: true,
-      validRange: {
-        start: new Date().toISOString().split("T")[0]
-      },
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
       eventClick: function(info) {
