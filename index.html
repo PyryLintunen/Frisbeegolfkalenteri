@@ -658,9 +658,9 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
       firstDay: 1,
       weekNumbers: true,
       weekText: 'vk',
-      nowIndicator: true, // Näyttää viivan nykyhetken kohdalla
+      nowIndicator: true,
       validRange: {
-        start: new Date().toISOString().split("T")[0] // Estää skrollaamisen menneisiin kuukausiin
+        start: new Date().toISOString().split("T")[0]
       },
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
