@@ -615,17 +615,29 @@ Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teem
       const [date, time] = dateTime.split(" ");
       const [d, m, y] = date.split("/");
       
-      events.push({
-        title: coursePart.split("→")[0].trim(),
-        start: `${y}-${m}-${d}T${time}`,
-        extendedProps: { region: region, time: time }
-      });
+      const eventDate = new Date(`${y}-${m}-${d}T${time}`);
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0); // Asetetaan kello päivän alkuun
+
+      if (eventDate >= todayStart) {
+        events.push({
+          title: coursePart.split("→")[0].trim(),
+          start: `${y}-${m}-${d}T${time}`,
+          extendedProps: { region: region, time: time }
+        });
+      }
     });
 
     const calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'fi',
       firstDay: 1,
+      weekNumbers: true,
+      weekText: 'vk',
+      nowIndicator: true,
+      validRange: {
+        start: new Date().toISOString().split("T")[0]
+      },
       initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
       events: events,
       eventClick: function(info) {
