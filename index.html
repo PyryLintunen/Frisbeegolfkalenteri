@@ -83,6 +83,7 @@
     <label>Valitse maakunta:</label>
     <select id="regionFilter" onchange="updateCityFilter()">
       <option value="all">Kaikki maakunnat</option>
+      <option value="Kanta-Häme">Kanta-Häme</option>
       <option value="Uusimaa">Uusimaa</option>
       <option value="Varsinais-Suomi">Varsinais-Suomi</option>
     </select>
@@ -121,6 +122,25 @@
 
   // 1. KAIKKI RADAT (Uusimaa + Varsinais-Suomi)
   const allCourses = [
+    // KANTA-HÄME
+    { name: "Hunnari DiscGolfPark", city: "Forssa", region: "Kanta-Häme" },
+    { name: "Hattula DiscGolfPark", city: "Hattula", region: "Kanta-Häme" },
+    { name: "Hausjärvi DiscGolfPark", city: "Hausjärvi", region: "Kanta-Häme" },
+    { name: "Ykslammi DiscGolfPark", city: "Hausjärvi", region: "Kanta-Häme" },
+    { name: "Ahvenisto Race Circuit", city: "Hämeenlinna", region: "Kanta-Häme" },
+    { name: "Hämeenlinnan Frisbeegolfrata", city: "Hämeenlinna", region: "Kanta-Häme" },
+    { name: "Härkälinnan Frisbeegolfrata", city: "Hämeenlinna", region: "Kanta-Häme" },
+    { name: "Kantola Urban DiscGolfPark", city: "Hämeenlinna", region: "Kanta-Häme" },
+    { name: "Pirtin kentän Frisbeegolfrata", city: "Hämeenlinna", region: "Kanta-Häme" },
+    { name: "Kiipulasäätiön Frisbeegolfrata", city: "Janakkala", region: "Kanta-Häme" },
+    { name: "Lastujärven Frisbeegolfrata", city: "Janakkala", region: "Kanta-Häme" },
+    { name: "Tervakoski Frisbeegolf", city: "Janakkala", region: "Kanta-Häme" },
+    { name: "Jokioinen DiscGolfPark", city: "Jokioinen", region: "Kanta-Häme" },
+    { name: "Launonen DiscGolfPark 2023", city: "Loppi", region: "Kanta-Häme" },
+    { name: "Loppi DiscGolfPark", city: "Loppi", region: "Kanta-Häme" },
+    { name: "Riutta DiscGolfPark", city: "Riihimäki", region: "Kanta-Häme" },
+    { name: "Eerikkilä DGP", city: "Tammela", region: "Kanta-Häme" },
+    { name: "Tammela DiscGolfPark", city: "Tammela", region: "Kanta-Häme" },
     // UUSIMAA
     { name: "Lakisto", city: "Espoo", region: "Uusimaa" },
     { name: "Oittaa Camping", city: "Espoo", region: "Uusimaa" },
@@ -211,16 +231,27 @@
 
   // 2. NAAPURIKUNNAT
   const neighbors = {
+    // === KANTA-HÄME ===
+    "Forssa": ["Jokioinen", "Tammela", "Somero"],
+    "Hattula": ["Hämeenlinna"],
+    "Hausjärvi": ["Riihimäki", "Hämeenlinna", "Janakkala", "Hyvinkää", "Mäntsälä"],
+    "Hämeenlinna": ["Hattula", "Janakkala", "Hausjärvi", "Loppi"],
+    "Janakkala": ["Hämeenlinna", "Hausjärvi", "Loppi", "Riihimäki"],
+    "Jokioinen": ["Forssa", "Tammela"],
+    "Loppi": ["Hämeenlinna", "Janakkala", "Riihimäki", "Vihti", "Hyvinkää"],
+    "Riihimäki": ["Hausjärvi", "Janakkala", "Loppi", "Hyvinkää"],
+    "Tammela": ["Forssa", "Jokioinen", "Somero", "Lohja", "Vihti"],
+    // === UUSIMAA ===
     "Espoo": ["Helsinki", "Vantaa", "Kirkkonummi", "Vihti", "Kauniainen"],
     "Hanko": ["Raasepori"],
     "Helsinki": ["Espoo", "Vantaa", "Sipoo"],
-    "Hyvinkää": ["Tuusula", "Nurmijärvi", "Vihti", "Mäntsälä", "Riihimäki", "Hausjärvi"],
+    "Hyvinkää": ["Tuusula", "Nurmijärvi", "Vihti", "Mäntsälä", "Riihimäki", "Hausjärvi", "Loppi"],
     "Inkoo": ["Raasepori", "Lohja", "Kirkkonummi", "Siuntio"],
     "Järvenpää": ["Tuusula", "Sipoo", "Mäntsälä", "Kerava"],
     "Karkkila": ["Vihti", "Lohja", "Tammela", "Loppi"],
     "Kerava": ["Tuusula", "Vantaa", "Sipoo", "Järvenpää"],
     "Kirkkonummi": ["Espoo", "Inkoo", "Vihti", "Siuntio"],
-    "Lohja": ["Vihti", "Raasepori", "Inkoo", "Karkkila", "Salo", "Siuntio", "Somero"],
+    "Lohja": ["Vihti", "Raasepori", "Inkoo", "Karkkila", "Salo", "Siuntio", "Somero", "Tammela"],
     "Loviisa": ["Porvoo", "Lapinjärvi", "Pyhtää", "Kouvola", "Iitti"],
     "Mäntsälä": ["Hyvinkää", "Järvenpää", "Tuusula", "Hausjärvi", "Kärkölä", "Orimattila", "Pukkila", "Askola"],
     "Nurmijärvi": ["Vantaa", "Espoo", "Vihti", "Hyvinkää", "Tuusula"],
@@ -229,7 +260,32 @@
     "Sipoo": ["Helsinki", "Vantaa", "Porvoo", "Kerava", "Järvenpää", "Pornainen"],
     "Tuusula": ["Vantaa", "Kerava", "Järvenpää", "Nurmijärvi", "Hyvinkää", "Sipoo"],
     "Vantaa": ["Helsinki", "Espoo", "Tuusula", "Kerava", "Sipoo", "Nurmijärvi"],
-    "Vihti": ["Espoo", "Lohja", "Karkkila", "Hyvinkää", "Nurmijärvi", "Kirkkonummi", "Loppi"]
+    "Vihti": ["Espoo", "Lohja", "Karkkila", "Hyvinkää", "Nurmijärvi", "Kirkkonummi", "Loppi", "Tammela"],
+    // === VARSINAIS-SUOMI ===
+    "Turku": ["Kaarina", "Lieto", "Naantali", "Raisio", "Rusko", "Parainen"],
+    "Kaarina": ["Turku", "Lieto", "Parainen", "Paimio"],
+    "Lieto": ["Turku", "Kaarina", "Paimio", "Marttila", "Pöytyä", "Rusko"],
+    "Raisio": ["Turku", "Naantali", "Rusko", "Masku"],
+    "Naantali": ["Turku", "Raisio", "Masku", "Taivassalo"],
+    "Rusko": ["Turku", "Raisio", "Masku", "Nousiainen", "Lieto"],
+    "Masku": ["Raisio", "Rusko", "Nousiainen", "Mynämäki", "Naantali"],
+    "Nousiainen": ["Masku", "Rusko", "Mynämäki", "Pöytyä"],
+    "Mynämäki": ["Masku", "Nousiainen", "Vehmaa", "Laitila", "Pöytyä"],
+    "Paimio": ["Kaarina", "Lieto", "Salo", "Marttila"],
+    "Salo": ["Paimio", "Marttila", "Somero", "Lohja", "Raasepori"],
+    "Marttila": ["Paimio", "Salo", "Koski Tl", "Lieto", "Pöytyä"],
+    "Koski Tl": ["Marttila", "Loimaa", "Pöytyä", "Somero"],
+    "Loimaa": ["Koski Tl", "Pöytyä", "Oripää", "Somero"],
+    "Pöytyä": ["Lieto", "Marttila", "Koski Tl", "Loimaa", "Oripää", "Nousiainen", "Mynämäki"],
+    "Oripää": ["Pöytyä", "Loimaa"],
+    "Somero": ["Salo", "Koski Tl", "Loimaa", "Lohja", "Forssa", "Tammela"],
+    "Laitila": ["Mynämäki", "Uusikaupunki", "Pyhäranta", "Vehmaa"],
+    "Vehmaa": ["Mynämäki", "Laitila", "Uusikaupunki", "Taivassalo"],
+    "Uusikaupunki": ["Laitila", "Pyhäranta", "Vehmaa", "Taivassalo"],
+    "Pyhäranta": ["Laitila", "Uusikaupunki"],
+    "Taivassalo": ["Uusikaupunki", "Vehmaa", "Kustavi", "Naantali"],
+    "Kustavi": ["Taivassalo"],
+    "Parainen": ["Turku", "Kaarina"]
   };
 
   // 3. APUFUNKTIOT
@@ -352,8 +408,10 @@
   document.addEventListener('DOMContentLoaded', function() {
     // METRIX DATA
     const rawData = `
-    #uusimaa
-    #vk19
+    # uusimaa
+    # ============================================================
+    # vk19
+    # ============================================================
 SD viikkokisat 2026 → 7.5. @ Talma
 Uusimaa, Sipoo	07/05/2026 18:00	Viikoittain	Talma DiscGolfPark → Talma DiscGolfPark 2023	34	Avoin Rating 880-939 Rating 800-879 Rating 1-799 Juniorit alle 18v	Yhden kierroksen viikkokisat Talman Frisbeegolfradalla, Sipoossa.	Alku: 30/04/2026 20:30 Päättyy: 07/05/2026 16:00
 NBDG Extra™ Lemmenlaakso
@@ -391,7 +449,9 @@ Uusimaa, Vihti	10/05/2026 12:00	Viikoittain	Vihtijärvi Frisbeegolf → 9 väyl�
 Oittaan viikkokilpailut 2026 → Yksilökisat 10.5
 Uusimaa, Espoo	10/05/2026 18:00	Viikoittain	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	0	Metrix rating 1-930 Metrix rating 1-889 Metrix rating 1-839 Metrix rating 0-1200 Metrix rating 0		Alku: 05/05/2026 08:00 Päättyy: 10/05/2026 16:00
 Karjaan juniors viikkokisa
-#vk20
+# ============================================================
+# vk20
+# ============================================================
 Uusimaa, Raasepori	11/05/2026 - 08/06/2026	Viikoittain	Karjaan Frisbeegolf Park → Selcast - (etutiit)	7	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	
 Karjaan juniors viikkokisa → 1. Kierros
 Uusimaa, Raasepori	11/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	6	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
@@ -464,7 +524,9 @@ Uusimaa, Tuusula	17/05/2026 10:00	C - PDGA	Ford Amateur DiscGolfPark (A1) → 1	
 Lauri Hämäläisen Heittoklinikka & Fundraiser Parikilpailu → Parikilpailu
 Uusimaa, Loviisa	17/05/2026 12:00	Parikilpailu	Loviisan frisbeegolfrata → Loviisa 21 b väylät	3	Open => 1775 (yhteisrating) Amateur < 1775 (yhteisrating) +50v Sekaparit	B-väylät, lisätiedot tarkentuu myöhemmin!	Päättyy: 17/05/2026 11:00
 Karjaan juniors viikkokisa → 2. Kierros
-#vk21
+# ============================================================
+# vk21
+# ============================================================
 Uusimaa, Raasepori	18/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	1	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
 Länsi-Uusimaan FribbeTour 2026 → Pohja: Gumnäs
 Uusimaa, Hanko	18/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	RPA RAD RAE RAF		Alku: 05/05/2026 00:00 Päättyy: 18/05/2026 17:00
@@ -503,7 +565,9 @@ Uusimaa, Inkoo	23/05/2026 14:30	B - PDGA	Inkoo discgolf → Inkoo discgolf 2021	
 Battle of the Three Forests 2026 → Kierros3 Kantarelli DGP
 Uusimaa, Lohja	24/05/2026 09:00	B - PDGA	Kantarelli DGC	0	MPO MP40 MP50 FPO FP40 FP50	Finaali kierros Golf lähdöin
 Länsi-Uusimaan FribbeTour 2026 → Karjaa: Maasilta
-#vk22
+# ============================================================
+# vk22
+# ============================================================
 Uusimaa, Hanko	25/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	RPA RAD RAE RAF		Alku: 12/05/2026 00:00 Päättyy: 25/05/2026 17:00
 Karkkilan viikkokilpailut 2026 → Parikisa 25.5
 Uusimaa, Karkkila	25/05/2026 18:00	Parikilpailu Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	0	Avoin Avoin+junnu/nainen (<=15v)	Info kilpailun pääsivun alareunassa. 36 paria mahtuu mukaan. 10e/pari (junnut ilmaiseksi). Holaripotissa 110e+.	Alku: 18/05/2026 21:00 Päättyy: 25/05/2026 17:00
@@ -529,8 +593,11 @@ Amatöörien SM-karsinnat Presented by Powergrip → #3 Lemmenlaakso, Järvenpä
 Uusimaa, Järvenpää	30/05/2026 11:22	C - PDGA	Lemmenlaakson frisbeegolfrata → Lemmenlaakso 05/2023	131	MA1 FA1 MA40 FA40 MA50 FA50 MA60 FA60	Amatöörien SM-karsintakiertueen osakilpailu Lemmenlaaksossa, Järvenpäässä.	Alku: 30/03/2026 19:00 Päättyy: 26/04/2026 23:00
 NBDG Amateurs™ Oittaa
 Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	33	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Oittaan Kalliometsässä, Espoossa.	Alku: 31/03/2026 19:00 Päättyy: 27/05/2026 23:00
-#varsinais-suomi
-#vk19
+# ============================================================
+# varsinais-suomi
+# ============================================================
+# vk19
+# ============================================================
 Hevonlinnan viikkokisat → Kisa5 Huom. Aloitus klo 17:30
 Varsinais-Suomi, Koski Tl	07/05/2026 17:30	Viikoittain	Hevonlinna 22	13	Yli 930 840-930 Alle 840	Kisamaksu 5€(sisältää ctp:n)+holaripotti 1€(potti69€). Metrix ilmottautuminen 16:30 mennessä. Maksu viimeistään 17:10. Payout 100%. Ctp 9. Ei poolitoiveita. Kisa perutaan kisapäivänä klo15:00, jos ennuste sateinen.	Alku: 03/05/2026 04:15 Päättyy: 07/05/2026 16:30
 WDGM viikkokisat 2026
@@ -553,7 +620,9 @@ Somerniemen viikkokilpailut → Kilpailu 1: Somerniemi Gold, yksilökilpailu
 Varsinais-Suomi, Somero	09/05/2026 11:00	Viikoittain	Somerniemi DiscGolfPark → Gold	4	>920 821-920 0-820	Kaikille avoimet viikkokilpailut lauantaisin noin kahden viikon välein!	Alku: 03/05/2026 20:30 Päättyy: 09/05/2026 10:00
 SFG kesäcup 2026 → SFG Kesäcup TUPURI VK19
 Varsinais-Suomi, Salo	10/05/2026 11:00	Viikoittain	Tupuri → 18 väylää	13	935+ 860-935 Alle 860		Päättyy: 10/05/2026 09:15
-#vk20
+# ============================================================
+# vk20
+# ============================================================
 PFGS Viikkokilpailut kesä 2026 → Parikisa #1
 Varsinais-Suomi, Paimio	11/05/2026 18:00	Parikilpailu	Paimio DGP [Paimion Frisbeegolfseura] → Viikkokisat Paimio 18	5	Jono Parin paremman rating 1-900 Parin paremman rating 900+ tai toinen 0 Sekaparit		Alku: 05/05/2026 08:00 Päättyy: 11/05/2026 16:00
 Laitilan viikkokisat → 6. Kierros
@@ -568,7 +637,9 @@ KaPa Disc Golf viikkokisat → 2. Kierros
 Varsinais-Suomi, Vehmaa	13/05/2026 18:30		Vehmaa DiscGolfPark → DGP-18 (2014)	0	1-799 800-849 850-899 950+ ja 0 Juniorit alle 18-v 900-949	Osallistumismaksu 5€. Juniorit 0€ (ei luokkapalkintoja). Osallistumismaksu sisältää osallistumisen holaripottiin (1€/pelaaja) ja CTP-kisaan (väylä x). Holaripotissa pohjalla xx€. Maksu mobilepaylla numeroon: 7641SY	Päättyy: 13/05/2026 17:30
 Frisbeegolfseura 7k - Kilpailut 2026 → Ace Hela Race
 Varsinais-Suomi, Turku	14/05/2026 12:00		Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	8	Metrix-rating yli 940 Metrix-rating alle 940 Metrix-rating alle 900 Metrix-rating alle 860 Metrix-rating alle 820	Jahdataan helatorstaina Ässiä erikoisradalla.	Alku: 05/05/2026 12:00 Päättyy: 14/05/2026 11:00
-#vk21
+# ============================================================
+# vk21
+# ============================================================
 Frisbeegolfseura 7k - Kilpailut 2026 → Lausteen Joukkuekisa #1
 Varsinais-Suomi, Turku	18/05/2026 18:00	Parikilpailu Viikoittain	Lausteen frisbeegolfpuisto → Tulos-layout, 24 väylää, 2024-	5	Rating ka >930 Rating ka <930 0-rating mukana	Kootkaa kolmen hengen joukkue, päättäkää pelipaikat ja tulkaa haastamaan Laustetta rennossa maanantai-illan mittelössä!	Alku: 28/04/2026 18:00 Päättyy: 18/05/2026 17:30
 KaPa Disc Golf viikkokisat → 3. Kierros
@@ -593,7 +664,9 @@ KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 3. kierros, 
 Varsinais-Suomi, Uusikaupunki	23/05/2026 15:00		Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit		
 KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 3. kierros, 2. pari - Tough Shot
 Varsinais-Suomi, Uusikaupunki	23/05/2026 15:01		Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit	
-#vk22
+# ============================================================
+# vk22
+# ============================================================
 KaPa Disc Golf viikkokisat → 4. Kierros
 Varsinais-Suomi, Uusikaupunki	27/05/2026 18:30		KaPa DG Pop-Up Race → Kalannin Urheilukenttä	0	1-799 800-849 850-899 950+ ja 0 Juniorit alle 18-v 900-949	POP-UP RATA! Osallistumismaksu 5€. Juniorit 0€ (ei luokkapalkintoja). Osallistumismaksu sisältää osallistumisen holaripottiin (1€/pelaaja) ja CTP-kisaan (väylä x). Holaripotissa pohjalla xx€. Maksu mobilepaylla numeroon: 7641SY	Päättyy: 20/05/2026 17:30
 7k - Viikkokisat 2026 → Lausteen viikkokilpailu #4
