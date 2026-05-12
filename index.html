@@ -122,11 +122,11 @@
   <div class="side-panel">
     <div class="info-box">
       <h3>Tietoa kalenterista</h3>
-      Suodata kisoja ja vapaita ratoja maakunnan ja kunnan mukaan.
-      Kalenterissa näkyy kisat, ja vapaat radat -haulla näet missä ei ole kisoja tänään.
-      Tällä hetkellä näkyy Kanta-Häme, Uusimaa ja Varsinais-Suomi.
-      Virheet ja puutteet datassa mahdollisia.
-      <small>Päivitetty: 12.5.2026</small>
+      Kalenteri näyttää päivän kisat.
+      "Näytä vapaat radat" näyttää radat, joissa ei ole kisoja tänään.
+      Rajaa aluetta maakunnittain tai kunnittain naapurikuntien kera.
+      Sivusto on vielä kehityksen alla, joten virheet ja puutteet datassa mahdollisia.
+      <small>Päivitetty: 13.5.2026</small>
     </div>
 
     <h2>Suodatus & vapaat radat</h2>
@@ -1051,239 +1051,1077 @@
   document.addEventListener('DOMContentLoaded', function() {
     // METRIX DATA
     const rawData = `
-    # uusimaa
-# ============================================================
-# vk20
-# ============================================================
-Uusimaa, Raasepori	11/05/2026 - 08/06/2026	Viikoittain	Karjaan Frisbeegolf Park → Selcast - (etutiit)	7	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	
-Karjaan juniors viikkokisa → 1. Kierros
-Uusimaa, Raasepori	11/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	6	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
-Karkkilan viikkokilpailut 2026 → 11.5
-Uusimaa, Karkkila	11/05/2026 18:00	Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	3	Metrix rating alle 870 Metrix rating 870-935 Metrix rating yli 935	Info kilpailun pääsivulla	Alku: 04/05/2026 21:00 Päättyy: 11/05/2026 17:00
-Kantarelli DGP Viikkokilpailut by Sweetspot ry → 4. Kierros
-Uusimaa, Lohja	11/05/2026 18:00	Viikoittain	Kantarelli DGC	2	1-859 860-909 910+ja ratingittomat		Alku: 14/04/2026 14:00 Päättyy: 11/05/2026 17:00
-Länsi-Uusimaan FribbeTour 2026 → Västerby: B-Rata
-Uusimaa, Hanko	11/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	1	RPA RAD RAE RAF		Alku: 28/04/2026 00:00 Päättyy: 11/05/2026 17:00
-Nummenmäki PDGA-Liiga → Liiga #2
-Uusimaa, Hyvinkää	11/05/2026 18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG		Alku: 05/05/2026 16:00 Päättyy: 12/05/2026 16:30
-VIIKKOKISAT 2026 → Inkoo viikkokisat2026 nmc
-Uusimaa, Inkoo	12/05/2026 18:00		Inkoo discgolf → Inkoo discgolf 2021	0	Pro 0 ja 930+ semi 860-929 Harraste 1-859		Alku: 05/04/2026 20:11 Päättyy: 12/05/2026 16:00
-Karjaan parikisa 2026 → 5. Kierros
-Uusimaa, Raasepori	12/05/2026 18:00	Parikilpailu Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Sekapari Rating yht. alle 1800 Juniors	Pelimuoto: Bestshot. Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Holaripotti 2€/pari (pisin holari voittaa - vain käteinen).	Päättyy: 12/05/2026 16:30
-Lohi viikkokisat → 5. Kierros
-Uusimaa, Hanko	12/05/2026 18:00		Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 20/04/2026 11:22 Päättyy: 12/05/2026 17:30
-Paloheinän viikkisliiga 1/2026 → Osakilpailu 4/8
-Uusimaa, Helsinki	12/05/2026 07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Osakilpailu 4/8	Päättyy: 12/05/2026 22:00
-Scouting Tour by Seppo Paju, powered by Discraft → Scouting Tour by Seppo Paju - Rock Valley Dics Golf Resort, Finland
-Uusimaa, Vihti	13/05/2026 16:30		Rock Valley Premium Disc Golf Resort → Amateur	96	Avoin Naiset Masterit Juniorit	Lue info! Info in English below Finnish.	Alku: 20/04/2026 21:00 Päättyy: 11/05/2026 22:00
-Sibbe Liiga #1
-Uusimaa, Sipoo	13/05/2026 - 24/06/2026	L - PDGA	Sibbe Disc Golf	0	RPA RAE RAF	Kuuden osakilpailun PDGA-liiga Sibbe Disc Golfissa, Sipoossa.	
+    #==========
+    #==========
+    #==========
+    vk20
+    #==========
+    #==========
+    #==========
+    Sibbe Liiga #1
+Uusimaa, Sipoo	13/05/2026 - 24/06/2026	L - PDGA	Sibbe Disc Golf	50	RPA RAE RAF	Kuuden osakilpailun PDGA-liiga Sibbe Disc Golfissa, Sipoossa.	
 Sibbe Liiga #1 → 1/6 Keltainen
-Uusimaa, Sipoo	13/05/2026 17:30	L - PDGA	Sibbe Disc Golf → Yellow 2025	0	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 06/05/2026 21:00 Päättyy: 13/05/2026 16:00
-Mäntsälän viikkokisat 2026 → ProMäny
-Uusimaa, Mäntsälä	13/05/2026 18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → Pro-Mäny 2021	0	0-rating Juniorit Rating 1-850 Rating 851-909 Rating 910 tai yli	Mäntsälän viikkokisat keskiviikkoisin klo 18. Lue tarkemmat infot rekisteröitymissivulta.	Alku: 06/05/2026 21:00 Päättyy: 13/05/2026 17:00
+Uusimaa, Sipoo	13/05/2026 17:30	L - PDGA	Sibbe Disc Golf → Yellow 2026	50	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 06/05/2026 21:00 Päättyy: 13/05/2026 16:00
+Epilän Viikkokisat → Epilä goes wild 2: vko 20
+Tampere	13/05/2026 18:00	Viikoittain	Epilä Goes Wild 2 → Epilä Goes Wild SFL Masters tour Lohko A/B	48	Gold Blue <970 White <935 Red <900 Green <850	HUOM SÄÄVARAUS: Keli nyt toistaseks heittelee niin paljon huomisen suhteen et katsotaan ke-aamuna et heitelläänkö vai ei!	Alku: 11/05/2026 07:22 Päättyy: 13/05/2026 17:00
+JokiLiiga 1/2026 → JokiLiiga 2/6 - 13.5.2026
+Pohjois-Karjala, Joensuu	13/05/2026 18:00	L - PDGA	Lykynlammen frisbeegolfrata → Diamond-18 - Par 65 (2026)	38	MPO FPO MP40 FP40 MP50 FP50 MA3 FA3 MJ15 FJ15	JLK:n järjestämää JokiLiigaa (PDGA L-tier) pelataan kuutena keskiviikkona peräkkäin 6.5. alkaen. Kts. ohjeet/säännöt sarjasivulta (oheisen valikon ylin rivi). Avoin kaikille! Tervetuloa!	Alku: 07/05/2026 12:00 Päättyy: 13/05/2026 12:00
+Kuopio Am parikilpailu
+Pohjois-Savo, Kuopio	13/05/2026 17:30	Parikilpailu	Huuhanmetsä DiscGolfPark → A-24 (2014)	27	Huiput Loput Kokeneet Innokkaat Sekavat	Kuopio Am parikilpailu, pelimuotona modified alternate shot	Alku: 06/05/2026 20:00 Päättyy: 13/05/2026 16:30
+FRISBEEGOLFCLUB HYRYLÄ VIIKKOKILPAILUT FORD AMATEUR DISCGOLFPARKISSA → Ford Amateur DGP viikkokilpailut 13.5.2026
+Uusimaa, Tuusula	13/05/2026 18:00	Viikoittain	Ford Amateur DiscGolfPark (A1) → 1	24	Avoin Rating 900-949 Rating 850-899 Rating 1-849 Rating 0	Td Esa 0504125640	Alku: 28/03/2026 19:00 Päättyy: 13/05/2026 15:00
+WDG:n viikkokisat 2026 / Yksilökilpailut → 13.5.2026, Myllymäki A-layout
+Etelä-Karjala, Lappeenranta	13/05/2026 18:00	Viikoittain	Myllymäen frisbeegolfrata (LPR) → A-layout	20	0 1-779 780-859 860-909 910+	Pakollinen pelaajakokous 17.40 kopin luona! / LUE INFOTEKSTI TARKASTI! / TD: Lauri Gröhn, p. 0505303303	Päättyy: 13/05/2026 16:00
 Puolarmaarin viikkokilpailut 2026 → Yksilökisat 13.5
-Uusimaa, Espoo	13/05/2026 18:00	Viikoittain	Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	0	Metrix rating 1-839 Metrix rating 1-889 Metrix rating 1-930 Metrix rating 0-1200 Metrix rating 0		Alku: 06/05/2026 08:00 Päättyy: 13/05/2026 16:00
+Uusimaa, Espoo	13/05/2026 18:00	Viikoittain	Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	20	Metrix rating 1-839 Metrix rating 1-889 Metrix rating 1-930 Metrix rating 0-1200 Metrix rating 0		Alku: 06/05/2026 08:00 Päättyy: 13/05/2026 16:00
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #2
+Varsinais-Suomi, Turku	13/05/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Tommis Special	17	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Alku: 11/05/2026 12:00 Päättyy: 13/05/2026 17:15
+FBG Forssa yksilökisat 2026 → FBG Forssa yksilökisat 2026 - 5. Jokioinen
+Kanta-Häme, Jokioinen	13/05/2026 18:00	Viikoittain	Jokioinen DiscGolfPark → Jokioinen DGP	17	Metrix rating +920 Metrix rating 850-919 Metrix rating -849 Juniorit U18 Juniorit U15	CTP väylällä #4	Alku: 06/05/2026 20:39 Päättyy: 13/05/2026 16:00
+JyLin viikkokisat 2026 → 15. Kierros, Seppälänkangas
+Keski-Suomi, Jyväskylä	13/05/2026 18:00	Viikoittain	Seppälänkankaan frisbeegolfrata → Seppälänkankaan frisbeegolfrata	16	Avoin Alle 935 Alle 880 Alle 825 Ei metrix-ratingia Alle 750	LUE INFO!	Alku: 11/05/2026 18:00 Päättyy: 13/05/2026 16:30
+Ankkapurhan Viikkokilpailut 2026 → #3 Viikkokilpailu 2026
+Kymenlaakso, Kouvola	13/05/2026 18:00	Viikoittain	Ankkapurha DiscGolfPark 2022 → 1	14	Metrix rating 911 tai yli Metrix rating 910 - 881 Metrix rating 880 - 851 Metrix rating 850 - 801 Metrix rating 800 - 751 Metrix rating 750 tai alle Ei Metrix ratingia (Maksuton)		Alku: 06/05/2026 19:00 Päättyy: 13/05/2026 17:30
+KvLL Viikkokisat 2026 - Harjunmäki
+Kymenlaakso, Kouvola	13/05/2026 - 16/09/2026	Viikoittain	Harjunmäki frisbeegolfrata Kouvola, Valkeala → 18 A etutiit (2024)	14	910 ja yli 850 - 909 Alle 850 0-rating	Valitse kilpailu vetovalikosta.	
+KvLL Viikkokisat 2026 - Harjunmäki → 1. Harjunmäen viikkokisa
+Kymenlaakso, Kouvola	13/05/2026 18:00	Viikoittain	Harjunmäki frisbeegolfrata Kouvola, Valkeala → 18 A etutiit (2024)	14	850 - 909 Alle 850 0-rating 910 ja yli	Katso tarkemmat ohjeet rekisteröitymissivulta! Kilpailun TD:nä toimii Aleksi Salakka.	Alku: 12/05/2026 08:00 Päättyy: 13/05/2026 17:20
+PJLFG Parikilpailut → Halsuan parikilpailu 2026 Toukokuu
+Keski-Pohjanmaa, Halsua	13/05/2026 18:00	Parikilpailu Viikoittain	Halsua DiscGolfPark → Halsua DGP Par-63	13	Hongankolistajat Ketjunkilistäjät	Best Shot - Kaksi sarjaa - 10e/pari (2e menee tästä holaripottiin)	Alku: 08/05/2026 18:00 Päättyy: 13/05/2026 17:20
+Rovaniemen viikkokisat → Toramon viikkokisat 13.5.2026
+Lappi, Rovaniemi	13/05/2026 18:00	Viikoittain	Toramon frisbeegolfrata → 20 - Par 67	13	Avoin Naiset Juniorit Harrastelijat		Alku: 11/05/2026 07:55 Päättyy: 13/05/2026 17:00
+SastaFG:n viikkokisat 2026 → Viikkokisat ke 13.5 Häntyri Pro
+Pirkanmaa, Sastamala	13/05/2026 18:00	Viikoittain	Häntyrinkankaan frisbeegolfrata → Häntyri PRO (2025)	11	Avoin>920 Metrix 860-919 Metrix 800-859 Metrix 1-799 Junior < 14 Metrix 0 (ilmainen)		Alku: 07/05/2026 11:00 Päättyy: 13/05/2026 17:00
+Laakspohja DGC viikkokilpailu → 4. Kierros
+Uusimaa, Lohja	13/05/2026 18:00		Laakspohja Disc Golf Course → Kesä2025-Par62	9	Blue - avoin RAD RAE RAF	Kilpailu alkaa klo 18.00. Ilmoittautuminen kontilla viimeistään klo 17.45.	Alku: 08/05/2026 08:00 Päättyy: 13/05/2026 17:00
+Sawo DG - Viikkokisat 2026 → 13.5.2026 Kanava
+Etelä-Savo, Joroinen	13/05/2026 18:00	Viikoittain	Kanavan frisbeegolf → Kotkatharju am-open 2026	9	Harrastajaluokka (ilmainen) Avoin kilpailuluokka	Kaikille avoimet viikkokisat Joroisten frisbeegolfradoilla. Rekisteröityminen kisaan Metrixissä, Tervetuloa mukaan	Alku: 10/05/2026 07:00 Päättyy: 13/05/2026 17:00
+Viisarin Discmaniastore.eu viikkokisat → 13.05.26
+Kanta-Häme, Hämeenlinna	13/05/2026 18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	7	Avoin MAX930 MAX850		Alku: 07/05/2026 18:00 Päättyy: 13/05/2026 15:00
+Savitsin viikkokisat 2026 → Savitsin viikkokisat 13.5.2026
+Satakunta, Harjavalta	13/05/2026 18:00	Viikoittain	Savitsi DiscGolfPark	7	Avoin Amatööri Aloittelija	Osallistuminen: HVDG jäsen 3e, Muut 5e, vapaaehtoinen holaripotti 1e, Holaripotissa 96€! Maksut ja paikallaolon vahvistus 17:40 mennessä. Vain käteismaksu!!	Alku: 06/05/2026 19:00 Päättyy: 13/05/2026 17:30
+Mäntsälän viikkokisat 2026 → ProMäny
+Uusimaa, Mäntsälä	13/05/2026 18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → Pro-Mäny 2021	7	0-rating Juniorit Rating 1-850 Rating 851-909 Rating 910 tai yli	Mäntsälän viikkokisat keskiviikkoisin klo 18. Lue tarkemmat infot rekisteröitymissivulta.	Alku: 06/05/2026 21:00 Päättyy: 13/05/2026 17:00
+Kangasniemen viikkokilpailut → Kangasniemen viikkokilpailu 13.5.
+Etelä-Savo, Kangasniemi	13/05/2026 17:30		Kangasniemen frisbeegolfrata → A-Rata 2025	7			Päättyy: 13/05/2026 16:30
+Ähtärin Mustikkavuoren perheradan ja harrasteradan viikkokisat → Perheradan viikkokisat 2 kierrosta
+Finland	13/05/2026 17:00	Viikoittain	Mustikkavuoren frisbeegolfpuisto → Perherata x2	7		Perheradan viikkokisa. Vapaaehtoinen holaripotti 1€, osallistuminen muuten ilmainen	Päättyy: 13/05/2026 16:45
+Multi Ace DG. Keuruun viivel viikkokisat → 6. Kierros
+Keskisuomi, Keuruu	13/05/2026 18:00	Viikoittain	Keuruun Viivel	6	MPO MA2 MA3 MA4	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti, ettei tule yllätyksiä! Kilpailu alkaa KE Klo 18.00	Alku: 05/05/2026 12:00 Päättyy: 13/05/2026 17:00
+Isku Frisbeegolf Tour 2026
+Finland	13/05/2026 - 30/09/2026			6	Iskun henkilöstö Iskun sidosryhmät	Iskun henkilöstölle ja sidosryhmille	
+Isku Frisbeegolf Tour 2026 → Orimattilan osakilpailu
+Päijät-Häme, Orimattila	13/05/2026 18:00		Orimattilan kiekkopuisto → OLA PRO 26	6	Iskun henkilöstö Iskun sidosryhmät	Iskun henkilöstölle ja sidosryhmille	Alku: 06/05/2026 15:00 Päättyy: 13/05/2026 18:00
+Ylivieskan viikkokisat 2026 - YFK → 6. Kierros
+Pohjois-Pohjanmaa, Ylivieska	13/05/2026 18:00	Viikoittain	Käenpesä DG → Kisa -layout (18-väylää)	6	MPO Ma4	Kaksi sarjaa: Maksullinen 4€ (YFK jäsen 3€) ja ilmainen. Vapaaehtoinen 1€ holarimaksu. Maksu vain käteinen	Alku: 07/05/2026 07:00 Päättyy: 13/05/2026 17:45
+niemenranta hills 2026
+oulu	13/05/2026 20:11		niemenranta hills #21	5			
+Sällin Viikkarit
+Etelä-Pohjanmaa, Kurikka	13/05/2026 18:00	Viikoittain	Säläisjärven Frisbeegolfrata → 23 -Par 76(2024)	5	Avoin Amatöörit Metrixrating =<900 Naiset juniorit Max 16v	Vapaaehtoinen holaripotti 2€. Poolit Arvotaan!	Alku: 07/05/2026 16:59 Päättyy: 13/05/2026 17:30
+Loviisan viikkokisat 2026 → #9 yksilökilpailu
+Uusimaa, Loviisa	13/05/2026 18:00		Loviisan frisbeegolfrata → Loviisa 21 b väylät	5	Novice <=875 Amateur <=925 Open >925 Naiset avoin Juniorit (max 15v.) +50v > 875 No rating +50v <= 875		Päättyy: 13/05/2026 17:00
+Honkamajan Viikkokisat 2026 → Honkamajan viikkokisa 2 Parikisa
+Pohjois-Pohjanmaa, Oulainen	13/05/2026 18:00	Parikilpailu Viikoittain	Honkamaja	4	Yli 1700 rating Alle 1700 rating	Modifield Best Throw, 5€/pari. Max2 peli, saman pelaajan avausheittoa voi käyttää korkeintaan kahdella peräkkäisellä väylällä. Kaksi sarjaa. Payout 100%	Alku: 29/04/2026 18:00 Päättyy: 13/05/2026 17:30
+Mukkulan viikkokilpailut 2026 → 13.5 Park
+Päijät-Häme, Lahti	13/05/2026 18:00	Viikoittain	Mukkula DiscGolfPark → Mukkula Park	4			Päättyy: 13/05/2026 17:15
+ÄKI DG viikkokisat → 11. Kierros - Liikuntapuisto
+Keski-Suomi, Äänekoski	13/05/2026 18:00	Viikoittain	Äänekosken Liikuntapuisto → Liikuntapuisto 2023	4	Avoin Metrix rating yht. alle 1850 Seka	Osallistumismaksu ÄKI DG jäsenille 2€, muille 3€	Alku: 12/04/2026 19:00 Päättyy: 13/05/2026 17:00
+Mikkelin viikkokisat → Kaihu
+Etelä-Savo, Mikkeli	13/05/2026 17:30	Viikoittain	Kaihu uusittu 2025	4	Avoin Rating alle 931 Rating alle 871 Rating alle 800 Rating 0	Osallistumismaksu mifg 3€ muut 5€, vapaaehtoinen holarimaksu 1€.Mobilepay 45142	Päättyy: 13/05/2026 17:30
+Pahkalanniemen Viikkokisat → Pahkalanniemen Viikkokisat #2
+Pirkanmaa, Parkano	13/05/2026 18:00		Pahkalanniemen Frisbeegolfrata	3	Ammattilaiset (Avoin) Amatöörit (Metrix-rating < 900) Noviisit (Metrix-rating < 850) Juniorit (< 18v) Tulokkaat (Ei Metrix-ratingia)	Kaksi kierrosta Pahkalassa / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	Päättyy: 13/05/2026 17:50
+Kannuksen viikkokisat → 3. Kierros
+Keski-Pohjanmaa, Kannus	13/05/2026 18:20		Kitinkangas Dgp → 2020 uusittu layout	3	Avoin rating 885 ja yli Harraste rating alle 885 Master 55+ Junior alle 15v Naiset Aloitteliat 0 rating	Maksuttomat kilpailut. Ei pelaajakokousta.	Alku: 07/05/2026 13:51 Päättyy: 13/05/2026 17:45
+Keuruun viikkokisat 2026 → Viikkokisat vko 20 Ketvelniemi
+Keskisuomi, Keuruu	13/05/2026 18:00	Viikoittain	Ketvelniemi 2x10 → Ketvelniemi Viikkis layout	3	Metrix rating alle 850 Noviisit Avoin Metrix rating alle 900	Pelataan Ketvelniemen 10-väyläisellä radalla kaksi kierrosta. Huom säävaraus	Alku: 10/05/2026 10:00 Päättyy: 13/05/2026 17:00
+Korven Kopse kisat → Viikkokisa Impilinna DGP punaisella leiska
+Kainuu, Kajaani	13/05/2026 18:00	Viikoittain	Impilinna discgolf park Maksullinen 01.05.2026 → Impilinna punainen	3	Kaikki Alle 900 Alle 870 +50V 15V Naiset Alle 935 Me heittelijät	Viikkokisa Impilinnan punaisella leiskalla	Alku: 11/05/2026 19:00 Päättyy: 13/05/2026 17:30
+Tanhuvaara Saku Games yksilökisa
+Etelä-savo, Savonlinna	13/05/2026 09:00		Tanhuvaaran Frisbeegolfrata	3	Amatööri pojat	Kilpailun johtaja Nestori Hämäläinen puh:0452114979	Alku: 12/05/2026 22:00 Päättyy: 13/05/2026 09:30
+Uuden-Summan viikkokisat parikilpailu
+Kymenlaakso, Hamina	13/05/2026 18:00	Parikilpailu	Uuden Summan Frisbeegolfrata	2	Yhteisrating yli 1900 Yhteisrating 1900 tai alle	Parikilpailu Uudessa-Summassa. Osallistumismaksu käteinen 10e pari (vapaaehtoinen holaripotti 1e) Payout 100%. Ilmottautuminen parkkipaikalla 17.15-17.45. Best shot	Alku: 06/05/2026 09:00 Päättyy: 13/05/2026 16:30
+FBG Nurmijärvi viikkokisat 2026 → FBGN viikkokilpailu #2
+Nurmijärvi	13/05/2026 18:00	Viikoittain	Nukarin Frisbeegolf → Rento	1	Avoin 890 - 925 840 - 899 1 - 839	Jokaisesta osallistumismaksusta 1€ https://viirinlaakso.fi ratahankkeen tukemiseen	Alku: 07/05/2026 09:00 Päättyy: 13/05/2026 17:00
+Iisalmen viikkokilpailut 2025 → Asevarikon viikkokilpailut 13.5
+Pohjois-Savo, Iisalmi	13/05/2026 18:00	Viikoittain	Asevarikon Frisbeegolfrata → Kiinteä 2025 layout	1	Betsi Höntsä	Info alhaalla!	Alku: 12/05/2026 09:00 Päättyy: 13/05/2026 17:20
+Pahkalanniemen Viikkokisat → Pahkalanniemen Viikkokisat #2 → 1. kierros
+Pirkanmaa, Parkano	13/05/2026 18:00		Pahkalanniemen Frisbeegolfrata	0	Ammattilaiset (Avoin) Amatöörit (Metrix-rating < 900) Noviisit (Metrix-rating < 850) Juniorit (< 18v) Tulokkaat (Ei Metrix-ratingia)		
+Pahkalanniemen Viikkokisat → Pahkalanniemen Viikkokisat #2 → 2. kierros
+Pirkanmaa, Parkano	13/05/2026 19:00		Pahkalanniemen Frisbeegolfrata	0	Ammattilaiset (Avoin) Amatöörit (Metrix-rating < 900) Noviisit (Metrix-rating < 850) Juniorit (< 18v) Tulokkaat (Ei Metrix-ratingia)		
+Gerbyyn Kesäviikkokisat 2026 → 13.5. Gerbyyn Kesäviikkokisa
+Pohjanmaa, Vaasa	13/05/2026 18:00	Viikoittain	Gerby Frisbeegolf → Gerbyy Frisbeegolf 18	0	MPO MA3 MJ18 FPO	Vapaaehtoinen 2€ holaripotti (MobilePay 0405691546), potissa 99€. Ryhmät arvotaan.	Alku: 07/05/2026 15:58 Päättyy: 13/05/2026 17:30
+Oripään viikkokisat 2026 → Kisa8. Siirretty La 16.5 klo17
+Varsinais-Suomi, Oripää	13/05/2026	Viikoittain	Oripään frisbeegolfrata → 24 - Par 78	0	Metrix rating yli 930 Metrix rating 840-930 Metrix rating alle 840	Kisamaksu 4€+ctp 1€ ja holaripotti 1€ (potti166€) Cash tai mob. Pay. ILMO PAIKALLA VIIM. KLO 16:40. Metrix ilmottautuminen klo16:00 mennessä. Payout 100%. Ctp-väylä 3. Ei poolitoiveita. Kisa perutaan kisapäivänä klo15, jos ennuste sateinen.	
+Sb-Hem - Veckotävling / Viikkokisa - VÄSTERBY - A (AM) → 13.05
+Uusimaa, Raasepori	13/05/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - A (AM)	0	PRO AM		Päättyy: 13/05/2026 17:30
 NBDG One Round™ Keinukallio - Powered by GameProofer
-Uusimaa, Kerava	14/05/2026 09:00	C - PDGA	Keinukallio 2024 → Normaali layout	110	MPO FPO MP40 FP40 MA2 FA2 MA3 FA3 MA4 FA4 MJ18 FJ18 MJ15 FJ15	Yhden kierroksen PDGA-kilpailu Keinukalliossa, Keravalla.	Alku: 11/03/2026 19:00 Päättyy: 12/05/2026 23:00
+Uusimaa, Kerava	14/05/2026 09:00	C - PDGA	Keinukallio 2024 → Normaali layout	135	MPO FPO MP40 FP40 MA2 FA2 MA3 FA3 MA4 FA4 MJ18 FJ18 MJ15 FJ15	Yhden kierroksen PDGA-kilpailu Keinukalliossa, Keravalla.	Alku: 11/03/2026 19:00 Päättyy: 12/05/2026 23:00
+Halsua Open 2026
+Keski-Pohjanmaa, Halsua	14/05/2026 10:00	C - PDGA	Halsua DiscGolfPark → Halsua DGP Par-63	107	MPO FPO MP40 FP40 MP50 FP50 MP60 FP60 MA2 FA2 MA3 FA3 MA4 FA4 MJ18 FJ18	C-tier 2 x20 väylää	Alku: 08/03/2026 18:00 Päättyy: 07/05/2026 23:59
+Kuopio AM 2026
+Pohjois-Savo, Kuopio	14/05/2026 09:00	C - PDGA	Huuhanmetsä DiscGolfPark → A-24 (2014)	74	MA1 MA2 MA3 MA4 MA50 MJ15 MJ18 FA1 FA2 FA3 FA4 FA50 FJ15 FJ18		Alku: 28/03/2026 17:00 Päättyy: 12/05/2026 17:00
+Kuopio AM 2026 → 1. Kierros
+Pohjois-Savo, Kuopio	14/05/2026 09:00	C - PDGA	Huuhanmetsä DiscGolfPark → A-24 (2014)	74	MA1 MA2 MA3 MA4 MA50 MJ15 MJ18 FA1 FA2 FA3 FA4 FA50 FJ15 FJ18		
+NBDG One Round™ Teisko - Powered by GameProofer
+Tampere	14/05/2026 09:00	C - PDGA	Teisko Disc Golf Forest → Kevät 2025	70	MPO FPO MP40 FP40 MA2 FA2 MA3 FA3 MA4 FA4 MJ18 FJ18 MJ15 FJ15	Yhden kierroksen PDGA-kilpailu Teiskossa, Tampereella.	Alku: 12/03/2026 19:00 Päättyy: 12/05/2026 23:00
+PGPT Tampereen karsintakisa
+Pirkanmaa, Tampere	14/05/2026 17:00	C - PDGA	Tampere Disc Golf Center → Major layout	49	MPO FPO	Shotgun lähtö	Alku: 22/04/2026 18:00 Päättyy: 12/05/2026 18:00
+SD viikkokisat 2026 → HELATORSTAI @ Talma
+Uusimaa, Sipoo	14/05/2026 18:00	Viikoittain	Talma DiscGolfPark → Talma DiscGolfPark 2023	43	Avoin Rating 880-939 Rating 800-879 Rating 1-799 Juniorit alle 18v	Yhden kierroksen viikkokisat Talman Frisbeegolfradalla, Sipoossa. KISAMAKSUT 17.00 MENNESSÄ, sen jälkeen tiputetaan kisasta pois	Alku: 07/05/2026 20:30 Päättyy: 14/05/2026 16:00
 Skogby Amatöörit 2026
-Uusimaa, Raasepori	14/05/2026 10:00	C - PDGA	Skogby, → Skogby-18 kisarata	26	FA1 FA2 FA3 FA4 MA1 MA2 MA3 MA4	Kahden kierroksen C-tier kilpailu.	Alku: 01/03/2026 18:00 Päättyy: 13/05/2026 18:00
+Uusimaa, Raasepori	14/05/2026 10:00	C - PDGA	Skogby, → Skogby-18 kisarata	30	FA1 FA2 FA3 FA4 MA1 MA2 MA3 MA4	Kahden kierroksen C-tier kilpailu.	Alku: 01/03/2026 18:00 Päättyy: 13/05/2026 18:00
+SFL MASTERS TOUR LAPPEENRANTA BY SUBARU & INNOVA
+Etelä-Karjala, Lappeenranta	14/05/2026 10:00		Ravikangas frisbeegolfrata (LPR) → PRO-layout (keltainen)	29	MP40 FP40 MP50 FP50 MP60 FP60 MP65 FP65 MP70 FP70		Alku: 14/02/2026 19:00 Päättyy: 09/05/2026 19:00
+JyLin kesäkauden avaukset → JyLin kesäkauden avaus 2026
+Finland	14/05/2026 12:00			22	Avoin 40+ 50+ 60+ Naiset N40+ Pojat 15v ja alle Tytöt 15v ja alle Pojat 12v ja alle Tytöt 12v ja alle		Alku: 10/05/2026 21:09 Päättyy: 14/05/2026 11:00
 Pääkaupunkiseudun junior cup 2026 → Osakilpailu #2, Kirkkonummi
-Uusimaa, Kirkkonummi	14/05/2026 13:00		Kirkkonummen frisbeegolfrata → Kirkkonummen Frisbeegolf Layout A	14	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12		
+Uusimaa, Kirkkonummi	14/05/2026 13:00		Kirkkonummen frisbeegolfrata → Kirkkonummen Frisbeegolf Layout A	18	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12		
+Frisbeegolfseura 7k - Kilpailut 2026 → Ace Hela Race
+Varsinais-Suomi, Turku	14/05/2026 12:00		Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	16	Metrix-rating yli 940 Metrix-rating alle 940 Metrix-rating alle 900 Metrix-rating alle 860 Metrix-rating alle 820	Jahdataan helatorstaina Ässiä erikoisradalla.	Alku: 05/05/2026 12:00 Päättyy: 14/05/2026 11:00
+Disc Golf Hyvinkää viikkokisat → Sahanmäki → Yksilökilpailu → #2
+Uusimaa, Hyvinkää	14/05/2026 18:00	Viikoittain	Sahanmäki Disc Golf Park → Sahanmäki 2026	14	1-850 851-880 881-910 911-949 950-1200		Alku: 12/05/2026 18:00 Päättyy: 14/05/2026 17:00
+Joen Liitokiekon talkoot / Lykynlampi sponsored by Juhta → Helatorstain talkoot
+Pohjois-Karjala, Joensuu	14/05/2026 09:00		Lykynlammen frisbeegolfrata → Diamond-18 - Par 65 (2025)	13			Ilmoittautuminen avoinna
+Hyzer Hollola Disc Clubin kilpailut 2026 → Viikkokilpailut | Parikilpailu | Kukonkoivu 14.5.2026
+Päijät-Häme, Hollola	14/05/2026 18:00	Parikilpailu Viikoittain	Kukonkoivu, Hollola → Kesä 2025	13	Alle 1800 1800 - 1900 Yli 1900	TD:nä toimii Riku Hirvonen 0408413638, CTP-kilpailu väylällä 17.	Päättyy: 14/05/2026 17:30
+Orimattilan Helaheitot 2026
+Päijät-Häme, Orimattila	14/05/2026 09:00	C - PDGA	Orimattilan kiekkopuisto → OLA PRO 26	12	RPA RAE RAF RAG	2- kierroksen PDGA-kilpailu Orimattilassa	Alku: 01/04/2026 18:00 Päättyy: 13/05/2026 18:00
+Pääkaupunkiseudun junior cup 2026 → Osakilpailu #2, Kirkkonummi → LOHKO B
+Finland	14/05/2026 13:00		Pääkaupunkiseudun junior cup 2026 K:nummi lohko B	12	MJ15 MJ12 FJ18 FJ15 FJ12		Alku: 06/04/2026 02:21 Päättyy: 14/05/2026 12:00
+IITTI DGP VIIKKOKISAT 23.4-1.10.2026 → DGC Birdie Hunters Iitti 2.Viikkokisat
+Päijät-Häme, Iitti	14/05/2026 18:00	Viikoittain	Iitti DiscGolfPark → 18 - Par 55	12	Rating yli 900 Rating 850-899 Rating 800-849 Rating alle 800 Rating 0	Osallistumismaksu jäsenet 2€, muut 4€... Vapaaehtoinen holaripottimaksu 1€... Maksu käteinen tai Mobilepay #94731	Alku: 07/05/2026 12:00 Päättyy: 14/05/2026 17:30
+Ahlainen viikkokisat 2026 #5
+Satakunta, Pori	14/05/2026 18:00	Viikoittain	Ahlainen DiscGolfPark → Ahlainen DGP 2022	10	Avoin yli 910 tai 0 Amatöörit alle 910		Alku: 07/05/2026 20:00 Päättyy: 14/05/2026 17:00
+Naamivaaran Helatorstai
+Lappi, Pello	14/05/2026 14:00		Naamivaaran Frisbeegolfrata → Pro-20 (2017)	10	Avoin Höntsäilijät	2 kierroksen kilpailu naamivaarassa.	Alku: 10/05/2026 13:39 Päättyy: 14/05/2026 13:00
+Jämsän frisbeegolf viikkokilpailut 2026 → Viikkokilpailu 6
+Keski-Suomi, Jämsä	14/05/2026 18:00	Viikoittain	Myllymäki Frisbeegolfrata → 18 - Par 60 (2023)	8	Rating 0-840 Rating 841-880 Rating 881-930 Avoin Naiset - ei rating rajaa	LUE INFO rekisteröityneiden alapuolelta! TD: Jauri p. 040 560 2632	Alku: 10/05/2026 18:00 Päättyy: 14/05/2026 17:00
+IiDg avoimet kisat 2026
+Pohjois-Pohjanmaa, Ii	14/05/2026 - 31/12/2026	Parikilpailu	Iin Frisbeepuisto → Illinsaari 2021 (18)	8	>=1800 <1800		
+IiDg avoimet kisat 2026 → R.I.P Illinsaari parikisa
+Pohjois-Pohjanmaa, Ii	14/05/2026 18:00	Parikilpailu Viikoittain	Iin Frisbeepuisto → Illinsaari 2021 (18)	8	>=1800 <1800		Alku: 11/05/2026 17:00 Päättyy: 14/05/2026 17:30
+SDG Kausi 2026 → Yksilökisat → SDG viikkokisat 14.05.2026.
+Etelä-Karjala, Rautjärvi	14/05/2026 18:00		Simpeleen frisbeegolfrata → Pro 18 - Par 62 (2020)	8	900+ 900-	TD. Joni Peippo	Alku: 11/05/2026 18:25 Päättyy: 14/05/2026 17:00
+SFG HELATORSTAI PAHKAVUORI
+Finland	14/05/2026 11:00		Pahkavuori → 12 (2015)	8	935+ 860-935 Alle 860	Hiukan modatulla Pahkavuorella	Päättyy: 14/05/2026 09:15
+Huutjärven Viikkokisat 2026 → Huutjärven Viikkokisat 14.5.2026 (CTP #9)
+Pyhtää	14/05/2026 18:00	Viikoittain	Huutjärven Frisbeegolfrata 2025 → 2025	7	941+ 901-940 861-900 821-860 0-820 Naiset alle 750	Ilmoittautuminen Bakkanaalissa (Hirventie 38, 49210 Huutjärvi) klo 17:10-17:30. Osallistuminen: Järjestäjäseuran jäsenille 2€. Muut 5€. Alle 18v HUFO:n jäsenelle ilmainen osallistuminen.Vapaaehtoinen holaripotti1€. Lisätietoja sivun lopussa.	Alku: 10/05/2026 17:15 Päättyy: 14/05/2026 17:00
+Kusiaismäen Talviradan viikkokisat → Junnukisa/ viikkokisa
+Saarijärvi	14/05/2026 12:00		Kusiaismäen Talvirata 2025-26 → Viikkokisat - 20 väylää	7	900 Avoin Höntsä 800	Junioreille ilmainen kisa, muut kilpailijat maksavat normaalisti. Raaka ja tasoituksellinen kisa. Maksu 3€ seuran jäsenille, muille 4€, josta 3€ pottiin ja 1€ seuralle.	Alku: 10/05/2026 12:52 Päättyy: 14/05/2026 11:45
+Pääkaupunkiseudun junior cup 2026 → Osakilpailu #2, Kirkkonummi → LOHKO A
+Finland	14/05/2026 13:01		Pääkaupunkiseudun junior cup 2026 K:nummi lohko A	6	MJ18		Alku: 06/04/2026 15:00 Päättyy: 14/05/2026 12:00
+Viikkokisat Raahe 2026 → Viikkokisat Raahe - Kraken 14.5.
+Pohjois-Pohjanmaa, Raahe	14/05/2026 17:30	Viikoittain	Kraken - Raahen frisbeegolfpuisto	6	MPO MJ15 FPO	Ilmoittautuminen paikanpäällä viimeistään klo 17.10. TD Niilo	Alku: 07/05/2026 00:00 Päättyy: 14/05/2026 17:00
+Paajalanmäen | Viikkokisa
+Pohjois-Savo, Leppävirta	14/05/2026 18:00	Viikoittain	Leppävirta paajalanmäki	6		2€ jäsenet ja muut 3€	Alku: 09/05/2026 19:40 Päättyy: 14/05/2026 17:00
+Hevonlinnan viikkokisat → Kisa6 Huom. Aloitus 17:30
+Varsinais-Suomi, Koski Tl	14/05/2026 17:30	Viikoittain	Hevonlinna 22	6	Yli 930 840-930 Alle 840	Kisamaksu 4€+ ctp 1€ +holaripotti 1€(potti88€). Metrix ilmottautuminen 16:30 mennessä. Maksu viimeistään 17:10. Payout 100%. Ctp 20. Ei poolitoiveita. Kisa perutaan kisapäivänä klo15:00, jos ennuste sateinen.	Alku: 10/05/2026 03:20 Päättyy: 14/05/2026 16:30
+Pitkiksen Viikkokisat 2026 → Pitkiksen viikkokisat 14.5.2026
+Satakunta, Kokemäki	14/05/2026 14:00		Pitkäjärvi DiscGolfPark → 18A - Par 58	6	Avoin Edistyneet amatöörit Amatöörit Naiset Juniorit	Viikkokisat pitkiksellä. Ilmoittautuminen ja maksut parkkiksella. Tarkempi info pääsivun alareunassa. Ilmoittautuminen/maksut viimeistään 10:30 .Saariväylä pelataan hazardina. CTP väylä 9.	Alku: 11/05/2026 08:33 Päättyy: 14/05/2026 13:00
+Epilä Goes Wild 2 - parigolfit → KLO17:00 LÄHTÖ
+Tampere	14/05/2026 17:00	Parikilpailu	Epilä Goes Wild 2 → Epilä Goes Wild SFL Masters tour Lohko A/B	6	Avoin Masterit Seka Juniorit <16		Alku: 11/05/2026 Päättyy: 14/05/2026 16:00
+WCDG viikkokisat 2026 - Rytikangas
+Keski-Pohjanmaa, Kokkola	14/05/2026 - 01/10/2026	Viikoittain	Rytikangas DiscGolfPark	5	Avoin Rating alle 930 Rating alle 880 Rating alle 830 Harraste	Tule mukaan West Coast Disc Golfers ry:n viikkokisoihin! Kaudella 2026 kisataan tiistaisin ja torstaisin vaihtuvilla radoilla – kaikki ovat tervetulleita mukaan, tasosta riippumatta. Lisätiedot löydät alhaalta.	
+WCDG viikkokisat 2026 - Rytikangas → Parikisa 1
+Keski-Pohjanmaa, Kokkola	14/05/2026 18:00	Parikilpailu Viikoittain	Rytikangas DiscGolfPark	5	Avoin Yhteisrating alle 1750	Tervetuloa mukaan West Coast Disc Golfers ry:n parikisoihin! Etsi itsellesi pari ja ilmoittautukaa mukaan. Lisätiedot löydät alhaalta.	Alku: 07/05/2026 18:00 Päättyy: 14/05/2026 17:00
+Liljendal veckotävlingar 2026 → v. 20
+Uusimaa, Loviisa	14/05/2026 18:00	Viikoittain	Liljendal Frisbeegolf → (2026)	5	>890 lägre rating		Ilmoittautuminen avoinna
+Ristinummen kesäviikkarit 2026 → Viikko 20
+Pohjanmaa, Vaasa	14/05/2026 17:30	Viikoittain	Ristinummen frisbeegolfrata → A-Leiska 18 väylää (kesä 2025->) Par 61	5	AM Open		Alku: 10/04/2026 12:00 Päättyy: 14/05/2026 17:00
+Vihtavuoren viikkokisat → 5. Kierros
+Keski-Suomi, Laukaa	14/05/2026 18:00	Viikoittain	Vihtavuori DGP 2023 → Vihtavuori 18	5		osallistumismaksu 3€! 1€ raaka, 1€ tasoitus ja 1€ holaripottiin	Alku: 11/05/2026 07:26 Päättyy: 14/05/2026 17:00
+Epilä Goes Wild 2 - parigolfit → klo13:OO LÄHTÖ
+Tampere	14/05/2026 13:00	Parikilpailu	Epilä Goes Wild 2 → Epilä Goes Wild SFL Masters tour Lohko A/B	5	Avoin Masterit Seka Juniorit <16		Alku: 11/05/2026 Päättyy: 14/05/2026 12:00
+Bsc Viikkokisat 2026 → bsc viikkokisat Virpiniemi
+Pohjois-Pohjanmaa, Oulu	14/05/2026 18:00		Virpiniemi DiscGolfPark → DGP-18 (2024)	5		Vain BSC jäsenille	Alku: 12/05/2026 10:20 Päättyy: 14/05/2026 17:00
+Multi Ace DG. Multicity viikkokisat → 267. Kierros
+Keski-Suomi, Multia	14/05/2026 18:00	Viikoittain	Multia DGP → Multia 22 DGP 2.0	4	MPO MA4 MA2	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa To Klo 18:00	Alku: 07/05/2026 16:00 Päättyy: 14/05/2026 17:00
+Suonenjoen viikkokilpailut → Suonenjoen viikkokilpailut 14.5
+Pohjois-Savo, Suonenjoki	14/05/2026 18:00	Viikoittain	Suonenjoki DiscGolfPark 23-väylää → Kesäleiska2024 pidenettyjä väyliä	3	Avoin 2	Ilmottautuminen päättyy 30min ennen kilpailun alkua. Olethan paikalla VIIMEISTÄÄN 15 min ennen kilpailun alkua jos et ole sinut poistetaan kilpailusta. Lue info alhaalta.	Alku: 05/04/2026 11:22 Päättyy: 14/05/2026 17:30
+Karjaan viikkokilpailut 2026 → 5. Kierros
+Uusimaa, Raasepori	14/05/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	3	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 14/05/2026 16:30
+Bothnia discgolf tour 2026
+Etelä-Pohjanmaa, Kauhajoki	14/05/2026 - 27/09/2026		Uimahallinpuisto Kauhajoki → 18 - Par 56 (2025)	3	MPO MA3 FPO MJ18 MP40 MP50		
+Bothnia discgolf tour 2026 → Helagolf Discgolf
+Etelä-Pohjanmaa, Kauhajoki	14/05/2026 12:00		Uimahallinpuisto Kauhajoki → 24 - Par 75 (2025)	3	MPO MA3 FPO MJ18 MP40 MP50		Alku: 04/05/2026 18:00 Päättyy: 14/05/2026 11:30
+Jätkänkiekon Viikkokisat 2026 → Kalli 14.5
+Keminmaa	14/05/2026 18:00		Kallin frisbeegolrata	3	Avoin Höntsäsarja	Pelataan kahdessa sarjassa, avoimessa ja höntsäsarjasssa. Avoimesta palkitaan parhaat raaka- ja tasoitetut tulokset	Ilmoittautuminen avoinna
+Rekikosken viikkokisat 2026 → Rekikosken viikkarit 3/14
+Satakunta, Huittinen	14/05/2026 18:00	Viikoittain	Rekikoski DiscGolfPark: 2 x 9 väylää	3		Lue info pääkilpailun sivulta. 5€ kisamaksu (2€ kisa, 2€ koko kauden pistepottiin, 1€ reksa) + 1€ vapaaehtoinen holari. Holarissa 6€.	Alku: 11/05/2026 17:00 Päättyy: 14/05/2026 17:30
+SportClub viikkokisat → Viikkokisa IV
+Pohjois-Karjala, Juuka	14/05/2026 18:00	Viikoittain	Taivaanpankon frisbeegolfrata	2	Naiset N < 18v N<15 M M < 18v M<15 Junnut		Alku: 01/04/2026 09:00 Päättyy: 14/05/2026 17:00
+Puumilan Viikkokisat → Puumilan Viikkokisat #2
+Pirkanmaa, Kihniö	14/05/2026 13:00	Viikoittain	Puumilan frisbeegolfrata → Puumilan kisarata	2	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 15v) Tulokkaat (Ei ratingia)	Kolme kierrosta Puumilassa / Osallistumismaksu 3€ / Vapaaehtoinen 1€ holaripotti	Päättyy: 14/05/2026 12:45
+Savivuori DGP Viikkokisat 2026 → 3. Viikkokisa
+Keski-Suomi, Viitasaari	14/05/2026 18:00		Savivuori DiscGolfPark → DGP-18	2		Pelataan 1x18 väylää. Kisamaksu 5€ (4€ pottiin, 1€ holarikassa) KÄTEINEN. Voitonjako Raakatulos 1. 40%. Tasoitus 1. 40% ja 2. 20%. Holaripotin katto 100€. Paikalle viimeistään 17.45. Avaukset 18:00. Kaikki mukaan itseään voittamaan!	Alku: 12/05/2026 22:05 Päättyy: 14/05/2026 17:15
+Padasjoen viikkokisat 2026 → Yksilökisat → Viipale 2
+Päijät-Häme, Padasjoki	14/05/2026 18:00	Viikoittain	Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	1		Maksu 4€ + vapaaehtoinen holaripot 1€	Alku: 08/05/2026 00:00 Päättyy: 14/05/2026 17:50
+Linnan Mando DG kesän 2026 viikkokisat → Aholahti 14.5.
+Etelä-Savo, Savonlinna	14/05/2026 18:00	Viikoittain	Aholahden frisbeegolfrata → 23 väylää	1	Avoin Amatööri Harrastaja	Kaikille avoimet viikkokisat. Osallistumismaksu 3€ mandolaisille, muut 5€. Kierros alkaa klo 18.00. Katso lisätiedot tämän sivun alalaidasta.	Alku: 08/05/2026 12:00 Päättyy: 14/05/2026 17:15
+Kivijärven viikkokilpailut → 45. Kierros
+Keski-Suomi, Kivijärvi	14/05/2026 18:00	Viikoittain	Peltokankaan frisbeegolfrata, Kivijärvi → Peltokangas 18-väyläinen AMA par 57	1	Avoin Juniorit 13v. Ilmainen	Ama radan viikkokisa	Alku: 11/05/2026 12:00 Päättyy: 14/05/2026 17:40
+Vols viikkokisat → volsiin viikkokisat
+Uusimaa, Kirkkonummi	14/05/2026 18:30		Kirkkonummen frisbeegolfrata → Kirkkonummen Frisbeegolf Layout A	1	0-1200 1-910	Jäsenet 2€ muut 4€. Maksu MobilePay 28585 tai käteinen. Vapaaehtoinen holaripotti 1€ käteisellä. Ilmoittautuminen radalla klo 18.00 mennessä. Luokkien voittajille 20e lahjakortti. . Takatiit.	Alku: 11/05/2026 17:04 Päättyy: 14/05/2026 17:45
+SFG HELATORSTAIN PARIKISA
+Varsinais-Suomi, Salo	14/05/2026 17:30	Parikilpailu	Pahkavuori → 12 (2015)	1	1800 --> Alle 1800 Sekapari	Sama leiska kun aamun yksilökisassa	Päättyy: 14/05/2026 16:00
+Talin viikkokisat 2026 → Talin viikkokisa 14.5
+HELSINKI	14/05/2026 14:30	Viikoittain	TALI FRISBEEGOLFI 2025 KESÄ → Kesä 2025	1	MPO FPO		Alku: 13/05/2026 17:00 Päättyy: 14/05/2026 13:00
+Talin viikkokisat 2026 → Talin viikkokisat 14.5 #2
+HELSINKI	14/05/2026 18:00	Viikoittain	TALI FRISBEEGOLFI 2025 KESÄ → Kesä 2025	1	MPO FPO		Alku: 13/05/2026 17:00 Päättyy: 14/05/2026 16:00
+SFL MASTERS TOUR 2026 → SFL MASTERS TOUR LAPPEENRANTA BY SUBARU & INNOVA (Linkkisivu)
+Finland	14/05/2026 10:52			0			
 Skogby Amatöörit 2026 → Kierros1
 Uusimaa, Raasepori	14/05/2026 11:00	C - PDGA	Skogby, → A1 Skogby18	0	FA1 FA2 FA3 FA4 MA1 MA2 MA3 MA4	Normaali Skogby 18 väylää	
 Skogby Amatöörit 2026 → Kierros2
 Uusimaa, Raasepori	14/05/2026 14:00	C - PDGA	Skogby, → Skogby-18 kisarata	0	FA1 FA2 FA3 FA4 MA1 MA2 MA3 MA4	Skogby 18 väylää kilpailu layout	
-Karjaan viikkokilpailut 2026 → 5. Kierros
-Uusimaa, Raasepori	14/05/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 14/05/2026 16:30
 Ahven viikkokilpailu → 5. Kierros
 Uusimaa, Hanko	14/05/2026 18:00		Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 15/04/2026 18:45 Päättyy: 14/05/2026 17:30
+Pyssymäen viikkokisat, NFG → 3. Viikkokisa 2026
+Pohjois-Pohjanmaa, Nivala	14/05/2026 18:00		Pyssymäen Frisbeegolfrata A1	0	Avoin 2€ Ilmainen (Nuoret alle 13v)	1 kierros, 2€ osallistuminen, tasoitus- ja raakatulossarjat. Payout 100%: 1. 50% ja 1. (HC) 50%, eli molempien sarjojen voittajat palkitaan	
+Kilpailut → Viikkokisat → Simpsiö → 2026
+Etelä-Pohjanmaa, Lapua	14/05/2026 18:00	Viikoittain	Lapua Frisbeegolf -Simpsiö	0	Avoin J15 J15 Harrastelijat (Metrixrating alle 1800) <900		
+FGK viikkarit 2026 → vko 20 - Sotka
+Etelä-Pohjanmaa, Kauhajoki	14/05/2026 18:00	Viikoittain	Sotka Kauhajoki → 18 - Par 60 (2025)	0	Avoin Metrix rating <900 Metrix rating <800	Ole paikalla viimeistään klo 17:45 Sotkapirtin parkkiksella. Vapaaehtoinen holaripotti 2€.	Ilmoittautuminen avoinna
+NoFS viikkokisat 2026 → Viikkokisa 14.5
+Pirkanmaa, Nokia	14/05/2026 18:00		Nokia DiscGolfPark → DGP 18, lyhyt	0	MPO MP40 MJ18 FPO MA3		Alku: 04/05/2026 09:00 Päättyy: 14/05/2026 16:30
+Linnoitus Open 2026 - HARJOITTELU
+Etelä-Karjala, Lappeenranta	15/05/2026 12:00		Linnoitus Open (LPR) → LO26 LA - MIXED	138		Tahdotko heittää uniikin Linnoitus Openin radan tai treenata viikonlopun kilpailuun? Nyt se on mahdollista!	Alku: 20/04/2026 18:00 Päättyy: 15/05/2026 16:30
+Mäntän viikkokisat 2026 → Viikkokisat vko 20
+Pirkanmaa, Mänttä-Vilppula	15/05/2026 18:00	Viikoittain	Mäntän frisbeegolfrata → 18 Pitkät korit 2x9 väylää	6		Kilpailumaksu 4e ja vapaaehtoinen holaripotti 1e. Maksut ainoastaan käteisellä ja mielellään tasaraha. Pelataan 2x9 väylää.	Alku: 10/05/2026 10:00 Päättyy: 15/05/2026 17:00
+Marttilan Murron viikkokilpailut 2026 → Parkisat vko 20
+Varsinais-Suomi, Marttila	15/05/2026 18:00	Parikilpailu	Marttila DiscGolfPark → täysi22	6	1751-> ->1750 Sekaparit	Ctp #17, TD Jan	Alku: 11/05/2026 20:12 Päättyy: 15/05/2026 17:00
+Viikkokisat Pudasjärvi → Viikkokisat Jyrkkäkoski 15.5.2026
+Pohjois-Pohjanmaa, Pudasjärvi	15/05/2026 18:00	Viikoittain	Jyrkkäkoski Discgolfpark → Jyrkkäkoski DiscGolfPark 2025	5	Kisasarja Rating-sarja	Huom: Kisa pidetään jos tulee minimissään 10 pelaajaa.	Alku: 04/05/2026 22:00 Päättyy: 15/05/2026 17:00
+Hämeenkyrön viikkokisat 2026 → Hämeenkyrön viikkokisa #2
+Hämeenkyrö	15/05/2026 18:00		Pappilanmetsä->18 (2024) → 1	5	Avoin Metrix rating alle 920 Metrix rating alle 870 Metrix rating alle 820	Osallistumismaksu 5€. Vapaaehtoinen holarimaksu 1€..	Alku: 11/05/2026 22:09 Päättyy: 15/05/2026 17:30
 Veikkolan viikkokisat 2026 → Veikkolan viikkokisat 15.5.2026
-Uusimaa, Kirkkonummi	15/05/2026 18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	VDGC järjestää viikkokisat. Kisamaksut: MobilePay-numeroon 28881 – käteismaksua ei ole. Jäsenet 2€, muut 4€ – PayOut 50% (30-15-5). Junnut ilmaiseksi ilman palkintoja. Lisäksi vapaaehtoinen 1€ holaripotti.	Alku: 09/05/2026 10:00 Päättyy: 15/05/2026 17:00
+Uusimaa, Kirkkonummi	15/05/2026 18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	3	Avoin Haastajat Juniorit	VDGC järjestää viikkokisat. Kisamaksut: MobilePay-numeroon 28881 – käteismaksua ei ole. Jäsenet 2€, muut 4€ – PayOut 50% (30-15-5). Junnut ilmaiseksi ilman palkintoja. Lisäksi vapaaehtoinen 1€ holaripotti. Potissa 203€	Alku: 09/05/2026 10:00 Päättyy: 15/05/2026 17:00
+Multi Ace DG. Keuruun viivel pariviikkokisat → 7. Kierros
+Keskisuomi, Keuruu	15/05/2026 18:00	Parikilpailu Viikoittain	Keuruun Viivel	3	MPO MRYA1800 EP	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! Huom! Kilpailu alkaa Pe Klo 18:00	Alku: 08/05/2026 12:00 Päättyy: 15/05/2026 17:00
+Munapirtin kisat 2026 → Munapirtin kisat 15.5.2026 CTP #2
+Pyhtää	15/05/2026 18:00	Viikoittain	Munapirtin Frisbeegolfrata → 21 Väyläinen	2	941+ 901-940 861-900 821-860 0-820 Naiset alle 750	Ilmoittautuminen Flakanäsin uimarannan parkkipaikalla klo 17:00-17:30. Osallistuminen: Järjestäjäseuran jäsenille 3€. Muut 5€. Alle 18v HUFO:n jäsenelle ilmainen osallistuminen.Vapaaehtoinen holaripotti1€. Lisätietoja sivun lopussa.	Alku: 12/05/2026 14:00 Päättyy: 15/05/2026 17:00
+Perhon viikkokilpailu → Perho 2026 #3
+Keski-Pohjanmaa, Perho	15/05/2026 18:00	Viikoittain	Paavonkallio → 2023 19 väylää	1		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay 76624(Lue info), 4€ (+1€ holaripotti)	Alku: 11/05/2026 18:00 Päättyy: 15/05/2026 17:20
+Posion viikkokisat 2026. → Posion viikkokisat.
+Lappi, Posio	15/05/2026 17:00		Korkeamaan frisbeegolfrata	1		Normaali pelimuoto. Osallistumismaksu 3€ käteisellä, vapaaehtoinen holaripotti 1€. Palkitaan tuloksen ja tasoituksen paras.	Alku: 04/05/2026 17:00 Päättyy: 15/05/2026 17:00
+Lemmensillanpuiston kevätliiga 2026 → 6. kilpailu
+Pohjois-Savo, Varkaus	15/05/2026 18:00	Viikoittain	Lemmensillanpuiston frisbeegolfrata → 12 - Par 36 (2013)	1	≥920 919-850 <850	Pelataan perjantaista 10.4. alkaen 8 osakilpailua aina perjantaisin. 4 parasta osakilpailua lasketaan kokonaiskilpailun. Kisamaksu 1€ ja vapaaehtoinen holaripotti 1€	Päättyy: 15/05/2026 17:00
+Siuntion Sisun frisbeegolfradan viikkokilpailut
+Uusimaa, Siuntio	15/05/2026 18:00	Viikoittain	Siuntion frisbeegolfrata 2 x 9 → 20.09.2021	1		Hyvän mielen viikkokilpailut Siuntion Sisun frisbeegolfradalla. Kisa alkaa 18:00, paikalla viimeistään 17.50. Osallistumismaksu 2€, alle 18v ilmainen (Mobilepay 22024). Vapaaehtoinen holaripotti 1€ käteisellä. Holaripotissa 100€.	Alku: 11/05/2026 15:00 Päättyy: 15/05/2026 17:30
+Käenkosken Viikkokisat → Käenkosken Viikkokisat #3
+Pirkanmaa, Parkano	15/05/2026 18:00	Viikoittain	Käenkosken Frisbeegolfrata → Käenkoski Pro	0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 18v) Tulokkaat (Ei ratingia)	Yksi kierros Käenkoskella / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	Päättyy: 15/05/2026 17:45
+ReTee viikkoparikisat 2026 → Lastujärven frisbeegolfrata
+Kanta-Häme, Janakkala	15/05/2026 18:00	Parikilpailu Viikoittain	Lastujärvi, Turenki | ReTee ry	0	Amatöörit Avoin	MAKSAMATTOMAT POISTETAAN KLO 16 JÄLKEEN. Holaripotti on XX €.	Alku: 12/05/2026 21:00 Päättyy: 15/05/2026 15:00
+Linnoitus Open 2026 sponsored by Ekomia + PGPT Status
+Etelä-Karjala, Lappeenranta	16/05/2026 08:00	B - PDGA	Linnoitus Open (LPR) → LO26 LA - MIXED	170	MPO FPO MP40 FP40 MJ18 FJ18	Etelä-Karjalan suurin frisbeegolfkilpailu järjestetään toukokuussa 2026 kuvankauniissa Lappeenrannan linnoituksessa, tervetuloa mukaan!	Alku: 27/02/2026 18:00 Päättyy: 10/05/2026 18:00
+Amatöörien SM-karsinnat Presented by Powergrip → #2 Luolavuori, Turku
+Finland	16/05/2026 11:20	C - PDGA	Luolavuoren frisbeegolfpuisto, Turku	156	MA1 FA1 MA40 FA40 MA50 FA50 MA60 FA60	Amatöörien SM-karsintakiertueen osakilpailu Luolavuoressa, Turussa.	Alku: 16/03/2026 19:00 Päättyy: 10/05/2026 23:00
 Paperiliiton frisbeegolfkilpailu 2026
 Uusimaa, Karkkila	16/05/2026 10:00		Karkkilan frisbeegolfrata → Gold (2024-)	75	Kilpasarja rating 1700-> Harrastesarja rating <- 1700 Avoin kilpasarja >=875 Keskitason sarja >=800 Harrastesarja <=799 Naisten sarja		
 Junioreiden SM-karsinnat 2026 by Poppamies → 3. Espoo - Junioreiden SM-karsinnat 2026
-Uusimaa, Espoo	16/05/2026	C - PDGA	Äijänpelto → Äijänpelto Frisbeegolf, Espoo (2021)	61	MPO FPO MJ15 FJ15		Alku: 01/04/2026 12:00 Päättyy: 14/05/2026 18:00
+Uusimaa, Espoo	16/05/2026	C - PDGA	Äijänpelto → Äijänpelto Frisbeegolf, Espoo (2021)	57	MPO FPO MJ15 FJ15		Alku: 01/04/2026 12:00 Päättyy: 14/05/2026 18:00
 Paperiliiton frisbeegolfkilpailu 2026 → Yksilökisa
 Uusimaa, Karkkila	16/05/2026 14:00		Karkkilan frisbeegolfrata → Gold (2024-)	51	Avoin kilpasarja >=875 Keskitason sarja >=800 Harrastesarja <=799 Naisten sarja		Alku: 27/01/2026 12:00 Päättyy: 30/04/2026 23:59
 Sepän Heitto 2026
-Uusimaa, Mäntsälä	16/05/2026 10:00	C - PDGA	Mäntsälän frisbeegolfpuisto → Pro-Mäny 2021	35	RPA RAH RAD RAE RAF RAG	Perinteinen c-tier Mäntsälässä	Alku: 27/03/2026 00:00 Päättyy: 08/05/2026 23:59
+Uusimaa, Mäntsälä	16/05/2026 10:00	C - PDGA	Mäntsälän frisbeegolfpuisto → Pro-Mäny 2021	44	RPA RAH RAD RAE RAF RAG	Perinteinen c-tier Mäntsälässä	Alku: 27/03/2026 00:00 Päättyy: 14/05/2026 23:59
+NBDG Amateurs™ Mukkula Forest
+Päijät-Häme, Lahti	16/05/2026 10:00	C - PDGA	Mukkula DiscGolfPark → Mukkula Forest B Basket	30	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Mukkulan metsäradalla, Lahdessa.	Alku: 17/03/2026 19:00 Päättyy: 13/05/2026 23:00
+Sammon Ryöstö 2026
+Uusimaa, Lohja	16/05/2026 10:00	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	29	RPA RAH RAD RAE RAF		Alku: 05/04/2026 12:31 Päättyy: 13/05/2026 23:59
 Paperiliiton frisbeegolfkilpailu 2026 → Parikisa
 Uusimaa, Karkkila	16/05/2026 10:00	Parikilpailu	Karkkilan frisbeegolfrata → Gold (2024-)	24	Kilpasarja rating 1700-> Harrastesarja rating <- 1700		Alku: 27/01/2026 12:00 Päättyy: 30/04/2026 23:59
-Sammon Ryöstö 2026
-Uusimaa, Lohja	16/05/2026 10:00	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	23	RPA RAH RAD RAE RAF		Alku: 05/04/2026 12:31 Päättyy: 11/05/2026 23:59
 Lauri Hämäläisen Heittoklinikka & Fundraiser Parikilpailu
-Uusimaa, Loviisa	16/05/2026 - 17/05/2026		Loviisan frisbeegolfrata → Loviisa 21 b väylät	12	Juniorit klo 12 Aikuiset klo 14 Open => 1775 (yhteisrating) Amateur < 1775 (yhteisrating) +50v Sekaparit	LISÄTIETOA TULOSSA PIAN JA ILMOITTAUTUMINEN VALIKON ALTA!	
-Lauri Hämäläisen Heittoklinikka & Fundraiser Parikilpailu → Heittoklinikka
-Uusimaa, Loviisa	16/05/2026 12:00		Loviisan frisbeegolfrata → Loviisa 21 b väylät	9	Juniorit klo 12 Aikuiset klo 14	Lisätietoa tulossa, junioreille ilmainen, aikuisilta 5€. LoFron jäsenet etusijalla.	Ilmoittautuminen avoinna
+Uusimaa, Loviisa	16/05/2026 - 17/05/2026		Loviisan frisbeegolfrata → Loviisa 21 b väylät	23	Juniorit klo 12 (15hlö) Aikuiset klo 14 (15 hlö) Open => 1775 (yhteisrating) Amateur < 1775 (yhteisrating) +50v Sekaparit	LISÄTIETOA TULOSSA PIAN JA ILMOITTAUTUMINEN VALIKON ALTA!	
+FribaFreaks at Ajos
+Lappi, Kemi	16/05/2026 14:00		Kemin frisbeegolfrata Ajos → Ajoksen Frisbeegolfrata PRO	19	Avoin (rating 0 - 1200) Rating < 935 Rating < 850	Pelataan AMA ja PRO layout.	Alku: 07/05/2026 22:00 Päättyy: 16/05/2026 12:30
+SFL MASTERS TOUR VAASA BY TJING & WESTSIDE DICS
+Pohjanmaa, Vaasa	16/05/2026 10:00	B - PDGA	Ristinummen frisbeegolfrata → A-Leiska 18 väylää (kesä 2025->) Par 61	18	MP40 FP40 MP50 FP50 MP60 FP60 MP65 FP65 MP70 FP70		Alku: 16/02/2026 19:00 Päättyy: 09/05/2026 19:00
+Holmenkollen avajaiskilpailu Yhteislähtö Kello 15.00
+Satakunta, Pori	16/05/2026 15:00	Viikoittain	Holmenkollen DiscGolfPark	17	Avoin Naiset Nuoret alle 18v	Valitse oikea sarja rekisteröitäessä.	Alku: 06/04/2026 21:31 Päättyy: 16/05/2026 10:00
+Lauri Hämäläisen Heittoklinikka & Fundraiser Parikilpailu → Heittoklinikka (LUE INFO!)
+Uusimaa, Loviisa	16/05/2026 12:00		Loviisan frisbeegolfrata → Loviisa 21 b väylät	17	Juniorit klo 12 (15hlö) Aikuiset klo 14 (15 hlö)	Junioreille ilmainen, aikuisilta 5€. LoFron jäsenet etusijalla.	Päättyy: 15/05/2026 15:00
+Oripään viikkokisat 2026 → Kisa8
+Varsinais-Suomi, Oripää	16/05/2026 17:00	Viikoittain	Oripään frisbeegolfrata → 24 - Par 78	6	Metrix rating yli 930 Metrix rating 840-930 Metrix rating alle 840	Kisamaksu 4€+ctp 1€ ja holaripotti 1€ (potti166€) Cash tai mob. Pay. ILMO PAIKALLA VIIM. KLO 16:40. Metrix ilmottautuminen klo16:00 mennessä. Payout 100%. Ctp-väylä 3. Ei poolitoiveita. Kisa perutaan kisapäivänä klo15, jos ennuste sateinen.	Alku: 10/05/2026 03:13 Päättyy: 13/05/2026 17:00
+Epilä Goes Wild One Round
+Tampere	16/05/2026 11:00		Epilä Goes Wild 2 → Epilä Goes Wild SFL Masters tour Lohko A/B	6	RPA RAH RAD RAE RAF RAG		
+Epilä Goes Wild One Round → Lohko A
+Tampere	16/05/2026 13:00		Epilä Goes Wild 2 → Epilä Goes Wild SFL Masters tour Lohko A/B	5	RPA RAH RAD RAE RAF RAG		Alku: 12/05/2026 12:00 Päättyy: 16/05/2026 12:00
+Tomoottajien järjestämät kilpailut 2026 → Viidentienristeys → viidentienristeys #4
+Satakunta, Kankaanpää	16/05/2026 15:00	Viikoittain	Viidentienristeys Pro 2022 → A-tiit	5	Avoin Naisten Avoin Metrix alle 930 Metrix alle 880 Aloittelijat/ei ratingia/ei metrixiä	Pelataan yksi kierros A-tiiltä. Holaripotti 1e potissa 50e	Ilmoittautuminen avoinna
+WCDG - Junioreiden treenikierros
+Keski-Pohjanmaa, Kokkola	16/05/2026 14:00		Köykäri DiscGolfPark → DGP-18 (2018)	3			Ilmoittautuminen avoinna
+Epilä Goes Wild One Round → Lohko B
+Tampere	16/05/2026 17:00		Epilä Goes Wild 2 → Epilä Goes Wild SFL Masters tour Lohko A/B	2	RPA RAH RAD RAE RAF RAG		Alku: 12/05/2026 12:00 Päättyy: 16/05/2026 16:00
+Pankko 10 vuotta
+Pohjois-Karjala, Juuka	16/05/2026 17:00		Taivaanpankon frisbeegolfrata	1	J <15 J < 18 N 0-600 N 601-750 N 750-900 M 0-600 M601-750 M 750-900 Naiset avoin Miehet avoin		Alku: 01/02/2026 12:00 Päättyy: 13/05/2026 16:00
+Ranuan viikkokisat → Viikkokisa
+Lappi, Ranua	16/05/2026 12:00	Viikoittain	Ranua DiscGolfPark → Ranua discgolfpark 20 Par 62	1	PRO LPRO MJ18		Alku: 30/04/2026 12:00 Päättyy: 16/05/2026 10:00
+SFL MASTERS TOUR 2026 → SFL MASTERS TOUR VAASA BY TJING & WESTSIDE DISCS (Linkkisivu)
+Finland	16/05/2026			0			
 Sammon Ryöstö 2026 → 1. Kierros
 Uusimaa, Lohja	16/05/2026 10:00	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	0	RPA RAH RAD RAE RAF		
 Sammon Ryöstö 2026 → 2. Kierros
-Uusimaa, Lohja	16/05/2026 14:30	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	0	RPA RAH RAD RAE RAF	
-Takaysi, Västerby sponsored by AION auto
-Uusimaa, Raasepori	17/05/2026 10:05	C - PDGA	Västerby, Tammisaari → B-18 (2025)	31	MPO FPO MA2 FA2 MA3 FA3 MA4 FA4 MA40 FA40	Kahden kierroksen PDGA-kisa. Lue info!	Alku: 10/02/2026 18:00 Päättyy: 12/05/2026 23:59
+Uusimaa, Lohja	16/05/2026 14:30	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	0	RPA RAH RAD RAE RAF		
+FribaFreaks at Ajos → 1. kierros
+Lappi, Kemi	16/05/2026 14:00		Kemin frisbeegolfrata Ajos → Ajoksen Frisbeegolfrata AMA	0	Avoin (rating 0 - 1200) Rating < 935 Rating < 850	AMA layout.	
+FribaFreaks at Ajos → 2. Kierros
+Lappi, Kemi	16/05/2026 17:00		Kemin frisbeegolfrata Ajos → Ajoksen Frisbeegolfrata PRO	0	Avoin (rating 0 - 1200) Rating < 935 Rating < 850	PRO layout.
+Linnoitus Open 2026
+Etelä-Karjala, Lappeenranta	17/05/2026 08:00		Linnoitus Open (LPR) → LO26 SU - MIXED	162	MPO FPO MP40 FP40 MP50 MJ18	Etelä-Karjalan suurin frisbeegolfkilpailu järjestetään toukokuussa 2026 kuvankauniissa Lappeenrannan linnoituksessa, tervetuloa mukaan!	Alku: 27/02/2026 19:00 Päättyy: 10/05/2026 18:00
+AM2-tour by NBDG → #2 Keljonkangas
+Keski-Suomi, Jyväskylä	17/05/2026 10:00	C - PDGA	Keljonkangas DiscGolfPark → Keljonkangas 2025 - Punainen	56	RAH RAD RAE RAF RAG	Kahden kierroksen PDGA-kilpailu Keljonkankaalla, Jyväskylässä.	Alku: 18/03/2026 19:00 Päättyy: 13/05/2026 23:00
 Ford AM By Fribakisat.fi
-Uusimaa, Tuusula	17/05/2026 10:00	C - PDGA	Ford Amateur DiscGolfPark (A1) → 1	23	MA1 FA1 MA2 FA2 MA3 FA3 MA4 FA4	Kahden kierroksen c-tier PDGA kilpailu Ford Amateur DiscGolfPark radalla.	Alku: 30/03/2026 18:00 Päättyy: 14/05/2026 18:00
+Uusimaa, Tuusula	17/05/2026 10:00	C - PDGA	Ford Amateur DiscGolfPark (A1) → 1	35	MA1 FA1 MA2 FA2 MA3 FA3 MA4 FA4	Kahden kierroksen c-tier PDGA kilpailu Ford Amateur DiscGolfPark radalla.	Alku: 30/03/2026 18:00 Päättyy: 14/05/2026 18:00
+Takaysi, Västerby sponsored by AION auto
+Uusimaa, Raasepori	17/05/2026 10:05	C - PDGA	Västerby, Tammisaari → B-18 (2025)	29	MPO FPO MA2 FA2 MA3 FA3 MA4 FA4 MA40 FA40	Kahden kierroksen PDGA-kisa. Lue info!	Alku: 10/02/2026 18:00 Päättyy: 15/05/2026 23:59
+Kirikallion viikkokisat
+Varsinais-Suomi, Pyhäranta	17/05/2026 14:00	Viikoittain	Kirikallio DGP 19 Kisa layout 2023 → Kirikallio DGP 20 kisalayout 2025	14	Avoin/0-rating 900-960 rating 840-899 rating 1-839 rating	Osallistumismaksu 5€ tasaraha (sis holari ja ctp), maksut pitää olla maksettu välillä klo 13.30-13.45 !(ryhmät n.13.50) CTP väylä 19 . Holarissa 116€.	Alku: 10/05/2026 19:54 Päättyy: 17/05/2026 13:00
+Napsun viikkokisat → Viikkarit 17.5.2026
+Lappi, Rovaniemi	17/05/2026 15:00	Viikoittain	Napapiirin Frisbeegolfpuisto → Pro layout 2026	10	Avoin Höntsä 0€ FPO	Kaikille avoimet viikkokisat Napapiirin frisbeegolfpuistossa	Alku: 11/05/2026 07:30 Päättyy: 17/05/2026 14:00
+Sunnuntaikierros Hakkarissa
+Pirkanmaa, Lempäälä	17/05/2026 11:00	C - PDGA	Hakkari Discgolfpark → 18-väyläinen layout 2020	7	MA1 MA2 MA3 MA4 MA40 MA50 MA60 FA1 FA2 FA3 FA4 FA40 FA50 FA60 MJ18 MJ15 FJ18 FJ15		Päättyy: 17/05/2026 09:30
 Lauri Hämäläisen Heittoklinikka & Fundraiser Parikilpailu → Parikilpailu
-Uusimaa, Loviisa	17/05/2026 12:00	Parikilpailu	Loviisan frisbeegolfrata → Loviisa 21 b väylät	3	Open => 1775 (yhteisrating) Amateur < 1775 (yhteisrating) +50v Sekaparit	B-väylät, lisätiedot tarkentuu myöhemmin!	Päättyy: 17/05/2026 11:00
+Uusimaa, Loviisa	17/05/2026 12:00	Parikilpailu	Loviisan frisbeegolfrata → Loviisa 21 b väylät	6	Open => 1775 (yhteisrating) Amateur < 1775 (yhteisrating) +50v Sekaparit	B-väylät, CTP #21	Päättyy: 17/05/2026 11:00
+Vårligan 2026 → Vårligan Vecka 6
+Ahvenanmaa, Mariehamn	17/05/2026 11:00	L - PDGA	Vesterkalmare DGP → Red 2025	5	MA1 FA1 MJ18 FJ18 MA2 FA2 MA50 FA50		Alku: 06/04/2026 23:59 Päättyy: 16/05/2026 23:59
+Outokummun viikkokisat 2026
+Pohjois-Karjala, Outokumpu	17/05/2026 - 06/09/2026	Viikoittain	Vanhan Kaivoksen frisbeegolfrata → 18 - Par 59	5	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Joen Liitokiekon järjestämät viikkokisat sunnuntaisin Outokummussa. Kilpailut ovat kaikille avoimet ja ilmaiset. Tervetuloa pelaamaan! Kts. säännöt, yms. oheiselta INFO-sivulta.	
+Outokummun viikkokisat 2026 → Outokummun viikkokisat - 17.5.2026
+Pohjois-Karjala, Outokumpu	17/05/2026 14:00	Viikoittain	Vanhan Kaivoksen frisbeegolfrata → 18 - Par 59	5	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Kaikille avoimet ja ilmaiset viikkokisat Outokummussa. Kierros alkaa klo 14:00. Katso lisätiedot ja säännöt sarjasivulta (oheisen valikon ylin rivi).	Alku: 11/05/2026 00:00 Päättyy: 17/05/2026 13:15
+Puunhakkaajien puolari liiga → Kierros 1
+Uusimaa, Espoo	17/05/2026 23:59		Puolarmaarin frisbeegolfrata → Puolarmaarin frisbeegolfrata ->20 (7/2019)	3			Alku: 11/05/2026 11:00 Päättyy: 17/05/2026 23:59
+DIF Viikkokilpailut 2026 → 17.5@Peikkometsä
+Pohjois-Savo, Kuopio	17/05/2026 10:00	Viikoittain	Peikkometsän Frisbeegolfrata → Peikkometsän Frisbeegolfrata	2	Yli 900 Alle 900 Juniorit Naiset	Kaikille ilmaiset viikkokilpailut.	Alku: 11/05/2026 00:00 Päättyy: 17/05/2026 08:00
+Pyhävuoren radan avajaiskisa!
+Pohjanmaa, Kristiinankaupunki	17/05/2026 14:00		Bötombergen DiscGolfPark → 9 - Par 27	2	MPO FPO MJ18 FJ18	Otetaan käyttöön uusi 9-väyläinen rata! Paikan päällä ilmaista makkaraa (200 kpl) ja kahvia! Lähitapiola Pohjanmaa pitää avajaispuheen! Tervetuloa!	Päättyy: 17/05/2026 13:30
+SFG kesäcup 2026 → SFG Kesäcup Perniö VK20
+Varsinais-Suomi, Salo	17/05/2026 11:00	Viikoittain	Perniön frisbeegolfrata → Melassuo 18 väylää (2024)	2	935+ 860-935 Alle 860		Päättyy: 17/05/2026 09:15
+PSDG:n tasoitusliiga mittelöt 2026 → 6.Kierros Laitila
+Varsinais-Suomi, Laitila	17/05/2026 16:30		Laitilan frisbeegolfrata → Sininen 2026 - 24 väylää	2		6.osakilpailu Laitilassa	Alku: 05/04/2026 18:00 Päättyy: 17/05/2026 16:00
+MäVi Frisbeegolf - Viikkokisat 2026 → 4. Kierros
+Etelä-Savo, Mäntyharju	17/05/2026 17:00	Viikoittain	Pappilan frisbeegolfpuisto → 2020 (par 67)	1		Osallistumismaksu jäseniltä 3€,muut 5€. Ilmoittautuminen päättyy kilpailupäivänä klo 16.45. Kilpailun aikana alkoholin nauttiminen kielletty. Vapaaehtoinen holaripotti 1€.	Päättyy: 17/05/2026 16:45
+Aakonvuoren viikkokisat 2026 → 17.5. viikkokisa 3
+Pohjois-Pohjanmaa, Haapavesi	17/05/2026 16:00	Viikoittain	Aakonvuoren frisbeegolfrata → Pro 18 (2023 AA)	1	Amatöörit Avoin Junnut Maksuton	Osallistumismaksu: seuranjäsenet 2€, ei jäsenet 4€	Alku: 26/04/2026 12:00 Päättyy: 17/05/2026 16:00
+Multi Ace DG. Multicity pariviikkokisa. → 29. Kierros
+Keski-Suomi, Multia	17/05/2026 18:00	Parikilpailu Viikoittain	Multia DGP → Multia 22 DGP 2.0	1	MPO MRYA1750 EP	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa Su Klo 18:00	Alku: 10/05/2026 09:00 Päättyy: 17/05/2026 17:00
+Huittisten viikkokisat 2026 → Huittisten viikkokisat 17/05/2026
+Finland	17/05/2026 15:00	Viikoittain		1	Metrix 920+ Metrix 860-919 Metrix 800-859 Metrix 1-799	Kisainfo pääsivulla. Holaripotissa 200€. CTP väylällä 7, tulos aina kommenttikenttään. Ryhmätoiveet kello 15.00 mennessä td Immoselle.	Alku: 11/05/2026 17:00 Päättyy: 17/05/2026 14:00
+Peurungan Viikkokisat → 229. Kierros
+Keski-Suomi, Laukaa	17/05/2026 17:00	Viikoittain	Peurunka DiscGolfPark → Peurunka DG 2026	1		HUOM! JOS 10 PELAAJAA NIIN KISA PIDETÄÄN! Kilpailumaksu 6€ (kulttuuri- tai liikuntaseteli käy maksuun) kylpylän kassalle. Kierros alkaa kello 17.00.	Alku: 12/05/2026 12:34 Päättyy: 17/05/2026 16:00
+Liedon frisbeegolfradan kilpailut kaudella 2026 → #2 sponsored by HYDROTEK
+Lieto	17/05/2026 18:00	Viikoittain	Liedon Frisbeegolfrata 2026	1	RATING YLI 960 RATING 921-960 RATING 871-920 RATING 811-870 RATING 810 TAI ALLE 0 RATING JONO	LUE INFO!	Alku: 13/05/2026 09:00 Päättyy: 17/05/2026 16:00
+RFG viikkokisat → Yksilökisat
+Kanta-Häme, Riihimäki	17/05/2026 16:00	Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	Ei ratingia Alle 860 860-930 Yli 930	Lukekaa ohjeet maksamisesta. Holaripotti on 50 €.	Alku: 01/05/2026 Päättyy: 03/05/2026 15:00
+Oittaan viikkokilpailut 2026 → Parikisat 17.5
+Uusimaa, Espoo	17/05/2026 18:00	Parikilpailu Viikoittain	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	0	1-1820 0-2200		Alku: 10/05/2026 21:00 Päättyy: 17/05/2026 16:00
+Mukkula Flex Forest 2026 → 17.05.2026 - Forest
+Päijät-Häme, Lahti	17/05/2026 10:00	Viikoittain	Mukkula DiscGolfPark → Mukkula Forest A	0		Kaikille avoimet viikkokilpailut flex-lähdöillä. LFC:n jäsenet pelaavat ilmaiseksi.	Alku: 10/05/2026 18:00 Päättyy: 17/05/2026 18:00
+Mukkula Flex Park 2026 → 17.05.2026 - Park
+Päijät-Häme, Lahti	17/05/2026 10:00	Viikoittain	Mukkula DiscGolfPark → Mukkula Park	0		Kaikille avoimet viikkokilpailut flex-lähdöillä. LFC:n jäsenet pelaavat ilmaiseksi.	Alku: 10/05/2026 18:00 Päättyy: 17/05/2026 18:00
+Raseborgs Energi - Veckotävling / Viikkokisa - VÄSTERBY - B (PRO) → 17.05
+Uusimaa, Raasepori	17/05/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - B (PRO)	0	PRO AM		Päättyy: 17/05/2026 17:30
+#==========
+#==========
+#==========
+#vk21
+#==========
+#==========
+#==========
+Frisbeegolfseura 7k - Kilpailut 2026 → FRIBAVIIKKO - Lausteen Joukkuekisa #1
+Varsinais-Suomi, Turku	18/05/2026 18:00	Parikilpailu Viikoittain	Lausteen frisbeegolfpuisto → Tulos-layout, 24 väylää, 2024-	9	Rating ka >930 Rating ka <930 0-rating mukana	Kootkaa kolmen hengen joukkue, päättäkää pelipaikat ja tulkaa haastamaan Laustetta rennossa maanantai-illan mittelössä!	Alku: 28/04/2026 18:00 Päättyy: 18/05/2026 17:30
+PFGS Viikkokilpailut kesä 2026 → Kisa #2
+Varsinais-Suomi, Paimio	18/05/2026 18:00	Viikoittain	Paimio DGP [Paimion Frisbeegolfseura] → Viikkokisat Paimio 18	8	1-850 851-920 921+ tai rating 0 Jono		Alku: 12/05/2026 08:00 Päättyy: 18/05/2026 16:00
+Kuortaneen viikkokisat 2026 → Kierros #2 – Malluunen AMA
+Etelä-Pohjanmaa, Kuortane	18/05/2026 18:00	Viikoittain	Malluusen frisbeegolfrata → 2026 AMA	7	Avoin AM JR free N	MFGS ry:n jäsenet 3€, muut 4€. Rating 0 ja juniorit ilmaiseksi. Maksut MobilePay numeroon 12781 / liikuntaedut tai pankkikortilla viimeistään kisapäivänä klo 17.45!	Alku: 12/05/2026 12:00 Päättyy: 18/05/2026 17:30
+Laitilan viikkokisat → 7. Kierros
+Varsinais-Suomi, Laitila	18/05/2026 18:00	Viikoittain	Laitilan frisbeegolfrata → Sininen 2026 - 24 väylää	5	950+ 900+ 850+ 800+ Alle 800 0 rating	Holaripotissa pohjalla 20€, CTP-väylä 19	Alku: 01/04/2026 12:00 Päättyy: 18/05/2026 17:15
+WDG Mimmiliiga 2026 → Ravikangas AM 18.5.
+Etelä-Karjala, Lappeenranta	18/05/2026 18:00	Viikoittain	Ravikangas frisbeegolfrata (LPR) → AM-layout (valkoinen)	4	Rating: alle 730 Rating: 730 tai yli	3. Osakilpailu / Tavataan ensimmäisellä heittopaikalla 17:45 / TD: Pinja Kumpulainen 040 7238738	Alku: 13/04/2026 18:00 Päättyy: 18/05/2026 17:45
+Ahtialan/kariston Viikkokilpailut → #2 Ahtiala
+Päijät-Häme, Lahti	18/05/2026 18:00	Viikoittain	Ahtiala DGP 3x6 viikkokisalayout	4	0 rating Alle 900 900-950 951+		Alku: 11/05/2026 09:00 Päättyy: 18/05/2026 17:15
+Lemmenlaakson viikkokisat → JFG viikkokilpailut → Lemmenlaakso 18.5.2026
+Uusimaa, Järvenpää	18/05/2026 18:00	Viikoittain	Lemmenlaakson frisbeegolfrata → Main Layout (2026)	4	Pro Semipro Harraste	JFG:n viikkokisat Kesälayoutilla. Jäseniltä kisamaksu 2€ ja muilta 4€. Maksu vain Mobilepaylla. TD: Ossi puh. 0456131665. Tervetuloa kisaamaan! (HUOM! Ei kisamaksua TD:n numeroon. Kisainfosta löytyy seuran Mobilepay numero.)	Alku: 11/05/2026 12:00 Päättyy: 18/05/2026 17:00
 Karjaan juniors viikkokisa → 2. Kierros
-# ============================================================
-# vk21
-# ============================================================
-Uusimaa, Raasepori	18/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	1	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
+Uusimaa, Raasepori	18/05/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	3	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
 Länsi-Uusimaan FribbeTour 2026 → Pohja: Gumnäs
-Uusimaa, Hanko	18/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	RPA RAD RAE RAF		Alku: 05/05/2026 00:00 Päättyy: 18/05/2026 17:00
+Nyland, Raseborg	18/05/2026 18:00	L - PDGA	Gumnäs frisbeegolf → Gumnäs frisbeegolf	2	RPA RAD RAE RAF		Alku: 05/05/2026 00:00 Päättyy: 18/05/2026 17:00
+Kauttuan metsän viikkokisat 2026 → 3.Kierros 18.5.2026 Klo 18:00
+Satakunta, Eura	18/05/2026 18:00	Viikoittain	Kauttuanmetsä DiscGolfPark	2	MA40 MA1 MA2 MJ18 FA1 MA3	Kauttuan metsän viikkokisat maanantaisin klo 18:00. Osallistumismaksu kaikissa luokissa 5€. Maksut viimeistään klo 17:30 parkkipaikalla. Holaripotissa 390€	Alku: 26/04/2026 18:00 Päättyy: 18/05/2026 16:45
+Limingan viikkokisat 2026 → Limingan viikkokisat #3
+Pohjois-Pohjanmaa, Liminka	18/05/2026 18:00	Viikoittain	Rantakylä DiscGolfPark → DGP (2022)	1			Alku: 11/05/2026 20:00 Päättyy: 18/05/2026 17:45
+Nummenmäki PDGA-Liiga → Liiga #3
+Uusimaa, Hyvinkää	18/05/2026 18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	1	RPA RAD RAE RAF RAG		Alku: 12/05/2026 16:00 Päättyy: 18/05/2026 16:30
+Kantarelli DGP Viikkokilpailut by Sweetspot ry → 5. Kierros
+Uusimaa, Lohja	18/05/2026 18:00	Viikoittain	Kantarelli DGC	1	1-859 860-909 910+ja ratingittomat		Alku: 14/04/2026 14:00 Päättyy: 18/05/2026 17:00
 Karkkilan viikkokilpailut 2026 → 18.5
 Uusimaa, Karkkila	18/05/2026 18:00	Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	0	Metrix rating alle 870 Metrix rating 870-935 Metrix rating yli 935	Info kilpailun pääsivulla	Alku: 11/05/2026 21:00 Päättyy: 18/05/2026 17:00
-Nummenmäki PDGA-Liiga → Liiga #3
-Uusimaa, Hyvinkää	18/05/2026 18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG
-VIIKKOKISAT 2026 → Inkoo viikkokisat2026-Sähkötyö Kaarakainen
-Uusimaa, Inkoo	19/05/2026 18:00		Inkoo discgolf → Inkoo discgolf 2021	0	Pro 0 ja 930+ semi 860-929 Harraste 1-859		Alku: 05/04/2026 20:12 Päättyy: 19/05/2026 16:00
+Vetelin viikkokilpailut → Veteli 2026 #5
+Keski-Pohjanmaa, Veteli	18/05/2026 18:00	Viikoittain	Veteli Puukorpi → SVL	0		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay(Lue info) 96776 4€ (+1€ holaripotti).	Alku: 15/05/2026 18:00 Päättyy: 18/05/2026 17:20
+Joen Liitokiekon junnufribailut sponsored by OP Pohjois-Karjala → JLK junnufribailut 3 Noljakka - Fribaviikko - frisbeegolfia koko Suomelle
+Pohjois-Karjala, Joensuu	18/05/2026 17:30		Noljakan frisbeegolfrata → 9 - Par 28 (2023)	0	MJ18 MJ15 MJ12	Matalan kynnyksen frisbeekisat junioreille! Katso lisätiedot junnufriban pääsivulta (oheisen valikon ylin rivi).	Alku: 12/05/2026 12:00 Päättyy: 18/05/2026 17:30
+Jätkänkiekon Viikkokisat 2026 → Ajos 18.5
+Lappi, Kemi	18/05/2026 18:00		Kemin frisbeegolfrata Ajos → Ajoksen Frisbeegolfrata (2022)	0	Avoin Höntsäsarja	Pelataan kahdessa sarjassa, avoimessa ja höntsäsarjasssa. Avoimesta palkitaan parhaat raaka- ja tasoitetut tulokset	Ilmoittautuminen avoinna
+TFS Viikkokilpailut 2026 → #3 Vihioja // Fribaviikko
+Pirkanmaa, Tampere	18/05/2026 18:00	Viikoittain	Vihioja 2x9	0	RPA RAH RAD RAE RAF RAG Ei Ratinkia		Alku: 17/05/2026 12:00 Päättyy: 18/05/2026 16:00
+KvLL Viikkokisat 2026 - Käyrälampi DGP → 1. Käyrälammen viikkokisa
+Kymenlaakso, Kouvola	18/05/2026 18:00		Käyrälampi DGP → 2023	0	910 ja yli 850 - 909 Alle 850 0-rating	Katso tarkemmat ohjeet rekisteröitymissivulta! Kilpailun TD:nä toimii *lisää nimi*	Alku: 13/05/2026 21:00 Päättyy: 18/05/2026 17:20
+KDG Viikkokilpailut → KDG Viikkokilpailu 3/12
+Egentliga Finland, Kimitoön	19/05/2026 17:30		Västanfjärd DiscGolfPark	22			
+Tarinalaakson Viikkokisat → 19.5 Fribaviikko @ New Course
+Pohjois-Savo, Siilinjärvi	19/05/2026 18:00	Viikoittain	Tarinalaakso New Course → 19 väylää - Par 63	5	Avoin yli 900 Avoin alle 900 Naiset Juniorit	Vuorelan Veikkojen järjestämät kaikille avoimet ja ilmaiset viikkokisat Tarinalaakso Disc Golfin kentillä Siilinjärvellä.	Ilmoittautuminen avoinna
+VIIKKOKISAT 2026 → INKOON FRIBAVIIKKO VIIKKARIT
+Uusimaa, Inkoo	19/05/2026 18:00	Viikoittain	Inkoo discgolf → Inkoo discgolf 2021	2	Pro 0 ja 930+ semi 860-929 Harraste 1-859		Alku: 05/04/2026 20:12 Päättyy: 19/05/2026 16:00
+Rauman Frisbeen Viikkokisat 2026 → 5. Kierros Uotila
+Satakunta, Rauma	19/05/2026 18:00	Viikoittain	Uotilan frisbeegolfrata → 18- Par 59 (2020)	2	Avoin(kaikki) Edistyneet Amatöörit ( 861-925 ) Amatöörit (1-860 )	Maksu ja ilmottautuminen viimeistään 17.40 parkkipaikalla kisa alkaa 18.00. Hinta 3€ jäsen/ 5€ muilta. Holaripotissa 259€.CTP väylä # mitta ja kansio korin päällä.	Alku: 12/05/2026 21:00 Päättyy: 19/05/2026 17:30
+Joen Liitokiekon viikkokisat 2026 (Kesä-sarja) → Joen Liitokiekon viikkokisat - 19.5.2026 - Fribaviikko - frisbeegolfia koko Suomelle
+Pohjois-Karjala, Joensuu	19/05/2026 18:00	Viikoittain	Lykynlammen frisbeegolfrata → Blue-20 - Par 70 (2026)	1	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Joen Liitokiekon Kesä-sarjan viikkokisoja pelataan tiistai-iltaisin. Kilpailut ovat kaikille avoimet ja ilmaiset. Tervetuloa pelaamaan! Kts. säännöt, yms. oheiselta INFO-sivulta.	Alku: 13/05/2026 00:00 Päättyy: 19/05/2026 17:15
+DG Rollers viikkokilpailu 2026 → DG Rollers viikkokilpailu 5
+Pirkanmaa, Mänttä-Vilppula	19/05/2026 17:30	Viikoittain	Kolho 18 väylää → Kisa layout 18 väylää	1	Rating yli 900 Rating 850-899 Alle 850 Noviisit	TD Lucas Le Nguyen	Alku: 20/04/2026 18:04 Päättyy: 19/05/2026 16:30
+FDV Weeklies 2026 → Deltävling 8 - Vörå - HC
+Pohjanmaa, Vöyri	19/05/2026 18:00	Viikoittain	Vörå DiscgolfPark → Vörå DGP 2.0	0	MPO MA1 FA1		Alku: 06/05/2026 08:27 Päättyy: 12/05/2026 17:40
 Karjaan parikisa 2026 → 6. Kierros
 Uusimaa, Raasepori	19/05/2026 18:00	Parikilpailu Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Sekapari Rating yht. alle 1800 Juniors	Pelimuoto: Bestshot. Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Holaripotti 2€/pari (pisin holari voittaa - vain käteinen).	Päättyy: 19/05/2026 16:30
+Porvoon viikkokilpailut 2026 → #7 Hornhattula
+Finland	19/05/2026 18:00	Viikoittain		0	0-750 751-810 811-870 871-930 931< 235		
+Frisbeekotkien viikkokilpailut 2026 → #5 - Petäjäsuo Eagle (AM) 19.5. #fribaviikko
+Kymenlaakso, Kotka	19/05/2026 18:00	Viikoittain	Petäjäsuo DiscGolfPark → Eagle(AM)	0	911+ 860-910 800-859 1-799 Ei Metrix ratingia Naisten avoin Juniorit		Alku: 13/05/2026 12:00 Päättyy: 19/05/2026 16:30
 Lohi viikkokisat → 6. Kierros
 Uusimaa, Hanko	19/05/2026 18:00		Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 20/04/2026 11:22 Päättyy: 19/05/2026 17:30
+KaVo Disc Golf Viikkokisat 2026 → Kisa #5 (Ranta-Koivisto) TD Kimmo
+Pirkanmaa, Kangasala	19/05/2026 18:00	Viikoittain	Ranta-Koivisto DiscGolfPark → DGP-9	0	Avoin		Alku: 13/05/2026 12:00 Päättyy: 19/05/2026 17:00
 Paloheinän viikkisliiga 1/2026 → Osakilpailu 5/8
-Uusimaa, Helsinki	19/05/2026 07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Osakilpailu 5/8
+Uusimaa, Helsinki	19/05/2026 07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Osakilpailu 5/8	
+Heinolan viikko- ja kuukausikilpailut 2026 → Kippasuo AM Short
+Päijät-Häme, Heinola	19/05/2026 18:00	Viikoittain	KIPPIS Am DiscGolfPark → Short (2026)	0	Avoin Alle 950 Alle 900 Alle 850 0-rating	LUE INFO HUOLELLA!! Heinolan kauden 2026 viikkokilpailut, jäsenet 3€, muut 4€. Vapaaehtoinen holaripotti 1€/pelaaja, potissa 52€! Liity jäseneksi www.ldg.fi/liity/ Kioski palvelee tapahtuman ajan!	Alku: 13/05/2026 10:00 Päättyy: 19/05/2026 17:30
+WCDG viikkokisat 2026 - Larsmo → Kisa 2
+Österbotten, Larsmo	19/05/2026 18:00	Viikoittain	Larsmo Disc Golf Course → Summer -23	0	Avoin Rating alle 930 Rating alle 880 Rating alle 830 Harraste	Tule mukaan West Coast Disc Golfers ry:n viikkokisoihin! Kaudella 2026 kisataan tiistaisin ja torstaisin vaihtuvilla radoilla – kaikki ovat tervetulleita mukaan, tasosta riippumatta. Lisätiedot löydät alhaalta.	Alku: 12/05/2026 18:00 Päättyy: 19/05/2026 17:00
+Julkujärven PDGA-Liiga → 2. Osakilpailu 19.5.2026
+Pirkanmaa, Ylöjärvi	19/05/2026 18:00	L - PDGA Viikoittain	Julkujärvi DiscGolfPark → PRO 18 - Par 63 - 2024	0	RPA RAD RAE RAF		Alku: 13/05/2026 18:00 Päättyy: 19/05/2026 15:00
+Linnan Mando DG kesän 2026 viikkokisat → Kauvonniemi 19.5.
+Etelä-Savo, Savonlinna	19/05/2026 18:00	Viikoittain	Kauvonniemi → Kauvonniemi	0	Avoin Amatööri Harrastaja	Kaikille avoimet viikkokisat. Osallistumismaksu 3€ mandolaisille, muut 5€. Kierros alkaa klo 18.00. Katso lisätiedot tämän sivun alalaidasta.	Alku: 12/05/2026 12:00 Päättyy: 19/05/2026 17:15
+ReTee viikkokisat 2026 → Kiipulan frisbeegolfrata
+Kanta-Häme, Janakkala	19/05/2026 18:00	Viikoittain	Kiipulasäätiön frisbeegolfrata → 22 -par 70 (2023)	0	Ei ratingia Amatöörit Semipro Avoin	MAKSAMATTOMAT POISTETAAN KLO 16 JÄLKEEN. Holaripotti on XX €.	Alku: 15/05/2026 21:00 Päättyy: 19/05/2026 15:00
+Fribahullujen kesäliiga 2026 → 2. Herunen
+Uusimaa, Nurmijärvi	19/05/2026 00:01		Nurmijärvi-Herusten frisbeegolfrata → 2023	0		Flex start 16. - 19.5.	Alku: 15/05/2026 00:01 Päättyy: 19/05/2026 23:59
+Nastola Woodpeckers Viikkokilpailut Rakokivi DG → Nastola Woodpeckers Viikkokilpailut Rakokivi DG 19.5.2026
+Päijät-Häme, Lahti	19/05/2026 18:00	Viikoittain	Rakokivi DG → Rakokivi Par57 2026	0	-849 850-899 900-939 940 ja yli 0 rating		Alku: 09/05/2026 09:14 Päättyy: 19/05/2026 17:45
+Scouting Tour by Seppo Paju, powered by Discraft → Scouting Tour by Seppo Paju - Rock Valley Dics Golf Resort, Finland
+Uusimaa, Vihti	20/05/2026 16:30		Rock Valley Premium Disc Golf Resort → Amateur	73	Avoin Naiset Masterit Juniorit	Päivämäärä siirtynyt! Lue info! Info in English below Finnish.	Alku: 20/04/2026 21:00 Päättyy: 18/05/2026 22:00
+Rantalakeusliiga 2026
+Pohjois-Pohjanmaa, Kempele	20/05/2026 - 24/06/2026		Köykkyri DiscGolfPark → Köykkyri 2025	61	MPO FPO MA2 FA2 MA3 FA3	Kaikille avoin liiga	
+Rantalakeusliiga 2026 → 1. osakilpailu, Köykkyri
+Pohjois-Pohjanmaa, Kempele	20/05/2026 18:00		Köykkyri DiscGolfPark → Köykkyri 2025	61	MPO FPO MA2 FA2 MA3 FA3	Kaikille avoin liiga	Alku: 24/04/2026 18:00 Päättyy: 17/05/2026 22:00
 NBDG Extra™ Sahanmäki
-Uusimaa, Hyvinkää	20/05/2026 18:00	C - PDGA	Sahanmäki DGP → Sahanmäki 2023	39	RPA RAD RAE RAF RAG	Yhden kierroksen PDGA-kilpailu Sahanmäessä, Hyvinkäällä.	Alku: 11/04/2026 19:00 Päättyy: 20/05/2026 15:00
+Uusimaa, Hyvinkää	20/05/2026 18:00	C - PDGA	Sahanmäki DGP → Sahanmäki 2023	44	RPA RAD RAE RAF RAG	Yhden kierroksen PDGA-kilpailu Sahanmäessä, Hyvinkäällä.	Alku: 11/04/2026 19:00 Päättyy: 20/05/2026 15:00
+WDG:n viikkokisat 2026 / Yksilökilpailut → 20.5.2026, Ravikangas AM-layout
+Etelä-Karjala, Lappeenranta	20/05/2026 18:00	Viikoittain	Ravikangas frisbeegolfrata (LPR) → AM-layout (valkoinen)	1	0 1-779 780-859 860-909 910+	Pakollinen pelaajakokous 17.40 kopin luona! / LUE INFOTEKSTI TARKASTI! / TD: TBA	Päättyy: 20/05/2026 16:00
 Sibbe Liiga #1 → 2/6 Sininen
-Uusimaa, Sipoo	20/05/2026 17:30	L - PDGA	Sibbe Disc Golf → Blue 2025	0	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 13/05/2026 21:00 Päättyy: 20/05/2026 16:00
+Uusimaa, Sipoo	20/05/2026 17:30	L - PDGA	Sibbe Disc Golf → Blue 2026	0	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 13/05/2026 21:00 Päättyy: 20/05/2026 16:00
+JokiLiiga 1/2026 → JokiLiiga 3/6 - 20.5.2026 - Fribaviikko - frisbeegolfia koko Suomelle
+Pohjois-Karjala, Joensuu	20/05/2026 18:00	L - PDGA	Lykynlammen frisbeegolfrata → Gold-18 - Par 65 (2026)	0	MPO FPO MP40 FP40 MP50 FP50 MA3 FA3 MJ15 FJ15	JLK:n järjestämää JokiLiigaa (PDGA L-tier) pelataan kuutena keskiviikkona peräkkäin 6.5. alkaen. Kts. ohjeet/säännöt sarjasivulta (oheisen valikon ylin rivi). Avoin kaikille! Tervetuloa!	Alku: 14/05/2026 12:00 Päättyy: 20/05/2026 12:00
+Ankkapurhan Viikkokilpailut 2026 → #4 Viikkokilpailu 2026
+Kymenlaakso, Kouvola	20/05/2026 18:00	Viikoittain	Ankkapurha DiscGolfPark 2022 → 1	0	Metrix rating 911 tai yli Metrix rating 910 - 881 Metrix rating 880 - 851 Metrix rating 850 - 801 Metrix rating 800 - 751 Metrix rating 750 tai alle Ei Metrix ratingia (Maksuton)		Alku: 13/05/2026 19:00 Päättyy: 20/05/2026 17:30
+Viisarin Discmaniastore.eu viikkokisat → 20.5.26
+Kanta-Häme, Hämeenlinna	20/05/2026 18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	0	Avoin MAX930 MAX850		Alku: 14/05/2026 18:00 Päättyy: 20/05/2026 15:00
+Käenkosken AM-viikkokisat → Käenkosken AM-viikkokisat #2
+Finland	20/05/2026 18:00	Viikoittain		0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 18v) Tulokkaat (Ei ratingia)	Kaksi kierrosta Käenkoskella (AM ja AM+ -layoutit) / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	Päättyy: 20/05/2026 17:45
+Käenkosken AM-viikkokisat → Käenkosken AM-viikkokisat #2 → 1. kierros
+Pirkanmaa, Parkano	20/05/2026 18:00		Käenkosken Frisbeegolfrata → Käenkoski Am+	0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 18v) Tulokkaat (Ei ratingia)	Kaksi kierrosta Käenkoskella (AM ja AM+ -layoutit) / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	
+Käenkosken AM-viikkokisat → Käenkosken AM-viikkokisat #2 → 2. kierros
+Pirkanmaa, Parkano	20/05/2026 19:00		Käenkosken Frisbeegolfrata → Käenkoski Am	0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 18v) Tulokkaat (Ei ratingia)		
+Mukkulan viikkokilpailut 2026 → 20.5 Park
+Päijät-Häme, Lahti	20/05/2026 18:00	Viikoittain	Mukkula DiscGolfPark → Mukkula Forest 2026	0		Lahden Frisbee Club ry:n järjestämät matalan kynnyksen viikkokilpailut mukkulan radoilla. Kilpailun TD:nä toimii	Päättyy: 20/05/2026 17:15
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #3 FRIBAVIIKKO
+Varsinais-Suomi, Turku	20/05/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	0	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Alku: 18/05/2026 12:00 Päättyy: 20/05/2026 17:00
 Mäntsälän viikkokisat 2026 → MiniMörri
 Uusimaa, Mäntsälä	20/05/2026 18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → MIniMörri 2021	0	0-rating Juniorit Rating 1-850 Rating 851-909 Rating 910 tai yli	Mäntsälän viikkokisat keskiviikkoisin klo 18. Lue tarkemmat infot rekisteröitymissivulta.	Alku: 13/05/2026 20:30 Päättyy: 20/05/2026 17:00
+Multi Ace DG. Keuruun viivel viikkokisat → 7. Kierros
+Keskisuomi, Keuruu	20/05/2026 18:00	Viikoittain	Keuruun Viivel	0	MPO MA2 MA3 MA4	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti, ettei tule yllätyksiä! Kilpailu alkaa KE Klo 18.00	Alku: 13/05/2026 20:00 Päättyy: 20/05/2026 17:00
+Laitakallion viikkokisat 2026 → 20.5. 2.viikkari
+Pohjois-Pohjanmaa, Haapavesi	20/05/2026 17:30	Viikoittain	Laitakallion frisbeegolfrata → LK11	0		Kisat aina parittoman viikon keskiviikkoisin. Ei osallistumismaksua. Vapaaehtoinen holaripotti 1€.	Alku: 06/05/2026 12:00 Päättyy: 20/05/2026 17:15
+SastaFG:n viikkokisat 2026 → Viikkokisat ke 20.5 Kemira
+Pirkanmaa, Sastamala	20/05/2026 18:00	Viikoittain	Kemira DiskGolfPark, Äetsä → Kemira DiskGolfPark 2024	0	Avoin>920 Metrix 860-919 Metrix 800-859 Metrix 1-799 Junior < 14 Metrix 0 (ilmainen)	Fribaviikon viikkokisat	Alku: 14/05/2026 11:00 Päättyy: 20/05/2026 17:00
+Sb-Hem - Veckotävling / Viikkokisa - VÄSTERBY - A (AM) → 20.5
+Uusimaa, Raasepori	20/05/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - A (AM)	0	PRO AM		Päättyy: 20/05/2026 17:30
+KvLL Viikkokisat 2026 - Ruhmaanharju
+Kymenlaakso, Kouvola	20/05/2026 - 23/09/2026		Ruhmaanharju Disc Golf	0	910 ja yli 850 - 909 Alle 850 0-rating	Valitse kilpailu vetovalikosta.	
+KvLL Viikkokisat 2026 - Ruhmaanharju → 1 Ruhmaanharjun viikkokisa
+Kymenlaakso, Kouvola	20/05/2026 18:00		Ruhmaanharju Disc Golf	0	910 ja yli 850 - 909 Alle 850 0-rating	Katso tarkemmat ohjeet rekisteröitymissivulta! Kilpailun TD:nä toimii *lisää nimi*	Alku: 13/05/2026 21:00 Päättyy: 20/05/2026 17:20
+Scouting Tour by Seppo Paju, powered by Discraft → Scouting Tour by Seppo Paju - Yliskulma DGC, Finland
+Varsinais-Suomi, Lieto	21/05/2026 16:30		Yliskulma FGR → Alkuperäinen2021	81	Avoin Naiset Masterit Juniorit	Lue info! Info in English below Finnish.	Alku: 20/04/2026 21:00 Päättyy: 19/05/2026 22:00
+Savo One Rounds 2026 → Atrain 21.5
+Pohjois-Savo, Kuopio	21/05/2026 18:00	C - PDGA	Atrain Disc Golf	59	MPO MP40 MP50 MP60 FPO FP40 FP50 FP60 MA2 MA4 FA1 FA2 FA3 FA4 MJ18 FJ18 MJ15 FJ15	Vuorelan Veikkojen ja Deep In The Forestin yhteistyössä järjestämä yhden kierroksen PDGA C-tier kilpailu Atrain Disc Golfissa.	Alku: 19/04/2026 20:00 Päättyy: 19/05/2026 20:00
+WCDG testailukisa → Laajalahti viikokisat 3
+Keski-Pohjanmaa, Kokkola	21/05/2026 18:00		Laajalahti Frisbeegolf → 18 - Par 59	10			
+WDG:n PappaLiiga 2026 → 21.5.2026, Ravikangas PRO-layout
+Etelä-Karjala, Lappeenranta	21/05/2026 18:00	Viikoittain	Ravikangas frisbeegolfrata (LPR) → PRO-layout (keltainen)	7	<860 >860	Pakollinen pelaajakokous 17:40 kopin luona! / LUE INFOTEKSTI TARKASTI! / TD: TBA	Päättyy: 21/05/2026 16:00
+Lehtomäen uuden layoutin avajaiskilpailu - Fribaviikko
+Pohjois-Pohjanmaa, Siikalatva	21/05/2026 18:30	Viikoittain	Lehtomäen frisbeegolfrata → Main 20 - Par 64 (2026)	7	Avoin Metrix rating alle 900 Metrix rating alle 800	Kaikille avoin yhden kierroksen kilpailu Lehtomäen frisbeegolfradalla (uusi layout), Siikalatvalla.	Alku: 12/05/2026 15:00 Päättyy: 21/05/2026 17:30
 Karjaan viikkokilpailut 2026 → 6. Kierros
-Uusimaa, Raasepori	21/05/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 21/05/2026 16:30
+Uusimaa, Raasepori	21/05/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	1	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 21/05/2026 16:30
+Liljendal veckotävlingar 2026 → Fribaviikko - Parikilpailu
+Uusimaa, Loviisa	21/05/2026 18:15	Parikilpailu	Liljendal Frisbeegolf → (2026)	1	≥1800 <1800 ≥120år <1700		Ilmoittautuminen avoinna
+SportClub viikkokisat → Viikkokisa V
+Pohjois-Karjala, Juuka	21/05/2026 18:00	Viikoittain	Taivaanpankon frisbeegolfrata	0	Naiset N < 18v N<15 M M < 18v M<15 Junnut		Alku: 01/04/2026 09:00 Päättyy: 21/05/2026 17:00
+Suonenjoen viikkokilpailut → Suonenjoen Viikkokilpailut 21.5
+Pohjois-Savo, Suonenjoki	21/05/2026 18:00	Viikoittain	Suonenjoki DiscGolfPark 23-väylää → Kesäleiska2024 pidenettyjä väyliä	0	Avoin 2	Ilmottautuminen päättyy 30min ennen kilpailun alkua. Olethan paikalla VIIMEISTÄÄN 15 min ennen kilpailun alkua jos et ole sinut poistetaan kilpailusta. Lue info alhaalta.	Alku: 05/04/2026 11:22 Päättyy: 21/05/2026 17:30
+Padasjoen viikkokisat 2026 → Yksilökisat → Viipale 3
+Päijät-Häme, Padasjoki	21/05/2026 18:00	Viikoittain	Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	0		Maksu 4€ + vapaaehtoinen holaripot 1€	Alku: 15/05/2026 00:00 Päättyy: 21/05/2026 17:50
+IITTI DGP VIIKKOKISAT 23.4-1.10.2026 → DGC Birdie Hunters Iitti 3.Viikkokisat
+Päijät-Häme, Iitti	21/05/2026 18:00	Viikoittain	Iitti DiscGolfPark → 18 - Par 55	0	Rating yli 900 Rating 850-899 Rating 800-849 Rating alle 800 Rating 0	Osallistumismaksu jäsenet 2€, muut 4€... Vapaaehtoinen holaripottimaksu 1€... Maksu käteinen tai Mobilepay #94731	Alku: 14/05/2026 12:00 Päättyy: 21/05/2026 17:30
+Viikkokisat Raahe 2026 → Viikkokisat Raahe - Koivuluoto 21.5.
+Pohjois-Pohjanmaa, Raahe	21/05/2026 17:30	Viikoittain	Kraken - Raahen frisbeegolfpuisto	0	MPO MJ15 FPO	Pelataan kaksi kierrosta Koivuluodon rataa. Ilmoittautuminen paikanpäällä viimeistään klo 17.10	Alku: 14/05/2026 00:00 Päättyy: 21/05/2026 17:00
 Ahven viikkokilpailu → 6. Kierros
 Uusimaa, Hanko	21/05/2026 18:00		Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 15/04/2026 18:45 Päättyy: 21/05/2026 17:30
+WCDG viikkokisat 2026 - Laajalahti → Kisa 2
+Keski-Pohjanmaa, Kokkola	21/05/2026 18:00	Viikoittain	Laajalahti Frisbeegolf → 18 - Par 59	0	Avoin Rating alle 930 Rating alle 880 Rating alle 830 Harraste	Tule mukaan West Coast Disc Golfers ry:n viikkokisoihin! Kaudella 2026 kisataan tiistaisin ja torstaisin vaihtuvilla radoilla – kaikki ovat tervetulleita mukaan, tasosta riippumatta. Lisätiedot löydät alhaalta.	Alku: 12/05/2026 18:00 Päättyy: 19/05/2026 17:00
+Jätkänkiekon Viikkokisat 2026 → Kalli 21.5
+Keminmaa	21/05/2026 18:00		Kallin frisbeegolrata	0	Avoin Höntsäsarja	Pelataan kahdessa sarjassa, avoimessa ja höntsäsarjasssa. Avoimesta palkitaan parhaat raaka- ja tasoitetut tulokset	Ilmoittautuminen avoinna
+Hyzer Hollola Disc Clubin kilpailut 2026 → Viikkokilpailut | Kukonkoivu 21.5.2026
+Päijät-Häme, Hollola	21/05/2026 18:00	Viikoittain	Kukonkoivu, Hollola → Kesä 2025	0	Alle 810 870 - 925 yli 925 810 - 869	TD:nä toimii Riku Hirvonen 0408413638	Alku: 03/05/2026 Päättyy: 21/05/2026 17:30
+Pyssymäen viikkokisat, NFG → 4. Viikkokisa 2026
+Pohjois-Pohjanmaa, Nivala	21/05/2026 18:00		Pyssymäen Frisbeegolfrata A1	0	Avoin 2€ Ilmainen (Nuoret alle 13v)	1 kierros, 2€ osallistuminen, tasoitus- ja raakatulossarjat. Payout 100%: 1. 50% ja 1. (HC) 50%, eli molempien sarjojen voittajat palkitaan	
+Linnan Mando DG kesän 2026 viikkokisat → Enonkoski 21.5.
+Etelä-Savo, Enonkoski	21/05/2026 18:00	Viikoittain	Enonkoski Discgolfpark → Enonkoski Discgolfpark	0	Avoin Amatööri Harrastaja	Kaikille avoimet viikkokisat. Osallistumismaksu 3€ mandolaisille, muut 5€. Kierros alkaa klo 18.00. Katso lisätiedot tämän sivun alalaidasta.	Alku: 14/05/2026 12:00 Päättyy: 21/05/2026 17:15
+Multi Ace DG. Multicity viikkokisat → 268. Kierros
+Keski-Suomi, Multia	21/05/2026 18:00	Viikoittain	Multia DGP → Multia 22 DGP 2.0	0	MPO MA4 MA2	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa To Klo 18:00	Alku: 14/05/2026 16:00 Päättyy: 21/05/2026 17:00
+Bsc Viikkokisat 2026 → bsc viikkokisat Toppila
+Pohjois-Pohjanmaa, Oulu	21/05/2026 18:00		Meri-Toppila DiscGolfPark → Meri-Toppila 2023	0		Vain BSC jäsenille	Alku: 12/05/2026 10:23 Päättyy: 21/05/2026 17:00
+SFL Powergrip Pro Tour
+Finland	22/05/2026 - 11/09/2026	A - PDGA		241	MPO FPO	Frisbeegolfin kotimainen kärkikiertue. Draamankaaria – joka heitossa.	
+SFL Powergrip Pro Tour → #1 Tampere
+Finland	22/05/2026	A - PDGA	Tampereen frisbeegolfkeskus, Tampere	160	MPO FPO	SFL Powergrip Pro Tourin osakilpailu Tampereella.	Alku: 23/03/2026 19:00 Päättyy: 26/04/2026 23:00
+Puula Spring Fiesta 2026 Parikisa by Veikon Kone Kangasniemi
+Etelä-Savo, Kangasniemi	22/05/2026 13:00	Parikilpailu	Puula Open → PO2025	12	Avoin <1800	parikilpailu, ei lisenssivaatimuksia	Alku: 12/04/2026 18:00 Päättyy: 21/05/2026 23:59
+Jokioisten koulujen frisbeegolf mestaruus 2026
+Finland	22/05/2026 09:00		Jokioisten koulujenväliset 2024	5	Yläaste tytöt Yläaste pojat Ala-aste tytöt Ala-aste pojat		Alku: 11/05/2026 12:37 Päättyy: 22/05/2026 09:00
+FGK Tour 2026 → 2. Isojoki
+Etelä-Pohjanmaa, Isojoki	22/05/2026 18:00		Isojoen frisbeegolfrata → 18 - Par 57	2	Avoin Metrix rating alle 910 Naiset Mestarit 50+ Juniorit alle 15v	Ole paikalla viimeistään 17:45. Maksut & pistesysteemit näjet tourin etusivulta. Muistakaahan kisakohtaanen CTP kisa väylällä #1, 2€ osallistuminen 100% payout.	Ilmoittautuminen avoinna
 Veikkolan viikkokisat 2026 → Veikkolan viikkokisat 22.5.2026
 Uusimaa, Kirkkonummi	22/05/2026 18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	VDGC järjestää viikkokisat. Kisamaksut: MobilePay-numeroon 28881 – käteismaksua ei ole. Jäsenet 2€, muut 4€ – PayOut 50% (30-15-5). Junnut ilmaiseksi ilman palkintoja. Lisäksi vapaaehtoinen 1€ holaripotti.	Alku: 16/05/2026 10:00 Päättyy: 22/05/2026 17:00
+Käenkosken Viikkokisat → Käenkosken Viikkokisat #4
+Pirkanmaa, Parkano	22/05/2026 18:00	Viikoittain	Käenkosken Frisbeegolfrata → Käenkoski Pro	0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 18v) Tulokkaat (Ei ratingia)	Yksi kierros Käenkoskella / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	Päättyy: 22/05/2026 17:45
+Kaustisen viikkokilpailu → Kaustinen 2026 #3
+Keski-Pohjanmaa, Kaustinen	22/05/2026 18:00	Viikoittain	Kaustisen frisbeegolfrata	0		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay 23091 4€ (+1€ holaripotti)	Alku: 18/05/2026 18:00 Päättyy: 22/05/2026 17:20
+Multi Ace DG. Keuruun viivel pariviikkokisat → 8. Kierros
+Keskisuomi, Keuruu	22/05/2026 18:09	Parikilpailu Viikoittain	Keuruun Viivel	0	MPO MRYA1800 EP	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! Huom! Kilpailu alkaa Pe Klo 18:00	Alku: 15/05/2026 12:00 Päättyy: 22/05/2026 17:00
+Lemmenlaakson viikkokisat → JFG viikkokilpailut → EXTRA Lemmenlaakso 22.5.2026
+Uusimaa, Järvenpää	22/05/2026 18:00	Viikoittain	Lemmenlaakson frisbeegolfrata → Lemmenlaakso - Main Layout (2026)	0	Pro Semipro Harraste	JFG:n EXTRA viikkokisat Kesälayoutilla. Jäseniltä kisamaksu 2€ ja muilta 4€. Maksu vain Mobilepaylla. TD Ossi p.0456131665. Tervetuloa kisaamaan! (HUOM! Ei kisamaksua TD:n numeroon. Kisainfosta löytyy seuran Mobilepay numero.)	Alku: 15/05/2026 11:00 Päättyy: 22/05/2026 17:00
+Lemmensillanpuiston kevätliiga 2026 → 7. kilpailu
+Pohjois-Savo, Varkaus	22/05/2026 18:00	Viikoittain	Lemmensillanpuiston frisbeegolfrata → 12 - Par 36 (2013)	0	≥920 919-850 <850	Pelataan perjantaista 10.4. alkaen 8 osakilpailua aina perjantaisin. 4 parasta osakilpailua lasketaan kokonaiskilpailun. Kisamaksu 1€ ja vapaaehtoinen holaripotti 1€	Päättyy: 22/05/2026 17:00
+ReTee viikkoparikisat 2026 → Kiipulan frisbeegolfrata
+Finland	22/05/2026 18:00	Parikilpailu Viikoittain	Kiipulasäätiön frisbeegolfrata → 22 -par 70 (2023)	0	Amatöörit Avoin	MAKSAMATTOMAT POISTETAAN KLO 16 JÄLKEEN. Holaripotti on XX €.	Alku: 19/05/2026 21:00 Päättyy: 22/05/2026 15:00
+Työpaikkafrisbeegolf SM 2026
+Finland	23/05/2026 - 24/05/2026		Kippis (Heinola DiscGolfPark World)	225	Kilpasarja Harrastesarja Naiset	Työpaikkafrisbeegolfin SM-kisat järjestetään ensimmäistä kertaa Heinolan Kippiksellä 23.–24.5.2026.	
 Battle of the Three Forests 2026
-Uusimaa, Raasepori	23/05/2026 10:00	B - PDGA	Skogby, → Skogby-18 kisarata 2025	83	MPO MP40 MP50 FPO FP40 FP50	PDGA B-tier erilliskilpailu Skogbyn, Inkoon ja Kantarellin radoilla.	Alku: 13/01/2026 18:00 Päättyy: 20/05/2026 21:00
+Uusimaa, Raasepori	23/05/2026 10:00	B - PDGA	Skogby, → Skogby-18 kisarata 2025	87	MPO MP40 MP50 FPO FP40 FP50	PDGA B-tier erilliskilpailu Skogbyn, Inkoon ja Kantarellin radoilla.	Alku: 13/01/2026 18:00 Päättyy: 20/05/2026 21:00
+Työpaikkafrisbeegolf SM 2026 → Parikilpailu
+Finland	23/05/2026 - 23/05/2026	Parikilpailu	Kippis (Heinola DiscGolfPark World)	83	Kilpasarja Harrastesarja	Työpaikkafrisbeegolfin SM 2026 | Parikilpailu	
+Kotkatharju amateur Open 2026
+Finland	23/05/2026 10:00	C - PDGA	Kotkatharjun frisbeegolf → Sininen, Par: 66	81	MA1 FA1 MA40 MA2 MJ18 FA2 MA3 FA3 FA40 MA50 FA50 MA60 FA60 MJ15 FJ15	Amatööreille suunnattu PDGA C-tier kisa Joroisten frisbeegolfradoilla 23.5	
+Junioreiden SM-karsinnat 2026 by Poppamies → 4. Hämeenlinna - Junioreiden SM-karsinnat 2026
+Finland	23/05/2026	C - PDGA		72	MPO FPO MJ15 FJ15		Alku: 03/04/2026 18:00 Päättyy: 20/05/2026 12:00
+Kyyjärvi Open 2026
+Keski-Suomi, Kyyjärvi	23/05/2026 10:00	C - PDGA	Kyyjärvi DiscGolfPark → Kyyjärvi open 2026	70	MPO MP40 MP50 FPO FP40 FP50 MA3 FA3 MJ18 FJ18	Kahden kilpailu kierroksen PDGA C-Tier kilpailu. 2*18 väylää	Alku: 13/03/2026 18:00 Päättyy: 17/05/2026 23:59
+2nd annual Battle of Pulkkila - Pulkkilan Taistelu 2026
+Pohjois-Pohjanmaa, Siikalatva	23/05/2026 10:00	C - PDGA	Lehtomäen frisbeegolfrata → Main 20 - Par 64 (2026)	66	RPA RAD RAE RAF RAG	Kahden kierroksen PDGA-kilpailu Lehtomäen radalla, Siikalatvalla.	Alku: 23/03/2026 19:00 Päättyy: 17/05/2026 23:59
+SFL MASTERS TOUR BY CORNY - PUULA SPRING FIESTA 2026 By Kangasniemen Osuuspankki
+Etelä-Savo, Kangasniemi	23/05/2026 12:57	C - PDGA	Puula Open → SF2025	52	MP40 FP40 MP50 FP50 MP60 FP60 MP65 FP65 MP70 FP70 MPO FPO MA2 FA2 MA3 FA3 MJ18 FJ18		Alku: 23/02/2026 19:00 Päättyy: 28/04/2026 19:00
+Kotkatharju amateur Open 2026 → Lohko A
+Finland	23/05/2026 10:00	C - PDGA		45	MA1 FA1 MA40 MA2 MJ18	Luokat: MA1, FA1, MA2, MA40, MJ18	Alku: 23/03/2026 20:00 Päättyy: 15/05/2026 20:00
+Työpaikkafrisbeegolf SM 2026 → Parikilpailu → Kilpasarja (Pro-rata)
+Päijät-Häme, Heinola	23/05/2026 10:00	Parikilpailu	Kippasuo Pro DiscGolfPark → Blue 18 (2020)	42	Kilpasarja	Työpaikkafrisbeegolfin SM 2026 | Parikilpailu | Kilpasarja | Pro-rata	Alku: 02/02/2026 12:00 Päättyy: 20/05/2026 23:59
+Työpaikkafrisbeegolf SM 2026 → Parikilpailu → Harrastesarja (AM-rata)
+Päijät-Häme, Heinola	23/05/2026 11:00	Parikilpailu	Kippasuo Amateur DiscGolfPark → Kippasuo AM DiscGolfPark (2024)	41	Harrastesarja	Työpaikkafrisbeegolfin SM 2026 | Parikilpailu | Harrastesarja | AM-rata	Alku: 02/02/2026 12:00 Päättyy: 20/05/2026 23:59
+Työpaikkafrisbeegolf SM 2026 → Joukkuekilpailu
+Finland	23/05/2026 - 23/05/2026	Parikilpailu	Kippis (Heinola DiscGolfPark World)	39	Kilpasarja Harrastesarja	Työpaikkafrisbeegolfin SM 2026 | Joukkuekilpailu	
+Kotkatharju amateur Open 2026 → Lohko B
+Finland	23/05/2026 10:01	C - PDGA		36	FA2 MA3 FA3 FA40 MA50 FA50 MA60 FA60 MJ15 FJ15	Luokat: FA2, MA3, FA3, MA50, FA50, MA60, FA60, FJ18, MJ15, FJ15	Alku: 23/03/2026 20:00 Päättyy: 15/05/2026 20:00
+Opettajien frisbeegolf SM 2026
+Pirkanmaa, Mänttä-Vilppula	23/05/2026 10:00		Parkkivuori Discgolfpark → 2023	23	Avoin miehet Master 40+ miehet Harraste miehet (<800) Avoin naiset Masters 40+ naiset Harraste naiset (<700)		Alku: 07/01/2026 17:00 Päättyy: 13/05/2026 23:59
+Työpaikkafrisbeegolf SM 2026 → Joukkuekilpailu → Harrastesarja (AM-rata)
+Päijät-Häme, Heinola	23/05/2026 17:00	Parikilpailu	Kippasuo Amateur DiscGolfPark → Kippasuo AM DiscGolfPark (2024)	20	Harrastesarja	Työpaikkafrisbeegolfin SM 2026 | Joukkuekilpailu | Harrastesarja | AM-rata	Alku: 02/02/2026 12:00 Päättyy: 20/05/2026 23:59
+NBDG Extra™ Laitila
+Varsinais-Suomi, Laitila	23/05/2026 11:00	C - PDGA	Laitilan frisbeegolfrata → Keltainen 2026 - 18 väylää	20	RPA RAD RAE RAF RAG	Yhden kierroksen PDGA-kilpailu Laitilan frisbeegolfradalla.	Alku: 16/04/2026 19:00 Päättyy: 20/05/2026 23:00
+Työpaikkafrisbeegolf SM 2026 → Joukkuekilpailu → Kilpasarja (Pro-rata)
+Päijät-Häme, Heinola	23/05/2026 16:00	Parikilpailu	Kippasuo Pro DiscGolfPark → Blue 18 (2020)	19	Kilpasarja	Työpaikkafrisbeegolfin SM 2026 | Joukkuekilpailu | Kilpasarja | Pro-rata	Alku: 02/02/2026 12:00 Päättyy: 20/05/2026 23:59
+Golf-frisbeegolf-yhdistelmäparikilpailu Hanko
+Finland	23/05/2026 12:30	Parikilpailu	Hangolf. Kirkkotie 28 10900	10		Tule mukaan osallistumaan ainutlaatuiseen yhdistelmäkilpailuun Hangon golfkentällä. 23.05.2026 klo 12.30	Alku: 14/02/2026 Päättyy: 21/05/2026 21:00
 Pääkaupunkiseudun junior cup 2026 → Osakilpailu #3, Puolarmaari
-Uusimaa, Espoo	23/05/2026 13:00		Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	5	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12		Alku: 19/04/2026 16:00 Päättyy: 23/05/2026 12:00
+Uusimaa, Espoo	23/05/2026 13:00		Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	4	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12		Alku: 19/04/2026 16:00 Päättyy: 23/05/2026 12:00
+Ranuan viikkokisat → Viikkokisa
+Lappi, Ranua	23/05/2026 12:00	Viikoittain	Ranua DiscGolfPark → Ranua discgolfpark 20 Par 62	1	PRO LPRO MJ18		Alku: 30/04/2026 01:00 Päättyy: 23/05/2026 10:00
 Battle of the Three Forests 2026 → Kierros1 Skogby DGP
 Uusimaa, Raasepori	23/05/2026 10:00	B - PDGA	Skogby, → Skogby-18 kisarata 2025	0	MPO MP40 MP50 FPO FP40 FP50	Ensimmäinen kierros Skogby kisaradalla	
 Battle of the Three Forests 2026 → Kierros2 Inkoo frisbeegolfrata normaali layout
-Uusimaa, Inkoo	23/05/2026 14:30	B - PDGA	Inkoo discgolf → Inkoo discgolf 2021	0	MPO MP40 MP50 FPO FP40 FP50	Toinen kierros yhteislähdöllä ilman pelaajakokousta.
+Uusimaa, Inkoo	23/05/2026 14:30	B - PDGA	Inkoo discgolf → Inkoo discgolf 2021	0	MPO MP40 MP50 FPO FP40 FP50	Toinen kierros yhteislähdöllä ilman pelaajakokousta.	
+SFL MASTERS TOUR - DISCOOTER NAAMIVAARA OPEN 2026
+Lappi, Pello	23/05/2026	B - PDGA	Naamivaaran Frisbeegolfrata → Pro-20 (2017)	0			
+SFL MASTERS TOUR 2026 → SFL MASTERS TOUR BY CORNY - PUULA SPRING FIESTA 2026 By Kangasniemen Osuuspankki (Linkkisivu)
+Finland	23/05/2026			0			
+SFL MASTERS TOUR 2026 → SFL MASTERS TOUR - DISCOOTER NAAMIVAARA OPEN 2026 (Linkkisivu)
+Finland	23/05/2026			0			
+Padasjoen avoimet kunnanmestaruuskilpailut 2026 → 1. Kierros
+Päijät-Häme, Padasjoki	23/05/2026 09:30		Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	0	MPO FPO MJ15 FJ15 MP50 FP50		
+Padasjoen avoimet kunnanmestaruuskilpailut 2026 → 2. Kierros
+Päijät-Häme, Padasjoki	23/05/2026 12:00		Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	0	MPO FPO MJ15 FJ15 MP50 FP50		
+Somerniemen viikkokilpailut → #2. Rankkula, parikisa
+Varsinais-Suomi, Somero	23/05/2026 11:00	Parikilpailu	Rankkula discgoflpark, Somero → Päivitetty Layout (17.07.2022 -->)	0	>1800 1600-1800 tai parempi pelaaja 900+ 0-1600 (molemmat pelaajat alle 900)	Kaikille avoimet viikkokilpailut lauantaisin noin kahden viikon välein!	Alku: 09/05/2026 22:00 Päättyy: 23/05/2026 10:00
+Puumilan Viikkokisat → Puumilan Viikkokisat #3
+Pirkanmaa, Kihniö	23/05/2026 13:00	Viikoittain	Puumilan frisbeegolfrata → Puumilan kisarata	0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 15v) Tulokkaat (Ei ratingia)	Kolme kierrosta Puumilassa / Osallistumismaksu 3€ / Vapaaehtoinen 1€ holaripotti	Päättyy: 23/05/2026 12:45
+Työpaikkafrisbeegolf SM 2026 → Yksilökilpailu
+Finland	24/05/2026 - 24/05/2026		Kippis (Heinola DiscGolfPark World)	103	Kilpasarja Harrastesarja Naiset	Työpaikkafrisbeegolfin SM 2026 | Yksilökilpailu	
+Työpaikkafrisbeegolf SM 2026 → Yksilökilpailu → Harrastesarja & naiset (AM-rata)
+Päijät-Häme, Heinola	24/05/2026 11:00		Kippasuo Amateur DiscGolfPark → Kippasuo AM DiscGolfPark (2024)	55	Harrastesarja Naiset	Työpaikkafrisbeegolfin SM 2026 | Yksilökilpailu | Harrastesarja & naiset | AM-rata	Alku: 02/02/2026 12:00 Päättyy: 20/05/2026 23:59
+Työpaikkafrisbeegolf SM 2026 → Yksilökilpailu → Kilpasarja (Pro-rata)
+Päijät-Häme, Heinola	24/05/2026 10:00		Kippasuo Pro DiscGolfPark → Blue 18 (2020)	48	Kilpasarja	Työpaikkafrisbeegolfin SM 2026 | Yksilökilpailu | Kilpasarja | Pro-rata	Alku: 02/02/2026 12:00 Päättyy: 20/05/2026 23:59
+Vörå Amateur Open 2026
+Pohjanmaa, Vöyri	24/05/2026 10:00	C - PDGA	Vörå DiscgolfPark → Vörå DGP 2.0	43	RPA RAH RAD RAE RAF RAG		Alku: 23/03/2026 18:00 Päättyy: 17/05/2026 18:00
+KevätKylis 2026
+Satakunta, Pori	24/05/2026 10:00	C - PDGA	Kyläsaaren frisbeegolfrata by Prodigy Disc	30	RPA RAD RAE RAF RAG	C-tier, kaksi kierrosta, Trophy only, rating-luokat	Alku: 29/04/2026 12:00 Päättyy: 20/05/2026 18:00
+OFS reikäpelit 2026 → Alle 900 luokka → 1. Kierros pari 1
+Finland	24/05/2026 23:55			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Yhdistetty 800 ja 850 luokka → 1. Kierros pari 1
+Finland	24/05/2026 23:51			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 1
+Finland	24/05/2026 23:53			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 3
+Finland	24/05/2026 23:55			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 2
+Finland	24/05/2026 23:54			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 4
+Finland	24/05/2026 23:56			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Alle 900 luokka → 1. Kierros pari 2
+Finland	24/05/2026 23:56			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 5
+Finland	24/05/2026 23:57			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Alle 900 luokka → 1. Kierros pari 3
+Finland	24/05/2026 23:57			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 6
+Finland	24/05/2026 23:58			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Avoin luokka → 1. Kierros pari 7
+Finland	24/05/2026 23:59			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
+OFS reikäpelit 2026 → Alle 900 luokka → 1. Kierros pari 4
+Finland	24/05/2026 23:58			2	Avoin <900 <850 <800 Yhdistetty 800-900 luokka		
 Battle of the Three Forests 2026 → Kierros3 Kantarelli DGP
-Uusimaa, Lohja	24/05/2026 09:00	B - PDGA	Kantarelli DGC	0	MPO MP40 MP50 FPO FP40 FP50	Finaali kierros Golf lähdöin
+Uusimaa, Lohja	24/05/2026 09:00	B - PDGA	Kantarelli DGC	0	MPO MP40 MP50 FPO FP40 FP50	Finaali kierros Golf lähdöin	
+WDG:n viikkokisat 2026 / Yksilökilpailut → 24.5.2026, Sorkki
+Etelä-Karjala, Lappeenranta	24/05/2026 12:00	Viikoittain	Sorkki frisbeegolfrata (LPR) → Sorkki (15)	0	0 1-779 780-859 860-909 910+	Pakollinen pelaajakokous 11.40 kopin luona! / LUE INFOTEKSTI TARKASTI! / TD: TBA	Päättyy: 24/05/2026 10:00
+MäVi Frisbeegolf - Viikkokisat 2026 → 5. Kierros
+Etelä-Savo, Mäntyharju	24/05/2026 17:00	Viikoittain	Pappilan frisbeegolfpuisto → 2020 (par 67)	0		Osallistumismaksu jäseniltä 3€,muut 5€. Ilmoittautuminen päättyy kilpailupäivänä klo 16.45. Kilpailun aikana alkoholin nauttiminen kielletty. Vapaaehtoinen holaripotti 1€.	Päättyy: 24/05/2026 16:45
+Outokummun viikkokisat 2026 → Outokummun viikkokisat - 24.5.2026 - Fribaviikko - frisbeegolfia koko Suomelle
+Pohjois-Karjala, Outokumpu	24/05/2026 14:00	Viikoittain	Vanhan Kaivoksen frisbeegolfrata → 18 - Par 59	0	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Kaikille avoimet ja ilmaiset viikkokisat Outokummussa. Kierros alkaa klo 14:00. Katso lisätiedot ja säännöt sarjasivulta (oheisen valikon ylin rivi).	Alku: 18/05/2026 00:00 Päättyy: 24/05/2026 13:15
+Multi Ace DG. Multicity pariviikkokisa. → 30. Kierros
+Keski-Suomi, Multia	24/05/2026 18:00	Parikilpailu Viikoittain	Multia DGP → Multia 22 DGP 2.0	0	MPO MRYA1750 EP	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa Su Klo 18:00	Alku: 17/05/2026 09:00 Päättyy: 24/05/2026 17:00
+RFG viikkokisat → Parikisat
+Kanta-Häme, Riihimäki	24/05/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	1200-1820 Alle 1200 tai yli 1820	Lukekaa ohjeet maksamisesta. Holaripotti on XX €.	Alku: 17/05/2026 Päättyy: 24/05/2026 15:00
+Raseborgs Energi - Veckotävling / Viikkokisa - VÄSTERBY - B (PRO) → 24.05
+Uusimaa, Raasepori	24/05/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - B (PRO)	0	PRO AM		Päättyy: 24/05/2026 17:30
+#==========
+#==========
+#==========
+#vk22
+#==========
+#==========
+#==========
+WDG Mimmiliiga 2026 → Savitaipale 25.5.
+Etelä-Karjala, Savitaipale	25/05/2026 18:00	Viikoittain	Savitaipale 12 (2022)	1	Rating: alle 730 Rating: 730 tai yli	4. Osakilpailu / Tavataan liikuntatalon edessä parkkipaikalla 17:45 / TD: Satu Kärnä 040 7015263	Alku: 13/04/2026 18:00 Päättyy: 25/05/2026 17:45
+Nousten Frisbeegolf ry - Viikkokisat 2026 → Mikko Rantanen (BEST SHOT - Parikisa)
+Varsinais-Suomi, Nousiainen	25/05/2026 18:30	Parikilpailu Viikoittain	Mikko Rantasen frisbeegolfrata	1	Paremman pelaajan rating 930 tai enemmän Paremman pelaajan rating alle 930 Sekaparit	Lue info! Osallistuminen 15€, jos parissa nousten jäsen, maksu on 12€. Maksut mobilepay 16009 tai käteisellä tasaraha. Maksut ja paikalla oltava 18:00 alkavassa pelaajakokouksessa!	Päättyy: 21/05/2026 17:30
 Länsi-Uusimaan FribbeTour 2026 → Karjaa: Maasilta
-# ============================================================
-# vk22
-# ============================================================
-Uusimaa, Hanko	25/05/2026 18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	RPA RAD RAE RAF		Alku: 12/05/2026 00:00 Päättyy: 25/05/2026 17:00
+Uusimaa, Raasepori	25/05/2026 18:00	L - PDGA	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	RPA RAD RAE RAF		Alku: 12/05/2026 00:00 Päättyy: 25/05/2026 17:00
+Halsuan viikkokilpailu → Halsua 2026 #6
+Keski-Pohjanmaa, Halsua	25/05/2026 18:00	Viikoittain	Halsua DiscGolfPark → Halsua DGP Par-63	0		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay 82031, osallistumismaksu 4€ (+1€ holaripotti).	Alku: 22/05/2026 18:00 Päättyy: 25/05/2026 17:20
+Joen Liitokiekon junnufribailut sponsored by OP Pohjois-Karjala → JLK junnufribailut 4 Niittylahti
+Pohjois-Karjala, Joensuu	25/05/2026 17:30		Niittylahden frisbeegolfrata → 12 - Par 36 (2023)	0	MJ18 MJ15 MJ12	Matalan kynnyksen frisbeekisat junioreille! Katso lisätiedot junnufriban pääsivulta (oheisen valikon ylin rivi).	Alku: 19/05/2026 12:00 Päättyy: 25/05/2026 17:30
+Limingan viikkokisat 2026 → Limingan viikkokisat #4
+Pohjois-Pohjanmaa, Liminka	25/05/2026 18:00	Viikoittain	Rantakylä DiscGolfPark → DGP (2022)	0			Alku: 18/05/2026 20:00 Päättyy: 25/05/2026 17:45
 Karkkilan viikkokilpailut 2026 → Parikisa 25.5
 Uusimaa, Karkkila	25/05/2026 18:00	Parikilpailu Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	0	Avoin Avoin+junnu/nainen (<=15v)	Info kilpailun pääsivun alareunassa. 36 paria mahtuu mukaan. 10e/pari (junnut ilmaiseksi). Holaripotissa 110e+.	Alku: 18/05/2026 21:00 Päättyy: 25/05/2026 17:00
+TFS Viikkokilpailut 2026 → #4 Sentteri
+Pirkanmaa, Tampere	25/05/2026 18:00	Viikoittain	Tampere Disc Golf Center → 2021 - Gold (27 väylää)	0	RPA RAH RAD RAE RAF RAG Ei Ratinkia		
 Nummenmäki PDGA-Liiga → Liiga #4
 Uusimaa, Hyvinkää	25/05/2026 18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG		
+Ahtialan/kariston Viikkokilpailut → #3 Karisto
+Päijät-Häme, Lahti	25/05/2026 18:00	Viikoittain	Karisto DGP 2x9 viikkokisalayout	0	0 rating Alle 900 900-950 951+		Alku: 18/05/2026 09:00 Päättyy: 25/05/2026 17:15
+Lemmenlaakson viikkokisat → JFG viikkokilpailut → Lemmenlaakso 25.5.2026
+Uusimaa, Järvenpää	25/05/2026 18:00	Viikoittain	Lemmenlaakson frisbeegolfrata → Main Layout (2026)	0	Pro Semipro Harraste	JFG:n viikkokisat Kesälayoutilla. Jäseniltä kisamaksu 2€ ja muilta 4€. Maksu vain Mobilepaylla. TD: Ossi puh. 0456131665. Tervetuloa kisaamaan! (HUOM! Ei kisamaksua TD:n numeroon. Kisainfosta löytyy seuran Mobilepay numero.)	Alku: 18/05/2026 12:00 Päättyy: 25/05/2026 17:00
+KvLL parigolfit 2026
+Finland	25/05/2026 - 30/09/2026	Parikilpailu		0	1750 ja yli alle 1750	Valitse kilpailu vetovalikosta.	
+KvLL parigolfit 2026 → 1. KvLL Parigolf Käyrälampi
+Kymenlaakso, Kouvola	25/05/2026 18:00	Parikilpailu	Käyrälampi DGP → 2023	0	1750 ja yli alle 1750	Katso tarkemmat ohjeet rekisteröitysmissivulta. Kilpailun TD:nä *lisää nimi*. Pelimuotona *.	Alku: 18/05/2026 21:00 Päättyy: 25/05/2026 17:20
+KDG Viikkokilpailut → KDG Viikkokilpailu 4/12
+Finland	26/05/2026 17:30		Taalintehtaan DGP → Taalintehtaan DGP	22			
+Ehtoorundi tour -26 → Kiipula
+Kanta-Häme, Janakkala	26/05/2026 18:00	C - PDGA	Kiipulasäätiön frisbeegolfrata → 22 -par 70 (2023)	16	RPA RAH RAD RAE RAF RAG		Alku: 26/04/2026 18:00 Päättyy: 25/05/2026 12:00
+Tarinalaakson Viikkokisat → 26.5 Old Course
+Pohjois-Savo, Siilinjärvi	26/05/2026 18:00	Viikoittain	Tarinalaakso Old Course → 19 väylää - Par 61	2	Avoin yli 900 Avoin alle 900 Naiset Juniorit	Vuorelan Veikkojen järjestämät kaikille avoimet ja ilmaiset viikkokisat Tarinalaakso Disc Golfin kentillä Siilinjärvellä.	Ilmoittautuminen avoinna
+Partävlingar → FDV weeklies partävlingar → Vörå weeklies partävlingar 2026 → Vörå weeklies partävlingar - Vörå - Alternate shot
+Pohjanmaa, Vöyri	26/05/2026 18:00	Parikilpailu	Vörå DiscgolfPark → Vörå DGP 2.0	0	MPO MA1		Alku: 20/05/2026 14:34 Päättyy: 26/05/2026 17:40
+Joen Liitokiekon viikkokisat 2026 (Kesä-sarja) → Joen Liitokiekon viikkokisat - 26.5.2026
+Pohjois-Karjala, Liperi	26/05/2026 18:00	Viikoittain	Liperin frisbeegolfrata → 18 - Par 57 (2022)	0	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Joen Liitokiekon Kesä-sarjan viikkokisoja pelataan tiistai-iltaisin. Kilpailut ovat kaikille avoimet ja ilmaiset. Tervetuloa pelaamaan! Kts. säännöt, yms. oheiselta INFO-sivulta.	Alku: 20/05/2026 00:00 Päättyy: 26/05/2026 17:15
+VIIKKOKISAT 2026 → INKOO VIIKKOKISAT/ SÄHKÖTYÖ KAARAKAINEN
+Uusimaa, Inkoo	26/05/2026 18:00	Viikoittain	Inkoo discgolf → Inkoo discgolf 2021	0	Pro 0 ja 930+ semi 860-929 Harraste 1-859		Alku: 06/05/2026 18:15 Päättyy: 26/05/2026 16:00
 Karjaan parikisa 2026 → 7. Kierros
 Uusimaa, Raasepori	26/05/2026 18:00	Parikilpailu Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Sekapari Rating yht. alle 1800 Juniors	Pelimuoto: Bestshot. Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Holaripotti 2€/pari (pisin holari voittaa - vain käteinen).	Päättyy: 26/05/2026 16:30
+Porvoon viikkokilpailut 2026 → #8 Hornhattula
+Finland	26/05/2026 18:00	Viikoittain		0	0-750 751-810 811-870 871-930 931< 235		
+Frisbeekotkien viikkokilpailut 2026 → #6 - Petäjäsuo Eagle (AM) 26.5.
+Kymenlaakso, Kotka	26/05/2026 18:00	Viikoittain	Petäjäsuo DiscGolfPark → Eagle(AM)	0	911+ 860-910 800-859 1-799 Ei Metrix ratingia Naisten avoin Juniorit	Frisbeekotkien viikkokisojen avajaiset! Lue kisainfo ylätason Frisbeekotkat viikkokilpailut 2026 tiedoista.	Alku: 20/05/2026 12:00 Päättyy: 26/05/2026 16:30
 Lohi viikkokisat → 7. Kierros
 Uusimaa, Hanko	26/05/2026 18:00		Lillmärsanin metsä → Hanko - Taka-lohi 2019	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 20/04/2026 11:22 Päättyy: 26/05/2026 17:30
+DG Rollers viikkokilpailu 2026 → DG Rollers viikkokilpailu 6
+Pirkanmaa, Mänttä-Vilppula	26/05/2026 17:30	Viikoittain	Parkkivuori Discgolfpark → 2023	0	Rating yli 900 Rating 850-899 Alle 850 Noviisit	TD Lucas Le Nguyen	Alku: 20/04/2026 18:14 Päättyy: 26/05/2026 16:30
+KaVo Disc Golf Viikkokisat 2026 → Kisa #6 (Ranta-Koivisto) TD Kimmo
+Pirkanmaa, Kangasala	26/05/2026 18:00	Viikoittain	Ranta-Koivisto DiscGolfPark → DGP-9	0	Avoin		Alku: 20/05/2026 12:00 Päättyy: 26/05/2026 17:00
 Paloheinän viikkisliiga 1/2026 → Osakilpailu 6/8
-Uusimaa, Helsinki	26/05/2026 07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Osakilpailu 6/8
+Uusimaa, Helsinki	26/05/2026 07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Osakilpailu 6/8	
+Heinolan viikko- ja kuukausikilpailut 2026 → Kippasuo Pro Short
+Päijät-Häme, Heinola	26/05/2026 18:00	Viikoittain	KIPPIS Pro DiscGolfPark → Short (2026)	0	Avoin Alle 950 Alle 900 Alle 850 0-rating	LUE INFO HUOLELLA!! Heinolan kauden 2026 viikkokilpailut, jäsenet 3€, muut 4€. Vapaaehtoinen holaripotti 1€/pelaaja, potissa xx€! Liity jäseneksi www.ldg.fi/liity/ Kioski palvelee tapahtuman ajan!	Alku: 20/05/2026 10:00 Päättyy: 26/05/2026 17:30
+Rauman Frisbeen Viikkokisat 2026 → 6. Kierros Uotila
+Satakunta, Rauma	26/05/2026 18:00	Viikoittain	Uotilan frisbeegolfrata → 18- Par 59 (2020)	0	Avoin(kaikki) Edistyneet Amatöörit ( 861-925 ) Amatöörit (1-860 )	Maksu ja ilmottautuminen viimeistään 17.40 parkkipaikalla kisa alkaa 18.00. Hinta 3€ jäsen/ 5€ muilta. Holaripotissa €.CTP väylä # mitta ja kansio korin päällä.	Alku: 19/05/2026 21:00 Päättyy: 26/05/2026 17:30
+WCDG viikkokisat 2026 - Bosund → Parikisa 1
+Österbotten, Larsmo	26/05/2026 18:00	Parikilpailu Viikoittain	Bosund Frisbeegolf → Bosund Frisbeegolf	0	Avoin Yhteisrating alle 1750	Tervetuloa mukaan West Coast Disc Golfers ry:n parikisoihin! Etsi itsellesi pari ja ilmoittautukaa mukaan. Lisätiedot löydät alhaalta.	Alku: 19/05/2026 18:00 Päättyy: 26/05/2026 17:00
+Julkujärven PDGA-Liiga → 3. Osakilpailu 26.5.2026
+Pirkanmaa, Ylöjärvi	26/05/2026 18:00	L - PDGA Viikoittain	Julkujärvi DiscGolfPark → PRO 18 - Par 63 - 2024	0	RPA RAD RAE RAF		Alku: 20/05/2026 18:00 Päättyy: 26/05/2026 15:00
+Linnan Mando DG kesän 2026 viikkokisat → PARIKISA Harjumaja 26.5.
+Etelä-Savo, Savonlinna	26/05/2026 18:00	Parikilpailu Viikoittain	Harjumajan Frisbeegolfrata → 18 (2014)	0	Avoin Amatööri	Parikisa, pelimuotona BEST-SHOT. HUOM! Katso alta infon lopusta parikisan ohjeistus!	Alku: 19/05/2026 12:00 Päättyy: 26/05/2026 17:15
+Nastola Woodpeckers Viikkokilpailut Rakokivi DG → Nastola Woodpeckers Viikkokilpailut Rakokivi DG 26.5.2026
+Päijät-Häme, Lahti	26/05/2026 18:00	Viikoittain	Rakokivi DG → Rakokivi Par57 2026	0	-849 850-899 900-939 940 ja yli 0 rating		Alku: 14/05/2026 20:34 Päättyy: 26/05/2026 17:45
+Eläkeliiton Keski-Suomen piirimestaruuskisa
+Finland	27/05/2026 10:00		Keurusselkä ELkisa	13	Miehet yli 70 Miehet alle 70 Naiset yli 70 Naiset alle 70	Pelataan kaksi kierrosta 10-väyläistä muokattua rataa	Alku: 01/04/2026 18:00 Päättyy: 13/05/2026 18:00
 Sibbe Liiga #1 → 3/6 Musta
-Uusimaa, Sipoo	27/05/2026 17:30	L - PDGA	Sibbe Disc Golf → Black 2025	0	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 20/05/2026 21:00 Päättyy: 27/05/2026 16:00
-Mäntsälän viikkokisat 2026 → MegaMäny
-Uusimaa, Mäntsälä	27/05/2026 18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → MegaMäny 2021	0	0-rating Juniorit Rating 1-850 Rating 851-909 Rating 910 tai yli	Mäntsälän viikkokisat keskiviikkoisin klo 18. Lue tarkemmat infot rekisteröitymissivulta.	Alku: 20/05/2026 21:00 Päättyy: 27/05/2026 17:00
-Karjaan viikkokilpailut 2026 → 7. Kierros
-Uusimaa, Raasepori	28/05/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 28/05/2026 16:30
-Ahven viikkokilpailu → 7. Kierros
-Uusimaa, Hanko	28/05/2026 18:00		Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 15/04/2026 18:45 Päättyy: 28/05/2026 17:30
-Veikkolan viikkokisat 2026 → Veikkolan viikkokisat 29.5.2026
-Uusimaa, Kirkkonummi	29/05/2026 18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	VDGC järjestää viikkokisat. Kisamaksut: MobilePay-numeroon 28881 – käteismaksua ei ole. Jäsenet 2€, muut 4€ – PayOut 50% (30-15-5). Junnut ilmaiseksi ilman palkintoja. Lisäksi vapaaehtoinen 1€ holaripotti.	Alku: 23/05/2026 10:00 Päättyy: 29/05/2026 17:00
-Amatöörien SM-karsinnat Presented by Powergrip → #3 Lemmenlaakso, Järvenpää
-Uusimaa, Järvenpää	30/05/2026 11:22	C - PDGA	Lemmenlaakson frisbeegolfrata → Lemmenlaakso 05/2023	131	MA1 FA1 MA40 FA40 MA50 FA50 MA60 FA60	Amatöörien SM-karsintakiertueen osakilpailu Lemmenlaaksossa, Järvenpäässä.	Alku: 30/03/2026 19:00 Päättyy: 26/04/2026 23:00
-NBDG Amateurs™ Oittaa
-Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	33	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Oittaan Kalliometsässä, Espoossa.	Alku: 31/03/2026 19:00 Päättyy: 27/05/2026 23:00
-# ============================================================
-# varsinais-suomi
-# ============================================================
-# vk20
-# ============================================================
-PFGS Viikkokilpailut kesä 2026 → Parikisa #1
-Varsinais-Suomi, Paimio	11/05/2026 18:00	Parikilpailu	Paimio DGP [Paimion Frisbeegolfseura] → Viikkokisat Paimio 18	5	Jono Parin paremman rating 1-900 Parin paremman rating 900+ tai toinen 0 Sekaparit		Alku: 05/05/2026 08:00 Päättyy: 11/05/2026 16:00
-Laitilan viikkokisat → 6. Kierros
-Varsinais-Suomi, Laitila	11/05/2026 18:00	Viikoittain	Laitilan frisbeegolfrata → Sininen 2026 - 24 väylää	4	950+ 900+ 850+ 800+ Alle 800 0 rating		Alku: 01/04/2026 12:00 Päättyy: 11/05/2026 17:00
-FOREN KESÄ 2026 → FOREN KESÄ #2
-Varsinais-Suomi, Turku	12/05/2026 18:00	Viikoittain	Luolavuoren Frisbeegolfpuisto → Pro 2025 (Sininen)	13	RATING YLI 960 RATING 921-960 RATING 871-920 RATING 811-870 RATING 810 TAI ALLE 0 RATING		Alku: 06/05/2026 13:40 Päättyy: 12/05/2026 17:15
-KDG Viikkokilpailu 1/12 → KDG 2/12
-Varsinais-Suomi, Kemiönsaari	12/05/2026 17:30		Amos DiscGolfPark → 18 - Par 57	0	
-7k - Viikkokisat 2026 → Lausteen viikkokilpailu #2
-Varsinais-Suomi, Turku	13/05/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Tommis Special	1	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Alku: 11/05/2026 12:00 Päättyy: 13/05/2026 17:15
-KaPa Disc Golf viikkokisat → 2. Kierros
-Varsinais-Suomi, Vehmaa	13/05/2026 18:30		Vehmaa DiscGolfPark → DGP-18 (2014)	0	1-799 800-849 850-899 950+ ja 0 Juniorit alle 18-v 900-949	Osallistumismaksu 5€. Juniorit 0€ (ei luokkapalkintoja). Osallistumismaksu sisältää osallistumisen holaripottiin (1€/pelaaja) ja CTP-kisaan (väylä x). Holaripotissa pohjalla xx€. Maksu mobilepaylla numeroon: 7641SY	Päättyy: 13/05/2026 17:30
-Frisbeegolfseura 7k - Kilpailut 2026 → Ace Hela Race
-Varsinais-Suomi, Turku	14/05/2026 12:00		Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	8	Metrix-rating yli 940 Metrix-rating alle 940 Metrix-rating alle 900 Metrix-rating alle 860 Metrix-rating alle 820	Jahdataan helatorstaina Ässiä erikoisradalla.	Alku: 05/05/2026 12:00 Päättyy: 14/05/2026 11:00
-# ============================================================
-# vk21
-# ============================================================
-Frisbeegolfseura 7k - Kilpailut 2026 → Lausteen Joukkuekisa #1
-Varsinais-Suomi, Turku	18/05/2026 18:00	Parikilpailu Viikoittain	Lausteen frisbeegolfpuisto → Tulos-layout, 24 väylää, 2024-	5	Rating ka >930 Rating ka <930 0-rating mukana	Kootkaa kolmen hengen joukkue, päättäkää pelipaikat ja tulkaa haastamaan Laustetta rennossa maanantai-illan mittelössä!	Alku: 28/04/2026 18:00 Päättyy: 18/05/2026 17:30
-KaPa Disc Golf viikkokisat → 3. Kierros
-Varsinais-Suomi, Uusikaupunki	20/05/2026 18:30		Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	1-799 800-849 850-899 950+ ja 0 Juniorit alle 18-v 900-949	Osallistumismaksu 5€. Juniorit 0€ (ei luokkapalkintoja). Osallistumismaksu sisältää osallistumisen holaripottiin (1€/pelaaja) ja CTP-kisaan (väylä x). Holaripotissa pohjalla xx€. Maksu mobilepaylla numeroon: 7641SY	Päättyy: 20/05/2026 17:30
-7k - Viikkokisat 2026 → Lausteen viikkokilpailu #3
-Varsinais-Suomi, Turku	20/05/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	0	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Alku: 18/05/2026 12:00 Päättyy: 20/05/2026 17:00
-Scouting Tour by Seppo Paju, powered by Discraft → Scouting Tour by Seppo Paju - Yliskulma DGC, Finland
-Varsinais-Suomi, Lieto	21/05/2026 16:30		Yliskulma FGR → Alkuperäinen2021	86	Avoin Naiset Masterit Juniorit	Lue info! Info in English below Finnish.	Alku: 20/04/2026 21:00 Päättyy: 19/05/2026 22:00
-NBDG Extra™ Laitila
-Varsinais-Suomi, Laitila	23/05/2026 11:00	C - PDGA	Laitilan frisbeegolfrata → Keltainen 2026 - 18 väylää	20	RPA RAD RAE RAF RAG	Yhden kierroksen PDGA-kilpailu Laitilan frisbeegolfradalla.	Alku: 16/04/2026 19:00 Päättyy: 20/05/2026 23:00
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa
-Varsinais-Suomi, Uusikaupunki	23/05/2026 10:00		Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit	Joukkuekisa, 4 hengen joukkueilla, 3 x 12 väylää. Osallistumismaksu 20€/joukkue. Maksu mobilepaylla numeroon: 7641SY Viestiksi: Joukkuekisa.	
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 1. Kierros, 1. pari - Alternate
-Varsinais-Suomi, Uusikaupunki	23/05/2026 10:00	Parikilpailu	Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit		
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 1. kierros, 2. pari - Alternate
-Varsinais-Suomi, Uusikaupunki	23/05/2026 10:01	Parikilpailu	Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit		
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 2. kierros, 1. pari - Best Shot
-Varsinais-Suomi, Uusikaupunki	23/05/2026 12:00	Parikilpailu	Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit		
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 2. kierros, 2. pari - Best Shot
-Varsinais-Suomi, Uusikaupunki	23/05/2026 12:01	Parikilpailu	Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit		
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 3. kierros, 1. pari - Tough Shot
-Varsinais-Suomi, Uusikaupunki	23/05/2026 15:00		Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit		
-KaPa Disc Golf pari- ja joukkuekisat → Teamwork - Joukkuekisa → 3. kierros, 2. pari - Tough Shot
-Varsinais-Suomi, Uusikaupunki	23/05/2026 15:01		Kalannin Frisbeegolfrata by KaPa-65 → 2025	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit	
-# ============================================================
-# vk22
-# ============================================================
-KaPa Disc Golf viikkokisat → 4. Kierros
-Varsinais-Suomi, Uusikaupunki	27/05/2026 18:30		KaPa DG Pop-Up Race → Kalannin Urheilukenttä	0	1-799 800-849 850-899 950+ ja 0 Juniorit alle 18-v 900-949	POP-UP RATA! Osallistumismaksu 5€. Juniorit 0€ (ei luokkapalkintoja). Osallistumismaksu sisältää osallistumisen holaripottiin (1€/pelaaja) ja CTP-kisaan (väylä x). Holaripotissa pohjalla xx€. Maksu mobilepaylla numeroon: 7641SY	Päättyy: 20/05/2026 17:30
-7k - Viikkokisat 2026 → Lausteen viikkokilpailu #4
-Varsinais-Suomi, Turku	27/05/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	0	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Ilmoittautuminen avoinna
-Teemu Lampaisen fundraiser - 2 kierroksen parikisa
-Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teemun fundraiser → Luolavuori Teemun fundraiser (Blue)	12	Rating yhteensä yli 1800 Rating yhteensä alle 1800 Sekaparit	Lue info sivun alareunasta.	Alku: 30/04/2026 10:00 Päättyy: 30/05/2026 23:00
-# ============================================================
-# kanta-häme
-# ============================================================
-# vk20
-# ============================================================
-Pirtin kentän maanantaiviikkarit → #1 - 11.5.
-Kanta-Häme, Hämeenlinna	11/05/2026 18:00	Viikoittain	Pirtin kentän Frisbeegolfrata → 18-väylää (2026)	17	Avoin Metrix rating 1-914 Ei ratingia	Katso info alempaa. Holaripotti 99€.	Alku: 04/05/2026 11:00 Päättyy: 11/05/2026 16:00
-Ehtoorundi tour -26 → Hattula
-Kanta-Häme, Hattula	12/05/2026 18:00	C - PDGA	Hattula DiscGolfPark → DGP-18 (2014)	45	RPA RAH RAD RAE RAF RAG		Alku: 12/04/2026 18:00 Päättyy: 11/05/2026 18:00
-ReTee viikkokisat 2026 → Lastujärven frisbeegolfrata
-Kanta-Häme, Janakkala	12/05/2026 18:00	Viikoittain	Lastujärvi, Turenki | ReTee ry	3	Ei ratingia Amatöörit Semipro Avoin	MAKSAMATTOMAT POISTETAAN KLO 16 JÄLKEEN. Holaripotti on XX €.	Alku: 08/05/2026 21:00 Päättyy: 12/05/2026 15:00
-FBG Forssa yksilökisat 2026 → FBG Forssa yksilökisat 2026 - 5. Jokioinen
-Kanta-Häme, Jokioinen	13/05/2026 18:00	Viikoittain	Jokioinen DiscGolfPark → Jokioinen DGP	9	Metrix rating +920 Metrix rating 850-919 Metrix rating -849 Juniorit U18 Juniorit U15	CTP väylällä #4	Alku: 06/05/2026 20:39 Päättyy: 13/05/2026 16:00
-Viisarin Discmaniastore.eu viikkokisat → 13.05.26
-Kanta-Häme, Hämeenlinna	13/05/2026 18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	4	Avoin MAX930 MAX850		Alku: 07/05/2026 18:00 Päättyy: 13/05/2026 15:00
-ReTee viikkoparikisat 2026 → Lastujärven frisbeegolfrata
-Kanta-Häme, Janakkala	15/05/2026 18:00	Parikilpailu Viikoittain	Lastujärvi, Turenki | ReTee ry	0	Amatöörit Avoin	MAKSAMATTOMAT POISTETAAN KLO 16 JÄLKEEN. Holaripotti on XX €.	Alku: 12/05/2026 21:00 Päättyy: 15/05/2026 15:00
-RFG viikkokisat → Yksilökisat
-Kanta-Häme, Riihimäki	17/05/2026 16:00	Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	Ei ratingia Alle 860 860-930 Yli 930	Lukekaa ohjeet maksamisesta. Holaripotti on 50 €.	Alku: 01/05/2026 Päättyy: 03/05/2026 15:00
-# ============================================================
-# vk21
-# ============================================================
-Viisarin Discmaniastore.eu viikkokisat → 20.5.26
-Kanta-Häme, Hämeenlinna	20/05/2026 18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	0	Avoin MAX930 MAX850		Alku: 14/05/2026 18:00 Päättyy: 20/05/2026 15:00
-# ============================================================
-# vk22
-# ============================================================
-Ehtoorundi tour -26 → Kiipula
-Kanta-Häme, Janakkala	26/05/2026 18:00	C - PDGA	Kiipulasäätiön frisbeegolfrata → 22 -par 70 (2023)	10	RPA RAH RAD RAE RAF RAG		Alku: 26/04/2026 18:00 Päättyy: 25/05/2026 12:00
+Uusimaa, Sipoo	27/05/2026 17:30	L - PDGA	Sibbe Disc Golf → Black 2026	0	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 20/05/2026 21:00 Päättyy: 27/05/2026 16:00
+JokiLiiga 1/2026 → JokiLiiga 4/6 - 27.5.2026
+Pohjois-Karjala, Kontiolahti	27/05/2026 18:00	L - PDGA	Kontiorannan frisbeegolfrata → Tournament-18 - Par 64 (2025)	0	MPO FPO MP40 FP40 MP50 FP50 MA3 FA3 MJ15 FJ15	JLK:n järjestämää JokiLiigaa (PDGA L-tier) pelataan kuutena keskiviikkona peräkkäin 6.5. alkaen. Kts. ohjeet/säännöt sarjasivulta (oheisen valikon ylin rivi). Avoin kaikille! Tervetuloa!	Alku: 21/05/2026 12:00 Päättyy: 27/05/2026 12:00
+Honkamajan Viikkokisat 2026 → Honkamajan viikkokisa 3
+Pohjois-Pohjanmaa, Oulainen	27/05/2026 18:00	Viikoittain	Honkamaja	0	Avoin Metrix rating alle 850 Maksuton luokka Naiset	Haapaveden fribeegolf-jaoston järjestämät matalan kynnyksen viikkokilpailut. Osallistumismaksu 4€, DGCH:n jäsenet 2€. Myös maksuton sarja! MobilePay maksu myös mahdollinen, 0259PP. 	Alku: 13/05/2026 18:00 Päättyy: 27/05/2026 17:30
+WDG:n viikkokisat 2026 / Parikisat → 27.5.2026, Myllymäki A-layout / Max2 Best Shot
+Etelä-Karjala, Lappeenranta	27/05/2026 18:00	Parikilpailu Viikoittain	Myllymäen frisbeegolfrata (LPR) → A-layout	0	2-1749 1750+	Pakollinen pelaajakokous 17.40 kopin luona! / LUE INFOTEKSTI TARKASTI! / TD: TBA	Päättyy: 27/05/2026 16:00
+Ankkapurhan Viikkokilpailut 2026 → #5 Viikkokilpailu 2026
+Kymenlaakso, Kouvola	27/05/2026 18:00	Viikoittain	Ankkapurha DiscGolfPark 2022 → 1	0	Metrix rating 911 tai yli Metrix rating 910 - 881 Metrix rating 880 - 851 Metrix rating 850 - 801 Metrix rating 800 - 751 Metrix rating 750 tai alle Ei Metrix ratingia (Maksuton)		Alku: 20/05/2026 19:00 Päättyy: 27/05/2026 17:30
 Viisarin Discmaniastore.eu viikkokisat → 27.05.26
 Kanta-Häme, Hämeenlinna	27/05/2026 18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	0	Avoin MAX930 MAX850		Alku: 21/05/2026 18:00 Päättyy: 27/05/2026 15:00
+Pahkalanniemen Viikkokisat → Pahkalanniemen Viikkokisat #3
+Pirkanmaa, Parkano	27/05/2026 18:00		Pahkalanniemen Frisbeegolfrata	0	Ammattilaiset (Avoin) Amatöörit (Metrix-rating < 900) Noviisit (Metrix-rating < 850) Juniorit (< 18v) Tulokkaat (Ei Metrix-ratingia)	Kaksi kierrosta Pahkalassa / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	Päättyy: 27/05/2026 17:50
+Pahkalanniemen Viikkokisat → Pahkalanniemen Viikkokisat #3 → 1. kierros
+Pirkanmaa, Parkano	27/05/2026 18:00		Pahkalanniemen Frisbeegolfrata	0	Ammattilaiset (Avoin) Amatöörit (Metrix-rating < 900) Noviisit (Metrix-rating < 850) Juniorit (< 18v) Tulokkaat (Ei Metrix-ratingia)		
+Pahkalanniemen Viikkokisat → Pahkalanniemen Viikkokisat #3 → 2. kierros
+Pirkanmaa, Parkano	27/05/2026 19:00		Pahkalanniemen Frisbeegolfrata	0	Ammattilaiset (Avoin) Amatöörit (Metrix-rating < 900) Noviisit (Metrix-rating < 850) Juniorit (< 18v) Tulokkaat (Ei Metrix-ratingia)		
+Mukkulan viikkokilpailut 2026 → 27.5 Park
+Päijät-Häme, Lahti	27/05/2026 18:00	Viikoittain	Mukkula DiscGolfPark → Mukkula Forest 2026	0		Lahden Frisbee Club ry:n järjestämät matalan kynnyksen viikkokilpailut mukkulan radoilla. Kilpailun TD:nä toimii	Päättyy: 27/05/2026 17:15
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #4
+Varsinais-Suomi, Turku	27/05/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	0	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Ilmoittautuminen avoinna
+Mäntsälän viikkokisat 2026 → MegaMäny
+Uusimaa, Mäntsälä	27/05/2026 18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → MegaMäny 2021	0	0-rating Juniorit Rating 1-850 Rating 851-909 Rating 910 tai yli	Mäntsälän viikkokisat keskiviikkoisin klo 18. Lue tarkemmat infot rekisteröitymissivulta.	Alku: 20/05/2026 21:00 Päättyy: 27/05/2026 17:00
+Multi Ace DG. Keuruun viivel viikkokisat → 8. Kierros
+Keskisuomi, Keuruu	27/05/2026 18:00	Viikoittain	Keuruun Viivel	0	MPO MA2 MA3 MA4	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti, ettei tule yllätyksiä! Kilpailu alkaa KE Klo 18.00	
+Sb-Hem - Veckotävling / Viikkokisa - VÄSTERBY - A (AM) → 27.05
+Uusimaa, Raasepori	27/05/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - A (AM)	0	PRO AM		Päättyy: 27/05/2026 17:30
+KvLL Viikkokisat 2026 - Harjunmäki → 2. Harjunmäen viikkokisa
+Kymenlaakso, Kouvola	27/05/2026 18:00	Viikoittain	Harjunmäki frisbeegolfrata Kouvola, Valkeala → 18 A etutiit (2024)	0	850 - 909 Alle 850 0-rating 910 ja yli	Katso tarkemmat ohjeet rekisteröitymissivulta! Kilpailun TD:nä toimii Aleksi Salakka.	Alku: 20/05/2026 21:00 Päättyy: 27/05/2026 17:20
+Kortekummun Karkelot 1
+Pirkanmaa	28/05/2026 18:00	C - PDGA	Kortekumpu Frisbeegolf (5ob)	4	MPO FPO MP40 FP40 MP50 FP50 MA2 FA2 MA3 FA3 MJ18 FJ18 MA40 FA40 MA50 FA50		Alku: 08/05/2026 12:00 Päättyy: 26/05/2026 18:00
+Nousten Frisbeegolf ry - Viikkokisat 2026 → Valpperi
+Varsinais-Suomi, Nousiainen	28/05/2026 18:30	Viikoittain	Valpperin Frisbeegolfrata	3	Metrix rating 930 tai enemmän Metrix rating alle 930 Metrix rating alle 870 Naiset/Tytöt Masterit 40+	Lue info! Osallistuminen 7€, jäsenet 4€, naiset/tytöt ilmaiseksi. Käteismaksut tasarahalla tai Mobilepay 16009. Paikalla ennen klo 18:00! Jos maksat kilpailusi mobilepaylla, ei tarvitse enää erikseen ilmoittautua TD:lle.	Päättyy: 28/05/2026 17:30
+Karjaan viikkokilpailut 2026 → 7. Kierros
+Uusimaa, Raasepori	28/05/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	1	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 28/05/2026 16:30
+SportClub viikkokisat → Viikkokisa VI
+Pohjois-Karjala, Juuka	28/05/2026 18:00	Viikoittain	Taivaanpankon frisbeegolfrata	0	Naiset N < 18v N<15 M M < 18v M<15 Junnut		Alku: 01/04/2026 09:00 Päättyy: 28/05/2026 17:00
+Suonenjoen viikkokilpailut → Suonenjoen Viikkokilpailut 28.5
+Pohjois-Savo, Suonenjoki	28/05/2026 18:00	Viikoittain	Suonenjoki DiscGolfPark 23-väylää → Kesäleiska2024 pidenettyjä väyliä	0	Avoin 2	Ilmottautuminen päättyy 30min ennen kilpailun alkua. Olethan paikalla VIIMEISTÄÄN 15 min ennen kilpailun alkua jos et ole sinut poistetaan kilpailusta. Lue info alhaalta.	Alku: 05/04/2026 11:22 Päättyy: 28/05/2026 17:30
+Padasjoen viikkokisat 2026 → Parikisat
+Päijät-Häme, Padasjoki	28/05/2026 - 24/09/2026	Parikilpailu	Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	0		Padasjoen 2026 viikkokisojen parikisat	
+Padasjoen viikkokisat 2026 → Parikisat → Viipale 4
+Päijät-Häme, Padasjoki	28/05/2026 18:00	Parikilpailu	Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	0		Parikisana. Pelimuoto Max2 Best Shot. Maksu 10 €/pari	Alku: 22/05/2026 00:00 Päättyy: 28/05/2026 17:50
+IITTI DGP VIIKKOKISAT 23.4-1.10.2026 → DGC Birdie Hunters Iitti 4. Viikkokisat
+Päijät-Häme, Iitti	28/05/2026 18:00	Viikoittain	Iitti DiscGolfPark → 18 - Par 55	0	Rating yli 900 Rating 850-899 Rating 800-849 Rating alle 800 Rating 0	Osallistumismaksu jäsenet 2€, muita 4€... Vapaaehtoinen holaripottimaksu 1€... Maksu käteinen tai Mobilepay #94731	Alku: 21/05/2026 12:00 Päättyy: 28/05/2026 17:30
+Viikkokisat Raahe 2026 → Viikkokisat Raahe - Kraken 28.5.
+Pohjois-Pohjanmaa, Raahe	28/05/2026 17:30	Viikoittain	Kraken - Raahen frisbeegolfpuisto	0	MPO MJ15 FPO	Ilmoittautuminen paikanpäällä viimeistään klo 17.10. TD Niilo	Alku: 21/05/2026 00:00 Päättyy: 28/05/2026 17:00
+Ahven viikkokilpailu → 7. Kierros
+Uusimaa, Hanko	28/05/2026 18:00		Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 15/04/2026 18:45 Päättyy: 28/05/2026 17:30
+WCDG viikkokisat 2026 - Rytikangas → Kisa 1
+Keski-Pohjanmaa, Kokkola	28/05/2026 18:00	Viikoittain	Rytikangas DiscGolfPark	0	Avoin Rating alle 930 Rating alle 880 Rating alle 830 Harraste	Tule mukaan West Coast Disc Golfers ry:n viikkokisoihin! Kaudella 2026 kisataan tiistaisin ja torstaisin vaihtuvilla radoilla – kaikki ovat tervetulleita mukaan, tasosta riippumatta. Lisätiedot löydät alhaalta.	
+Hyzer Hollola Disc Clubin kilpailut 2026 → Viikkokilpailut | Kukonkoivu 28.5.2026
+Päijät-Häme, Hollola	28/05/2026 18:00	Viikoittain	Kukonkoivu, Hollola → Kesä 2025	0	Alle 810 870 - 925 yli 925 810 - 869	TD:nä toimii Riku Hirvonen 0408413638	Alku: 03/05/2026 Päättyy: 28/05/2026 17:30
+Linnan Mando DG kesän 2026 viikkokisat → Tanhuvaara 28.5.
+Etelä-savo, Savonlinna	28/05/2026 18:00	Viikoittain	Tanhuvaaran Frisbeegolfrata	0	Avoin Amatööri Harrastaja	Kaikille avoimet viikkokisat. Osallistumismaksu 3€ mandolaisille, muut 5€. Kierros alkaa klo 18.00. Katso lisätiedot tämän sivun alalaidasta.	Alku: 21/05/2026 12:00 Päättyy: 28/05/2026 17:15
+Multi Ace DG. Multicity viikkokisat → 269. Kierros
+Keski-Suomi, Multia	28/05/2026 21:12	Viikoittain	Multia DGP → Multia 22 DGP 2.0	0	MPO MA4 MA2	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa To Klo 18:00	Alku: 21/05/2026 16:00 Päättyy: 28/05/2026 17:00
+Bsc Viikkokisat 2026 → bsc viikkokisat Liminka
+Pohjois-Pohjanmaa, Liminka	28/05/2026 18:00		Rantakylä DiscGolfPark → DGP (2022)	0		Vain BSC jäsenille	Alku: 12/05/2026 10:25 Päättyy: 28/05/2026 17:00
+Jurva,Kauhajoki, Kurikka, Teuva PARIKISATOUR 2026
+Finland	29/05/2026 - 14/08/2026	Parikilpailu		6	Avoin Amatöörit Metrixrating =<1820 Mestarit=>110v | Junnut(max16v) | Naiset		
+Jurva,Kauhajoki, Kurikka, Teuva PARIKISATOUR 2026 → 1. Osakilpailu Parra
+Etelä-Pohjanmaa, Teuva	29/05/2026 18:00	Parikilpailu	Vapaa-ajankeskus Parran frisbeegolfrata → 18 - Par 57	6	Avoin Amatöörit Metrixrating =<1820 Mestarit=>110v | Junnut(max16v) | Naiset	Ilmoittautuminen paikallaolevaksi viimeistään klo 17:30, kisamaksu 10€ / pari. CTP kisa väylällä #?, tähän vapaaehtoinen osallistuminen 2€ / naamari, 100% payout.	Alku: 02/05/2026 10:49 Päättyy: 29/05/2026 17:30
+Veikkolan viikkokisat 2026 → Veikkolan viikkokisat 29.5.2026
+Uusimaa, Kirkkonummi	29/05/2026 18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	VDGC järjestää viikkokisat. Kisamaksut: MobilePay-numeroon 28881 – käteismaksua ei ole. Jäsenet 2€, muut 4€ – PayOut 50% (30-15-5). Junnut ilmaiseksi ilman palkintoja. Lisäksi vapaaehtoinen 1€ holaripotti.	Alku: 23/05/2026 10:00 Päättyy: 29/05/2026 17:00
+Käenkosken Viikkokisat → Käenkosken Viikkokisat #5
+Pirkanmaa, Parkano	29/05/2026 18:00	Viikoittain	Käenkosken Frisbeegolfrata → Käenkoski Pro	0	Ammattilaiset (Avoin) Amatöörit (alle 900) Noviisit (alle 850) Juniorit (alle 18v) Tulokkaat (Ei ratingia)	Yksi kierros Käenkoskella / Osallistumismaksu 2€ jäseniltä, 4€ muilta / Vapaaehtoinen 1€ holaripotti	Päättyy: 29/05/2026 17:45
+Perhon viikkokilpailu → Perho 2026 #4
+Keski-Pohjanmaa, Perho	29/05/2026 18:00	Viikoittain	Paavonkallio → 2023 19 väylää	0		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay 76624(Lue info), 4€ (+1€ holaripotti)	Alku: 25/05/2026 18:00 Päättyy: 29/05/2026 17:20
+Lemmensillanpuiston kevätliiga 2026 → 8. kilpailu
+Pohjois-Savo, Varkaus	29/05/2026 18:00	Viikoittain	Lemmensillanpuiston frisbeegolfrata → 12 - Par 36 (2013)	0	≥920 919-850 <850	Pelataan perjantaista 10.4. alkaen 8 osakilpailua aina perjantaisin. 4 parasta osakilpailua lasketaan kokonaiskilpailun. Kisamaksu 1€ ja vapaaehtoinen holaripotti 1€	Päättyy: 29/05/2026 17:00
+ReTee viikkoparikisat 2026 → Tervakoski frisbeegolf
+Kanta-Häme, Janakkala	29/05/2026 18:00	Parikilpailu Viikoittain	Tervakoski Frisbeegolf | ReTee ry → 2026	0	Amatöörit Avoin	MAKSAMATTOMAT POISTETAAN KLO 16 JÄLKEEN. Holaripotti on 151 €.	Alku: 26/05/2026 21:00 Päättyy: 29/05/2026 15:00
+Amatöörien SM-karsinnat Presented by Powergrip → #3 Lemmenlaakso, Järvenpää
+Uusimaa, Järvenpää	30/05/2026 11:22	C - PDGA	Lemmenlaakson frisbeegolfrata → Main Layout (2026)	134	MA1 FA1 MA40 FA40 MA50 FA50 MA60 FA60	Amatöörien SM-karsintakiertueen osakilpailu Lemmenlaaksossa, Järvenpäässä.	Alku: 30/03/2026 19:00 Päättyy: 26/04/2026 23:00
+Kesäyön Kuningas XIV: Yksilökisa
+Pohjois-Savo, Siilinjärvi	30/05/2026 20:30		Kunnonpaikka DGP+Vuorelan Frisbeegolfkenttä → Normaali	47	Kuninkaat Kuningattaret Prinssit (Metrix-rating alle 900) Herttuat (Masterit-40) Jaarlit (Masterit-50) Paronit (Masterit-60)	Vuorelan Veikkojen järjestämä kaikille avoi yksilökisa Vuorelan frisbeegolfkentillä Siilinjärvellä.	Ilmoittautuminen avoinna
+Kesäyön Kuningas XIV: Parikisa
+Pohjois-Savo, Siilinjärvi	30/05/2026 15:30	Parikilpailu	Kunnonpaikka DGP+Vuorelan Frisbeegolfkenttä → Normaali	10	Avoin yli 1800 Avoin alle 1800 Masterit Seka Naiset	Vuorelan Veikkojen järjestämä kaikille avoin parikisa Siilinjärvellä Vuorelan frisbeegolfkentillä.	Ilmoittautuminen avoinna
+
+SFL MASTERS TOUR MIKKELI BY DSV NOUTOPISTE
+Etelä-Savo, Mikkeli	30/05/2026 10:58	C - PDGA	Kaihu uusittu 2025	0			
+Viranomaiset Itä-Suomi
+Pohjois-Karjala, Juuka	30/05/2026 10:00	Parikilpailu	Taivaanpankon frisbeegolfrata	0	M<1800 M>1800 M<1000 N<1800 N>1800 N<1000 Sekapari	Klikkaa"OPAS"! Avaa kutsu ja ilmoittautumisohjeet! Kiitos.	Alku: 01/04/2026 10:00 Päättyy: 23/05/2026 16:00
+Viranomaiset Itä-Suomi
+Pohjois-Karjala, Juuka	30/05/2026 14:00		Taivaanpankon frisbeegolfrata	0	M N N >850 N>650 N<650 M>850 M>650 M<650	Klikkaa"OPAS"! Avaa kutsu ja ilmoittautumisohjeet! Kiitos.	Alku: 01/04/2026 10:00 Päättyy: 23/05/2026 16:00
+Vesaniemi Open
+Pirkanmaa, Virrat	31/05/2026 09:30	C - PDGA	Vesaniemi FBG → PRO layout	97	MPO MP40 FPO FP40 MA3 FA3		Alku: 01/03/2026 12:00 Päättyy: 27/05/2026 12:00
+Discooter Tour 2026 → Discooter Tour 2026 - Myllymäki
+Keski-Suomi, Jämsä	31/05/2026 10:00	C - PDGA	Myllymäki Frisbeegolfrata → 18 - Par 60 (2023)	90	MPO FPO MP40 FP40 MP50 FP50 MP60 FP60 MA2 FA2 MA4 FA4 MJ18 FJ18 MJ15 FJ15 MA3 FA3		Alku: 31/03/2026 18:00 Päättyy: 28/05/2026 21:00
+Honkimaa open 2026
+Pohjois-Pohjanmaa, Oulu	31/05/2026 09:00	C - PDGA	Honkimaan frisbeegolfrata → Honkimaan Frisbeegolfrata 21-väyläinen 2020	38	MPO FPO MP40 FP40 MP50 FP50 MJ18 FJ18 MJ15 FJ15 MA2 FA2 MA3 FA3 MA4 FA4	Mukana myös pro luokkia	Alku: 06/04/2026 18:00 Päättyy: 21/05/2026 18:00
+NBDG Amateurs™ Oittaa
+Uusimaa, Espoo	31/05/2026 10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	38	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Oittaan Kalliometsässä, Espoossa.	Alku: 31/03/2026 19:00 Päättyy: 27/05/2026 23:00
 Game of Throws 11
-Kanta-Häme, Riihimäki	31/05/2026 10:00	C - PDGA	Riutta DiscGolfPark → DPG-19 (2024)	14	FPO MPO FJ18 MJ18 FJ15 MJ15 FA2 MA2 FA40 MA40 FA50 MA50	GoT jo 11. kertaa, nyt lisää luokkia	Alku: 15/04/2026 00:00 Päättyy: 30/05/2026 15:00
+Kanta-Häme, Riihimäki	31/05/2026 10:00	C - PDGA	Riutta DiscGolfPark → DPG-19 (2024)	15	FPO MPO FJ18 MJ18 FJ15 MJ15 FA2 MA2 FA40 MA40 FA50 MA50	GoT jo 11. kertaa, nyt lisää luokkia	Alku: 15/04/2026 00:00 Päättyy: 30/05/2026 15:00
+Teemu Lampaisen fundraiser - 2 kierroksen parikisa
+Varsinais-Suomi, Turku	31/05/2026 09:00	Parikilpailu Viikoittain	Luolavuori Teemun fundraiser → Luolavuori Teemun fundraiser (Blue)	13	Rating yhteensä yli 1800 Rating yhteensä alle 1800 Sekaparit	Lue info sivun alareunasta.	Alku: 30/04/2026 10:00 Päättyy: 30/05/2026 23:00
+Kotirata closed
+Pohjois-Pohjanmaa, Oulu	31/05/2026 09:00		Virpiniemi DiscGolfPark → DGP-18 (2024)	10	Pro rating yli 935 Semi Pro rating alle 935 Amateur rating alle 900	Vain BSC jäsenille	Alku: 12/05/2026 10:11 Päättyy: 29/05/2026 23:00
+Ranua cup
+Finland	31/05/2026 - 26/07/2026			1	MA MXJ18 PRO		
+Ranua cup → Ranua Cup 1/3 osakilpailu. Ranua DiscGolfPark
+Lappi, Ranua	31/05/2026 12:00		Ranua DiscGolfPark → Ranua discgolfpark 20 Par 62	1	MA MXJ18 PRO		Alku: 01/05/2026 01:00 Päättyy: 31/05/2026 08:00
+SFL MASTERS TOUR VAMPULA BY TEIPPITUKKU.FI
+Satakunta, Säkylä	31/05/2026 12:59	C - PDGA	Vampulan frisbeegolfrata → Sininen 18 (2023)	0			
+SFL MASTERS TOUR 2026 → SFL MASTERS TOUR VAMPULA (Linkkisivu)
+Finland	31/05/2026 10:00			0			
+WDG:n viikkokisat 2026 / Yksilökilpailut → 31.5.2026, Lyytikkälä
+Lappeenranta , Etelä-Karjala	31/05/2026 12:00	Viikoittain	Lyytikkälän Frisbeegolfrata (LPR) uudistettu 18	0	0 1-779 780-859 860-909 910+	Pakollinen pelaajakokous 11.40 1 teen luona! / LUE INFOTEKSTI TARKASTI! / TD: TBA	Päättyy: 31/05/2026 10:00
+MäVi Frisbeegolf - Kesäcup 2026
+Etelä-Savo, Mäntyharju	31/05/2026 - 26/07/2026		Pappilan frisbeegolfpuisto → 2020 (par 67)	0		Osallistumismaksu jäseniltä 3€,muut 5€. Ilmoittautuminen päättyy kilpailupäivänä klo 16.45. Kilpailun aikana alkoholin nauttiminen kielletty. Vapaaehtoinen holaripotti 1€.	
+MäVi Frisbeegolf - Kesäcup 2026 → 1. Kierros
+Etelä-Savo, Mäntyharju	31/05/2026 17:00		Pappilan frisbeegolfpuisto → 2020 (par 67)	0		Osallistumismaksu jäseniltä 3€,muut 5€. Ilmoittautuminen päättyy kilpailupäivänä klo 16.45. Kilpailun aikana alkoholin nauttiminen kielletty. Vapaaehtoinen holaripotti 1€.	Päättyy: 31/05/2026 16:45
+Outokummun viikkokisat 2026 → Outokummun viikkokisat - 31.5.2026
+Pohjois-Karjala, Outokumpu	31/05/2026 14:00	Viikoittain	Vanhan Kaivoksen frisbeegolfrata → 18 - Par 59	0	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Kaikille avoimet ja ilmaiset viikkokisat Outokummussa. Kierros alkaa klo 14:00. Katso lisätiedot ja säännöt sarjasivulta (oheisen valikon ylin rivi).	Alku: 25/05/2026 00:00 Päättyy: 31/05/2026 13:15
+Heinolan viikko- ja kuukausikilpailut 2026 → KIPPIS.org Kuukausikilpailu Pro Long
+Päijät-Häme, Heinola	31/05/2026 12:00	Viikoittain	KIPPIS Pro DiscGolfPark → Long (2026)	0	Avoin Alle 950 Alle 900 Alle 850 0-rating	LUE INFO HUOLELLA!! Heinolan kauden 2026 KUUKAUSIkilpailut, jäsenet 3€, muut 4€. Vapaaehtoinen holaripotti 1€/pelaaja, potissa xx€! Liity jäseneksi www.ldg.fi/liity/ Kioski palvelee tapahtuman ajan!	Alku: 24/05/2026 10:00 Päättyy: 31/05/2026 11:30
+Multi Ace DG. Multicity pariviikkokisa. → 31. Kierros
+Keski-Suomi, Multia	31/05/2026 18:00	Parikilpailu Viikoittain	Multia DGP → Multia 22 DGP 2.0	0	MPO MRYA1750 EP	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa Su Klo 18:00	Alku: 24/05/2026 09:00 Päättyy: 31/05/2026 17:00
+Raseborgs Energi - Veckotävling / Viikkokisa - VÄSTERBY - B (PRO) → 31.05
+Uusimaa, Raasepori	31/05/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - B (PRO)	0	PRO AM		Päättyy: 31/05/2026 17:30
+RFG viikkokisat → Yksilökisat
+Kanta-Häme, Riihimäki	31/05/2026 16:00	Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	Ei ratingia Alle 860 860-930 Yli 930	Lukekaa ohjeet maksamisesta. Holaripotti on 50 €.	Alku: 01/05/2026 Päättyy: 31/05/2026 15:00
+#==========
+#==========
+#==========
+#vk23
+#==========
+#==========
+#==========
+Karjaan juniors viikkokisa → 3. Kierros
+Uusimaa, Raasepori	01/06/2026 18:00		Karjaan Frisbeegolf Park → Selcast - (etutiit)	3	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille. Pelataan Selcast layout.	Ilmoittautuminen avoinna
+RDG viikkokilpailut 2026 → Viikko 23
+Varsinais-Suomi, Raisio	01/06/2026 18:00	Viikoittain	Hauninen 2023	2	Rating yli 950 Rating 910 - 949 Rating 870 -909 Rating 869 - 820 Rating alle 820 alle 18v 0-rating		Alku: 28/04/2026 19:00 Päättyy: 01/06/2026 17:00
+Eläkeliitto Etelä-Hämeen Frisbeegolfin avoimet piirinmestaruuskilpailut
+Kanta-Häme, Hausjärvi	01/06/2026 09:00		Hausjärvi DiscGolfPark	2	miehet 70- Miehet 70+ Naiset 70- Naiset 70+		Alku: 04/05/2026 09:00 Päättyy: 31/05/2026 18:00
+Leppäveden heittelyt 2026
+Keski-Suomi, Laukaa	01/06/2026 - 05/09/2026		Leppäveden Liikuntapuisto (2022) 18 par 54	0	Avoin Naiset Alle 18-vuotiaat Harrastajat Järjestäjä	Tervetuloa mukaan. Lue aina kilpailun tiedot huolellisesti.	
+Länsi-Uusimaan FribbeTour 2026 → Lande: Blue
+Uusimaa, Raasepori	01/06/2026 18:00	L - PDGA	Lande DiscGolfPark 2.0 → Lande 2.0 blue (ama)	0	RPA RAD RAE RAF		Alku: 19/05/2026 00:00 Päättyy: 01/06/2026 17:00
+Karkkilan viikkokilpailut 2026 → 1.6
+Uusimaa, Karkkila	01/06/2026 18:00	Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	0	Metrix rating alle 870 Metrix rating 870-935 Metrix rating yli 935	Info kilpailun pääsivulla	Alku: 25/05/2026 21:00 Päättyy: 01/06/2026 17:00
+Vetelin viikkokilpailut → Veteli 2026 #6
+Keski-Pohjanmaa, Veteli	01/06/2026 18:00	Viikoittain	Veteli Puukorpi → SVL	0		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay(Lue info) 96776 4€ (+1€ holaripotti).	Alku: 29/05/2026 18:00 Päättyy: 01/06/2026 17:20
+Joen Liitokiekon junnufribailut sponsored by OP Pohjois-Karjala → JLK junnufribailut 5 Noljakka
+Pohjois-Karjala, Joensuu	01/06/2026 17:30		Noljakan frisbeegolfrata → 9 - Par 28 (2023)	0	MJ18 MJ15 MJ12	Matalan kynnyksen frisbeekisat junioreille! Katso lisätiedot junnufriban pääsivulta (oheisen valikon ylin rivi).	Alku: 26/05/2026 12:00 Päättyy: 01/06/2026 17:30
+Limingan viikkokisat 2026 → Limingan viikkokisat #5
+Pohjois-Pohjanmaa, Liminka	01/06/2026 18:00	Viikoittain	Rantakylä DiscGolfPark → DGP (2022)	0			Alku: 25/05/2026 20:00 Päättyy: 01/06/2026 17:45
+TFS Viikkokilpailut 2026 → #5 Vihioja
+Pirkanmaa, Tampere	01/06/2026 18:00	Viikoittain	Vihioja 2x9	0	RPA RAH RAD RAE RAF RAG Ei Ratinkia		
+Nummenmäki PDGA-Liiga → Liiga #5
+Uusimaa, Hyvinkää	01/06/2026 18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG		
+Tampereen seudun ilmaiset juniori viikkokilpailut
+Finland	01/06/2026			0	Gold RPA 970+ Blue RAH <970 White RAD <935 Red RAE <900 Green RAF <850 Purple RAG <800		
+Lemmenlaakson viikkokisat → JFG viikkokilpailut → Lemmenlaakso 1.6.2025
+Uusimaa, Järvenpää	01/06/2026 18:00	Viikoittain	Lemmenlaakson frisbeegolfrata → Main Layout (2026)	0	Pro Semipro Harraste	JFG:n viikkokisat Kesälayoutilla. Jäseniltä kisamaksu 2€ ja muilta 4€. Maksu vain Mobilepaylla. TD: Ossi puh. 0456131665. Tervetuloa kisaamaan! (HUOM! Ei kisamaksua TD:n numeroon. Kisainfosta löytyy seuran Mobilepay numero.)	Alku: 25/05/2026 12:00 Päättyy: 01/06/2026 17:00
+KvLL Viikkokisat 2026 - Käyrälampi DGP → 2. Käyrälammen viikkokisa
+Kymenlaakso, Kouvola	01/06/2026 18:00		Käyrälampi DGP → 2023	0	910 ja yli 850 - 909 Alle 850 0-rating	Katso tarkemmat ohjeet rekisteröitymissivulta! Kilpailun TD:nä toimii *lisää nimi*	Alku: 25/05/2026 21:00 Päättyy: 01/06/2026 17:20
+KDG Viikkokilpailut → KDG Viikkokilpailu 5/12
+Varsinais-Suomi, Kemiönsaari	02/06/2026 17:30		Amos DiscGolfPark → 18 - Par 57	22			
+Tarinalaakson Viikkokisat → 2.6 New Course
+Pohjois-Savo, Siilinjärvi	02/06/2026 18:00	Viikoittain	Tarinalaakso New Course → 19 väylää - Par 63	2	Avoin yli 900 Avoin alle 900 Naiset Juniorit	Vuorelan Veikkojen järjestämät kaikille avoimet ja ilmaiset viikkokisat Tarinalaakso Disc Golfin kentillä Siilinjärvellä.	Ilmoittautuminen avoinna
+Kivijärvenkankaan viikkokisat
+Pyhäntä	02/06/2026 - 04/08/2026		Kivijärvenkankaan frisbeegolfrata	1	PRO (2€) Amateur metrix-rating 0-800 (2€) Almost PRO metrix rating 801-899 (2€) Free (ei maksua)		
+Kivijärvenkankaan viikkokisat → #1 Viikkokisat
+Pyhäntä	02/06/2026 17:00	Viikoittain	Kivijärvenkankaan frisbeegolfrata	1	PRO (2€) Amateur metrix-rating 0-800 (2€) Almost PRO metrix rating 801-899 (2€) Free (ei maksua)		Alku: 06/05/2026 17:00 Päättyy: 02/06/2026 16:30
+FDV Weeklies 2026 → Deltävling 9 - Vörå
+Pohjanmaa, Vöyri	02/06/2026 18:00	Viikoittain	Vörå DiscgolfPark → Vörå DGP 2.0	0	MPO MA1 FA1		Alku: 27/05/2026 08:27 Päättyy: 02/06/2026 17:45
+Joen Liitokiekon viikkokisat 2026 (Kesä-sarja) → Joen Liitokiekon viikkokisat - 2.6.2026
+Pohjois-Karjala, Joensuu	02/06/2026 18:00	Viikoittain	Utran frisbeegolfrata → Kesä (2022)	0	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Joen Liitokiekon Kesä-sarjan viikkokisoja pelataan tiistai-iltaisin. Kilpailut ovat kaikille avoimet ja ilmaiset. Tervetuloa pelaamaan! Kts. säännöt, yms. oheiselta INFO-sivulta.	Alku: 27/05/2026 00:00 Päättyy: 02/06/2026 17:15
+Karjaan parikisa 2026 → 8. Kierros
+Uusimaa, Raasepori	02/06/2026 18:00	Parikilpailu Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Sekapari Rating yht. alle 1800 Juniors	Pelimuoto: Bestshot. Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Holaripotti 2€/pari (pisin holari voittaa - vain käteinen).	
+Frisbeekotkien viikkokilpailut 2026 → #7 - Petäjäsuo Eagle (AM) 2.6.
+Kymenlaakso, Kotka	02/06/2026 18:00	Viikoittain	Petäjäsuo DiscGolfPark → Eagle(AM)	0	911+ 860-910 800-859 1-799 Ei Metrix ratingia Naisten avoin Juniorit	Frisbeekotkien viikkokisojen avajaiset! Lue kisainfo ylätason Frisbeekotkat viikkokilpailut 2026 tiedoista.	Alku: 27/05/2026 12:00 Päättyy: 02/06/2026 16:30
+Lohi viikkokisat → 8. Kierros
+Uusimaa, Hanko	02/06/2026 18:00		Lillmärsanin metsä → Hanko - Taka-lohi 2019	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 20/04/2026 11:22 Päättyy: 02/06/2026 17:30
+DG Rollers viikkokilpailu 2026 → DG Rollers viikkokilpailu 7
+Pirkanmaa, Mänttä-Vilppula	02/06/2026 17:30	Viikoittain	Parkkivuori Discgolfpark → 2023	0	Rating yli 900 Rating 850-899 Alle 850 Noviisit	TD Lucas Le Nguyen	Alku: 20/04/2026 18:19 Päättyy: 02/06/2026 16:30
+Paloheinän viikkisliiga 1/2026 → Osakilpailu 7/8
+Uusimaa, Helsinki	02/06/2026 07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Osakilpailu 7/8	
+WCDG viikkokisat 2026 - Larsmo → Kisa 3
+Österbotten, Larsmo	02/06/2026 18:00	Viikoittain	Larsmo Disc Golf Course → Summer -23	0	Avoin Rating alle 930 Rating alle 880 Rating alle 830 Harraste	Tule mukaan West Coast Disc Golfers ry:n viikkokisoihin! Kaudella 2026 kisataan tiistaisin ja torstaisin vaihtuvilla radoilla – kaikki ovat tervetulleita mukaan, tasosta riippumatta. Lisätiedot löydät alhaalta.	Alku: 26/05/2026 18:00 Päättyy: 02/06/2026 17:00
+Heinolan viikko- ja kuukausikilpailut 2026 → Kippasuo AM Long
+Päijät-Häme, Heinola	02/06/2026 18:00	Viikoittain	KIPPIS Am DiscGolfPark → Long (2026)	0	Avoin Alle 950 Alle 900 Alle 850 0-rating	LUE INFO HUOLELLA!! Heinolan kauden 2026 viikkokilpailut, jäsenet 3€, muut 4€. Vapaaehtoinen holaripotti 1€/pelaaja, potissa 23€! Liity jäseneksi www.ldg.fi/liity/ Kioski palvelee tapahtuman ajan!	Alku: 27/05/2026 10:00 Päättyy: 02/06/2026 17:30
+Julkujärven PDGA-Liiga → 4. Osakilpailu 2.6.2026
+Pirkanmaa, Ylöjärvi	02/06/2026 18:00	L - PDGA Viikoittain	Julkujärvi DiscGolfPark → PRO 18 - Par 63 - 2024	0	RPA RAD RAE RAF		Alku: 27/05/2026 18:00 Päättyy: 02/06/2026 15:00
+Rauman Frisbeen Viikkokisat 2026 → 7. Kierros Uotila
+Satakunta, Rauma	02/06/2026 18:00	Viikoittain	Uotilan frisbeegolfrata → 18- Par 59 (2020)	0	Avoin(kaikki) Edistyneet Amatöörit ( 861-925 ) Amatöörit (1-860 )	Maksu ja ilmottautuminen viimeistään 17.40 parkkipaikalla kisa alkaa 18.00. Hinta 3€ jäsen/ 5€ muilta. Holaripotissa €.CTP väylä # mitta ja kansio korin päällä.	Alku: 26/05/2026 21:00 Päättyy: 02/06/2026 17:30
+Golfkunta Hattulan avoimet frisbeegolfmestaruudet
+Kanta-Häme, Hattula	03/06/2026 18:00		Hattula DiscGolfPark → DGP-18 (2014)	3	MPO FPO MJ18 Harrastesarja		Alku: 03/04/2026 18:00 Päättyy: 03/06/2026 15:00
+Lady Tour 2026 → Lady Tour 2026 - Siilinjärvi
+Pohjois-Savo, Siilinjärvi	03/06/2026 18:00		Kunnonpaikka DGP+Vuorelan Frisbeegolfkenttä → Normaali	3	Metrix-rating 0-700 Metrix-rating 701-750 Metrix-rating 751-800 Metrix-rating 801-850 Metrix-rating 851+	Vuorelan Veikkojen järjestämä kaikille naisille ja tytöille avoin kilpailu Kunnonpaikan ja Vuorelan frisbeegolfkentillä Siilinjärvellä.	Alku: 07/05/2026 18:00 Päättyy: 03/06/2026 17:45
+Sibbe Liiga #1 → 4/6 Keltainen
+Uusimaa, Sipoo	03/06/2026 17:30	L - PDGA	Sibbe Disc Golf → Yellow 2026	0	RPA RAE RAF	PDGA-liigan osakilpailu Sibbe Disc Golfissa, Sipoossa.	Alku: 27/05/2026 21:00 Päättyy: 03/06/2026 16:00
+JokiLiiga 1/2026 → JokiLiiga 5/6 - 3.6.2026
+Pohjois-Karjala, Joensuu	03/06/2026 18:00	L - PDGA	Lykynlammen frisbeegolfrata → Diamond-18 - Par 65 (2026)	0	MPO FPO MP40 FP40 MP50 FP50 MA3 FA3 MJ15 FJ15	JLK:n järjestämää JokiLiigaa (PDGA L-tier) pelataan kuutena keskiviikkona peräkkäin 6.5. alkaen. Kts. ohjeet/säännöt sarjasivulta (oheisen valikon ylin rivi). Avoin kaikille! Tervetuloa!	Alku: 28/05/2026 12:00 Päättyy: 03/06/2026 12:00
+Ankkapurhan Viikkokilpailut 2026 → #6 Viikkokilpailu 2026
+Kymenlaakso, Kouvola	03/06/2026 18:00	Viikoittain	Ankkapurha DiscGolfPark 2022 → 1	0	Metrix rating 911 tai yli Metrix rating 910 - 881 Metrix rating 880 - 851 Metrix rating 850 - 801 Metrix rating 800 - 751 Metrix rating 750 tai alle Ei Metrix ratingia (Maksuton)		Alku: 27/05/2026 19:00 Päättyy: 03/06/2026 17:30
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #5
+Varsinais-Suomi, Turku	03/06/2026 18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros, 24 väylää, 2024-	0	>960 920-959 880-919 830-879 <830	Tervetuloa 7k:n järjestämiin viikkokisoihin Lausteen frisbeegolfradalle! Kisamaksut: kortti/Mobilepay #92327. Holari- ja CTP-potti 1€/kpl käteisellä.	Ilmoittautuminen avoinna
+Laitakallion viikkokisat 2026 → 3.6. 3.viikkokisa
+Pohjois-Pohjanmaa, Haapavesi	03/06/2026 17:30	Viikoittain	Laitakallion frisbeegolfrata → LK11	0		Kisat aina parittoman viikon keskiviikkoisin. Ei osallistumismaksua. Vapaaehtoinen holaripotti 1€.	
+Viisarin Discmaniastore.eu viikkokisat → 03.06.26
+Kanta-Häme, Hämeenlinna	03/06/2026 18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	0	Avoin MAX930 MAX850		Alku: 28/05/2026 18:00 Päättyy: 03/06/2026 15:00
+Sb-Hem - Veckotävling / Viikkokisa - VÄSTERBY - A (AM) → 03.06
+Uusimaa, Raasepori	03/06/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - A (AM)	0	PRO AM		Päättyy: 03/06/2026 17:30
+KvLL Viikkokisat 2026 - Ruhmaanharju → 2. Ruhmaanharjun viikkokisa
+Kymenlaakso, Kouvola	03/06/2026 18:00		Ruhmaanharju Disc Golf	0	910 ja yli 850 - 909 Alle 850 0-rating	Katso tarkemmat ohjeet rekisteröitymissivulta! Kilpailun TD:nä toimii *lisää nimi*	Alku: 27/05/2026 21:00 Päättyy: 03/06/2026 17:20
+Savo One Rounds 2026 → Savo one rounds Puijo
+Pohjois-Savo, Kuopio	04/06/2026 18:00	C - PDGA	Puijo Disc Golf → 18 - Par 59	49	MPO MP40 MP50 MP60 FPO FP40 FP50 FP60 MA2 MA4 FA1 FA2 FA3 FA4 MJ18 FJ18 MJ15 FJ15	Savo one Rounds Puijo	Alku: 09/05/2026 20:00 Päättyy: 02/06/2026 20:00
+WDG:n PappaLiiga 2026 → 4.6.2026, Suurlampi (Saimaanharju) 2x10
+Etelä-Karjala, Taipalsaari	04/06/2026 18:00	Viikoittain	Suurlammen frisbeegolf	1	<860 >860	Pakollinen pelaajakokous 17:40 1 teen luona! / LUE INFOTEKSTI TARKASTI! / TD: TBA	Päättyy: 04/06/2026 16:00
+Karjaan viikkokilpailut 2026 → 8. Kierros
+Uusimaa, Raasepori	04/06/2026 18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	1	Avoin Rating <900 Rating <830 MJ15	Rekisteröityminen ennen klo 16.30. Ryhmät nähtävillä klo 17.00. Maksu: Jäsenet 2€, muilta 3€. Alle 15v ja 0 ratinkilaiset ilmaiseksi. Mobilepay 31032. Holaripotti 1€ (vain käteinen - pisin holari voittaa).	Päättyy: 04/06/2026 16:30
+SportClub viikkokisat → Viikkokisa VII
+Pohjois-Karjala, Juuka	04/06/2026 18:00	Viikoittain	Taivaanpankon frisbeegolfrata	0	Naiset N < 18v N<15 M M < 18v M<15 Junnut		Alku: 01/04/2026 09:00 Päättyy: 04/06/2026 17:00
+Suonenjoen viikkokilpailut → Suonenjoen Viikkokilpailut 4.6
+Pohjois-Savo, Suonenjoki	04/06/2026 18:00	Viikoittain	Suonenjoki DiscGolfPark 23-väylää → Kesäleiska2024 pidenettyjä väyliä	0	Avoin 2	Ilmottautuminen päättyy 30min ennen kilpailun alkua. Olethan paikalla VIIMEISTÄÄN 15 min ennen kilpailun alkua jos et ole sinut poistetaan kilpailusta. Lue info alhaalta.	Alku: 05/04/2026 11:22 Päättyy: 04/06/2026 17:30
+WDG:n PappaLiiga 2026 → 4.6.2026, Suurlampi (Saimaanharju) 2x10 → 1. Kierros
+Etelä-Karjala, Taipalsaari	04/06/2026 18:00	Viikoittain	Suurlammen frisbeegolf	0	<860 >860		
+WDG:n PappaLiiga 2026 → 4.6.2026, Suurlampi (Saimaanharju) 2x10 → 2. Kierros
+Etelä-Karjala, Taipalsaari	04/06/2026 19:00	Viikoittain	Suurlammen frisbeegolf	0	<860 >860		
+Padasjoen viikkokisat 2026 → Yksilökisat → Viipale 5
+Päijät-Häme, Padasjoki	04/06/2026 18:00	Viikoittain	Padasjoki DiscGolfPark → 18 - Par 58 (Early 2024)	0		Maksu 4€ + vapaaehtoinen holaripot 1€	Alku: 29/05/2026 00:00 Päättyy: 04/06/2026 17:50
+Ahven viikkokilpailu → 8. Kierros
+Uusimaa, Hanko	04/06/2026 18:00		Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40	HaHy FG järjestämät viikkokilpailut. Osallistumismaksu 1€, alle 18v maksutta, lisäksi vapaaehtoinen holaripotti 1€.	Alku: 15/04/2026 18:45 Päättyy: 04/06/2026 17:30
+WCDG viikkokisat 2026 - Laajalahti → Parikisa 1
+Keski-Pohjanmaa, Kokkola	04/06/2026 18:00	Parikilpailu Viikoittain	Laajalahti Frisbeegolf → 18 - Par 59	0	Avoin Yhteisrating alle 1750	Tervetuloa mukaan West Coast Disc Golfers ry:n parikisoihin! Etsi itsellesi pari ja ilmoittautukaa mukaan. Lisätiedot löydät alhaalta.	Alku: 28/05/2026 18:00 Päättyy: 04/06/2026 17:00
+Multi Ace DG. Multicity viikkokisat → 270. Kierros
+Keski-Suomi, Multia	04/06/2026 18:00	Viikoittain	Multia DGP → Multia 22 DGP 2.0	0	MPO MA4 MA2	Lue Info rekisteröityneiden pelaajien alta huolellisesti ja tarkasti. Infoa saatetaan päivitittää ennen kilpailua, joten lue myös ennen kilpailua, ettei tule yllätyksiä! TD: Tero Huisman p. +358400724189. Huom! Kilpailu alkaa To Klo 18:00	Alku: 28/05/2026 16:00 Päättyy: 04/06/2026 17:00
+IITTI DGP VIIKKOKISAT 23.4-1.10.2026 → DGC Birdie Hunters Iitti 5. Viikkokisat
+Päijät-Häme, Iitti	04/06/2026 18:00		Iitti DiscGolfPark → Iitti DGP Talvi2025	0	Rating yli 900 Rating 850-899 Rating 800-849 Rating alle 800 Rating 0	Osallistumismaksu jäseniltä 2€, muilta 4€... Vapaaehtoinen holaripottimaksu 1€... Maksu käteinen tai Mobilepay #94731...	Alku: 28/05/2026 12:00 Päättyy: 04/06/2026 17:30
+SFL Powergrip Pro Tour → #2 Oulu
+Finland	05/06/2026 08:00	A - PDGA	Pikkarala Frisbeegolf, Oulu	149	MPO FPO	SFL Powergrip Pro Tourin osakilpailu Oulussa.	Alku: 06/04/2026 19:00 Päättyy: 10/05/2026 23:00
+Fribakuningas 2026
+Uusimaa, Lohja	05/06/2026 - 07/06/2026		Laakspohja Disc Golf Course → Kesä2025-Par62	5		Viiden ystävän joka vuotinen fribakiertue.	
+Fribakuningas 2026 → Laakspohja
+Uusimaa, Lohja	05/06/2026 09:00		Laakspohja Disc Golf Course → Kesä2025-Par62	5			
+Fribakuningas 2026 → Suomusjärvi
+Varsinais-Suomi, Salo	05/06/2026 12:00		DiscGolfPark Suomusjärvi → Punainen (Red)	5			
+Fribakuningas 2026 → Märynummi
+Varsinais-Suomi, Salo	05/06/2026 16:00		Märynummi → 18 väylää	5			
+Sun Pampas Parikisa 2026
+Finland	05/06/2026 18:00	Parikilpailu	Käenpesä DG → Kisa -layout (18-väylää)	2	parikisa	Kaikkien osallistujien kesken arvotaan lippuja Sun Pampas festareille!	Alku: 30/04/2026 00:00 Päättyy: 05/06/2026 17:00
+Sykäräisen frisbeeradan avajais-parikisa
+Keski-Pohjanmaa, Toholampi	05/06/2026 17:00	Parikilpailu	Mörönpuro DiscGolfPark → Mörönpuro DiscGolfPark 2025	0	1750 ja alle yhteispisteet Avoin		Alku: 27/04/2026 08:26 Päättyy: 05/06/2026 16:00
+Kaustisen viikkokilpailu → Kaustinen 2026 #4
+Keski-Pohjanmaa, Kaustinen	05/06/2026 18:00	Viikoittain	Kaustisen frisbeegolfrata	0		PJLFG: Tasoitukselliset viikkokilpailut. Mobilepay 23091 4€ (+1€ holaripotti)	Alku: 01/06/2026 18:00 Päättyy: 05/06/2026 17:20
+Ruhtinaskuntien taisto!
+Uusimaa, Järvenpää	05/06/2026 17:00	Parikilpailu Viikoittain	Lemmenlaakson frisbeegolfrata → Main Layout (2026)	0	Lähetit (1-1800) Tornit (0-2200) Hallitsijat (mies/nainen)	Puskasoturien, Järvenpään Frisbeegolfin ja Disc Golf Vikingsien väliset ystävyysparikisat	Alku: 13/05/2026 12:00 Päättyy: 05/06/2026 15:00
+Fuck Cancer Disc Golf 2026
+Finland	06/06/2026 - 06/06/2026		Kippis (Heinola DiscGolfPark World)	74		Kaikille avoin hyväntekeväisyystapahtuma Kippiksellä, Heinolassa.	
+Ylivieska Open 2026
+Pohjois-Pohjanmaa, Ylivieska	06/06/2026 07:00	C - PDGA	Käenpesä DG → Kisa -layout (18-väylää)	58	MPO MP40 MP50 FPO MA2 MA3 MJ18	Kahden päivän ja kolmen kierroksen PDGA C-tier kisa Ylivieskassa	Alku: 23/04/2026 16:00 Päättyy: 31/05/2026 23:59
+Joukkuefrisbeegolfin SM 2026, Vaasa
+Finland	06/06/2026	A - PDGA		55	Avoin Seka		Alku: 30/03/2026 18:00 Päättyy: 16/05/2026 23:59
+Fuck Cancer Disc Golf 2026 → Kippasuo Pro
+Päijät-Häme, Heinola	06/06/2026 11:00		Kippasuo Pro DiscGolfPark → Blue 18 (2020)	53		Kaikille avoin hyväntekeväisyystapahtuma Kippiksen Pro-radalla, Heinolassa.	Alku: 09/02/2026 18:00 Päättyy: 05/06/2026 23:00
+Nummenmäki Open 2026 By Fribakisat.fi
+Uusimaa, Hyvinkää	06/06/2026 10:00	C - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	37	MPO FPO MP40 FP40 MP50 FP50 MA1 FA1 MA2 FA2	Kahden kierroksen PDGA C-tier kisa Nummenmäen frisbeegolfradalla, Hyvinkäällä.	Alku: 10/03/2026 18:00 Päättyy: 04/06/2026 18:00
+Junioreiden SM-karsinnat 2026 by Poppamies → 5. Riihimäki - Junioreiden SM-karsinnat 2026
+Kanta-Häme, Riihimäki	06/06/2026	C - PDGA	Riutta DiscGolfPark → DPG-19 (2024)	27	MPO FPO MJ15 FJ15		Alku: 01/05/2026 10:00 Päättyy: 03/06/2026 22:00
+Fuck Cancer Disc Golf 2026 → Kippasuo AM
+Päijät-Häme, Heinola	06/06/2026 12:00		Kippasuo Amateur DiscGolfPark → Kippasuo AM DiscGolfPark (2024)	21		Kaikille avoin hyväntekeväisyystapahtuma Kippiksen AM-radalla, Heinolassa.	Alku: 09/02/2026 18:00 Päättyy: 05/06/2026 23:00
+SF-Caravan SM-kisat
+Uusikaupunki	06/06/2026 10:00		Rairanta Frisbeegolf 2025	21	Yleinen Naiset Nuoret	SF-Caravaanareiden SM-kisat. Pelataan 6.6.2026 . Yleinen 2 kierrosta, Naisten luokkassa 1-2 kierrosta, parempi tulos ratkaisee. Nuoret 11-14 1 kierros. Alueella on buffetti. Osallistumismaksu 20 € (sis lounas)	Alku: 20/04/2026 17:41 Päättyy: 01/06/2026 19:00
+AM2-tour by NBDG → #3 Parkano
+Pirkanmaa, Parkano	06/06/2026 10:00	C - PDGA	Käenkosken Frisbeegolfrata → Käenkoski Pro	15	RAH RAD RAE RAF RAG	Kahden kierroksen PDGA-kilpailu Käenkoskella, Parkanossa.	Alku: 06/04/2026 19:00 Päättyy: 03/06/2026 23:00
+SFG King of Salo
+Varsinais-Suomi, Salo	06/06/2026 06:00		Perniön frisbeegolfrata → Melassuo 18 väylää (2024)	11	900 ja 900+ Alle 900		Päättyy: 03/06/2026 20:00
+SKOGBY KUUKAUSIKISAT → KESÄKUU
+Uusimaa, Raasepori	06/06/2026 11:00		Skogby, → A1 Skogby18	9	Naiset Naiset 60+ Masters 40+ Masters 60+ Avoin Juniorit 16 ja alle	Kaikille avoin ja ilmainen!	Alku: 04/04/2026 11:00 Päättyy: 06/06/2026 10:00
+Lohja Open 2026
+Uusimaa, Lohja	06/06/2026	C - PDGA	Laakspohja Disc Golf Course → Kesä2025-Par62	8	RPA RAH RAD RAF		Alku: 10/05/2026 18:00 Päättyy: 03/06/2026 23:59
+Pyhäntä Open 2026
+Pyhäntä	06/06/2026 10:00		Kivijärvenkankaan frisbeegolfrata	6	Avoin Naiset Juniorit alle 15v Ma3 (metrix rating alle 900)		Alku: 07/05/2026 21:00 Päättyy: 04/06/2026 18:00
+Fribakuningas 2026 → Karjaa
+Uusimaa, Raasepori	06/06/2026 10:00		Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	5			
+Fribakuningas 2026 → Skogby
+Uusimaa, Raasepori	06/06/2026 13:00		Skogby, → AA1 Skogby20 väylää	5			
+Fribakuningas 2026 → Västerby
+Uusimaa, Raasepori	06/06/2026 16:00		Västerby, Tammisaari → VÄSTERBY - B (PRO)	5			
+Lady Tour 2026 → Lady Tour 2026 - Lappeenranta
+Etelä-Karjala, Lappeenranta	06/06/2026 13:00		Ravikangas frisbeegolfrata (LPR) → AM-layout (valkoinen)	4	○ 0-700 ○ 701-750 ○ 751-800 ○ 801-850 ○ 851 +		Alku: 01/05/2026 08:00 Päättyy: 06/06/2026 10:00
+Sykäräisen frisbeeradan avajaiskilpailu
+Keski-Pohjanmaa, Toholampi	06/06/2026 12:00		Mörönpuro DiscGolfPark → Mörönpuro DiscGolfPark 2025	4	Avoin - rating 885 ja yli Rating alle 885		Alku: 27/04/2026 08:38 Päättyy: 06/06/2026 11:00
+Hunnari Open 2026
+Kanta-Häme, Forssa	06/06/2026 12:00		Hunnari DiscGolfPark → DGP 18 - Par 58	2	Metrix rating 930+ Metrix rating 850-929 Metrix rating -849 Naiset Juniorit U15 Juniorit U12	Yhden kierroksen yksilökisa Hunnari DGP:lla	Alku: 04/05/2026 18:00 Päättyy: 02/06/2026 18:00
+SF-Caravan SM-kisat → Kierros 1
+Uusikaupunki	06/06/2026 10:00		Rairanta Frisbeegolf 2025	2	Yleinen Naiset Nuoret		
+SF-Caravan SM-kisat → Kierros 2
+Uusikaupunki	06/06/2026 14:00		Rairanta Frisbeegolf 2025	2	Yleinen Naiset		
+Lohja Open 2026 → 1.Kierros - Laakspohja
+Uusimaa, Lohja	06/06/2026 10:00	C - PDGA	Laakspohja Disc Golf Course → Kesä2025-Par62	2	RPA RAH RAD RAF		
+Lohja Open 2026 → 2.Kierros - Laakspohja
+Uusimaa, Lohja	06/06/2026 14:00	C - PDGA	Laakspohja Disc Golf Course → Kesä2025-Par62	2	RPA RAH RAD RAF		
+SFL MASTERS TOUR VUOKATTI BY CLIMO DISC GOLF
+Kainuu, Vuokatti	06/06/2026	C - PDGA	Break Sokos Hotel Vuokatti DiscGolfPark	0			
+Frisbeegolfin SM-kilpailut 2026
+Finland	06/06/2026 - 20/09/2026			0			
+KaPa Disc Golf pari- ja joukkuekisat → Merefestien parikisa
+Varsinais-Suomi, Uusikaupunki	06/06/2026 12:00	Parikilpailu	Sorvakon Frisbeegolfrata (2023) → 2023 / par 56	0	Yhteisrating 1750+ ja jompikumpi 0 Yhteisrating 1749 ja alle ja naisparit	Osallistumismaksu 10€/pari. Maksu mobilepaylla numeroon: 7641SY Viestiksi: Parikisa. Henk.koht CTP-kisa väylällä x. Kilpailu käydään best shot kilpailuna.	Päättyy: 06/06/2026 10:00
+Prodiscus Skogby Masters 2026
+Uusimaa, Raasepori	07/06/2026 10:00	C - PDGA	Skogby, → Skogby-18 kisarata	53	FP40 FP50 FP60 MP40 MP50 MP60	Kahden kierroksen C-tier kilpailu masters ikäisille.	Alku: 03/02/2026 11:35 Päättyy: 04/06/2026 18:00
+Hunnari AM - Juhlakisa 10v
+Kanta-Häme, Forssa	07/06/2026 09:30	C - PDGA	Hunnari DiscGolfPark → DGP 18 - Par 58	14	MA1 MA2 MA3 MA4 FA1 FA2 FA3 FA4 MA40 MA50 FA40 FA50 MJ18 FJ18 MJ15 FJ15	Kahden kierroksen PDGA-kisa Hunnarilla	Alku: 27/04/2026 18:00 Päättyy: 03/06/2026 18:00
+NBDG Amateurs™ Häntyri
+Pirkanmaa, Sastamala	07/06/2026 10:00	C - PDGA	Häntyrinkankaan frisbeegolfrata → Häntyri etu 18 (2025)	13	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Häntyrinkankaalla, Sastamalassa.	Alku: 07/04/2026 19:00 Päättyy: 03/06/2026 23:00
+NBDG Amateurs™ Parkkivuori
+Pirkanmaa, Mänttä-Vilppula	07/06/2026 10:00	C - PDGA	Parkkivuori Discgolfpark → 2023	11	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Kahden kierroksen PDGA-kilpailu Parkkivuoressa, Mänttä-Vilppulassa.	Alku: 17/04/2026 19:00 Päättyy: 03/06/2026 23:00
+Lady Tour 2026 → Lady Tour 2026 - Turku, Lauste
+Varsinais-Suomi, Turku	07/06/2026 11:00		Lausteen frisbeegolfpuisto → LadyTour 2026	10	FPO FA FJPro FJA	Kaikille naispuolisille avoin kilpailu. Ei vaadi lisenssiä. Klinikka osallistujille ennen kisaa	Alku: 04/05/2026 12:00 Päättyy: 07/06/2026 10:00
+Fribakuningas 2026 → Somerniemi
+Varsinais-Suomi, Somero	07/06/2026 10:00		Somerniemi DiscGolfPark → Blue	5			
+Fribakuningas 2026 → Karkkila
+Uusimaa, Karkkila	07/06/2026 14:00		Karkkilan frisbeegolfrata → Gold (2024-)	5			
+Puunhakkaajien puolari liiga
+Uusimaa, Espoo	07/06/2026		Puolarmaarin frisbeegolfrata → Puolarmaarin frisbeegolfrata ->20 (7/2019)	4		Viikottainen liiga puunhakkaajille	Ilmoittautuminen avoinna
+Lohja Open 2026 → 3.Kierros - Sammatti
+Uusimaa, Lohja	07/06/2026 09:30	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	2	RPA RAH RAD RAF		
+Lohja Open 2026 → 4.Kierros - Sammatti
+Uusimaa, Lohja	07/06/2026 14:00	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	2	RPA RAH RAD RAF		
+MäVi Frisbeegolf - Kesäcup 2026 → 2. Kierros
+Etelä-Savo, Mäntyharju	07/06/2026 17:00		Pappilan frisbeegolfpuisto → 2020 (par 67)	0		Osallistumismaksu jäseniltä 3€,muut 5€. Ilmoittautuminen päättyy kilpailupäivänä klo 16.45. Kilpailun aikana alkoholin nauttiminen kielletty. Vapaaehtoinen holaripotti 1€.	Päättyy: 07/06/2026 16:45
+Outokummun viikkokisat 2026 → Outokummun viikkokisat - 7.6.2026
+Pohjois-Karjala, Outokumpu	07/06/2026 14:00	Viikoittain	Vanhan Kaivoksen frisbeegolfrata → 18 - Par 59	0	Metrix-rating >= 920 Metrix-rating < 920 Metrix-rating < 870 Metrix-rating < 820 Metrix-rating < 770 Metrix-rating < 720 Metrix-rating = 0	Kaikille avoimet ja ilmaiset viikkokisat Outokummussa. Kierros alkaa klo 14:00. Katso lisätiedot ja säännöt sarjasivulta (oheisen valikon ylin rivi).	Alku: 01/06/2026 00:00 Päättyy: 07/06/2026 13:15
+Raseborgs Energi - Veckotävling / Viikkokisa - VÄSTERBY - B (PRO) → 07.06
+Uusimaa, Raasepori	07/06/2026 18:00	Viikoittain	Västerby, Tammisaari → VÄSTERBY - B (PRO)	0	PRO AM		Päättyy: 07/06/2026 17:30
+RFG viikkokisat → Parikisat
+Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	1200-1820 Alle 1200 tai yli 1820	Lukekaa ohjeet maksamisesta. Holaripotti on XX €.	Alku: 17/05/2026 Päättyy: 07/06/2026 15:00
     `;
 
     const lines = rawData.trim().split("\n");
