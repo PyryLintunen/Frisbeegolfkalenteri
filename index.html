@@ -68,6 +68,48 @@
     
     select, button { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
     button { cursor: pointer; font-weight: bold; border: none; }
+    footer {
+    margin-top: 50px;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    text-align: center;
+}
+
+.contact-form {
+    max-width: 400px;
+    margin: 20px auto;
+    text-align: left;
+}
+
+.contact-form input, .contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.contact-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.contact-form button:hover {
+    background-color: #0056b3;
+}
+
+.copyright {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 20px;
+}
   </style>
 </head>
 <body>
@@ -724,6 +766,22 @@ Kanta-Häme, Riihimäki	31/05/2026 10:00	C - PDGA	Riutta DiscGolfPark → DPG-19
     updateCityFilter();
   });
 </script>
+
+  <footer>
+    <div class="contact-form">
+        <h3>Ota yhteyttä</h3>
+        <p>Onko kalenterista puutteita tai haluatko antaa palautetta?</p>
+        <form action="https://formspree.io/f/xpqbbypz" method="POST">
+            <input type="email" name="email" placeholder="Sähköpostiosoitteesi" required>
+            <textarea name="message" placeholder="Viestisi..." rows="4" required></textarea>
+            <button type="submit">Lähetä viesti</button>
+        </form>
+    </div>
+    
+    <div class="copyright">
+        &copy; 2026 Vapaat Radat. Tiedot haetaan Metrix-palvelusta.
+    </div>
+</footer>
 
 </body>
 </html>
