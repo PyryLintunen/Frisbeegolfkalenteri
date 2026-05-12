@@ -288,11 +288,11 @@
   };
 
   // 3. APUFUNKTIOT
-  function normalize(str) {
+ function normalize(str) {
     if (!str) return "";
     return str.toLowerCase()
       .replace(/frisbeegolfrata|frisbeegolfpuisto|disc golf|dgp|[()]/g, "")
-      .replace(/\s+/g, "") // Poistaa kaikki välilyönnit
+      .replace(/\s+/g, "") // Poistaa välilyönnit
       .trim();
   }
 
@@ -318,17 +318,26 @@
     const includeNeighbors = document.getElementById("includeNeighbors").checked;
 
     const filteredEvents = events.filter(event => {
+      // 1. Maakuntasuodatus
       const matchesRegion = (selectedRegion === "all" || event.extendedProps.region === selectedRegion);
+      
+      // 2. Kuntasuodatus
       let matchesCity = true;
       if (selectedCity !== "all") {
-        const courseInfo = allCourses.find(c => normalize(c.name) === normalize(event.title));
+        // Etsitään radan tiedot normalisoidun nimen perusteella
+        const normalizedEventTitle = normalize(event.title);
+        const courseInfo = allCourses.find(c => normalize(c.name) === normalizedEventTitle);
+        
         const eventCity = courseInfo ? courseInfo.city : "";
+        
         let targetCities = [selectedCity];
         if (includeNeighbors && neighbors[selectedCity]) {
           targetCities = [selectedCity, ...neighbors[selectedCity]];
         }
+        
         matchesCity = targetCities.includes(eventCity);
       }
+      
       return matchesRegion && matchesCity;
     });
 
@@ -337,19 +346,15 @@
   }
 
   function getFreeCourses(dateStr, selectedCity) {
-    // 1. Kerätään päivän varatut radat ja normalisoidaan niiden nimet
     const busy = events
       .filter(e => e.start.startsWith(dateStr))
       .map(e => normalize(e.title));
 
-    // 2. Suodatetaan allCourses-listasta ne, joiden nimeä EI löydy busy-listalta
     return allCourses.filter(c => {
       if (selectedCity !== "all" && c.city !== selectedCity) return false;
-      
       const normalizedName = normalize(c.name);
-      
-      // Palautetaan true (eli rata on vapaa), jos nimeä ei löydy varattujen listalta
-      return !busy.some(b => b === normalizedName);
+      // Rata on varattu, jos sen normalisoitu nimi löytyy busy-listalta
+      return !busy.includes(normalizedName);
     });
   }
 
