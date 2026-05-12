@@ -142,8 +142,8 @@
     { name: "Tammela DiscGolfPark", city: "Tammela", region: "Kanta-Häme" },
     // UUSIMAA
     { name: "Lakisto frisbeepark", city: "Espoo", region: "Uusimaa" },
-    { name: "Oittaa Camping", city: "Espoo", region: "Uusimaa" },
-    { name: "Oittaa Kalliometsä", city: "Espoo", region: "Uusimaa" },
+    { name: "Oittaan ulkoilualue, Espoo (Camping)", city: "Espoo", region: "Uusimaa" },
+    { name: "Oittaan ulkoilualue, Espoo (Kalliometsä)", city: "Espoo", region: "Uusimaa" },
     { name: "Puolarmaari", city: "Espoo", region: "Uusimaa" },
     { name: "Velskolan", city: "Espoo", region: "Uusimaa" },
     { name: "Äijänpelto", city: "Espoo", region: "Uusimaa" },
@@ -661,7 +661,9 @@ Kanta-Häme, Riihimäki	31/05/2026 10:00	C - PDGA	Riutta DiscGolfPark → DPG-19
 
       if (eventDate >= todayStart) {
         events.push({
-          title: coursePart.split("→")[0].trim(),
+          title: coursePart.includes("→") 
+        ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
+        : coursePart.trim(),
           start: `${y}-${m}-${d}T${time}`,
           extendedProps: { region: region, time: time }
         });
