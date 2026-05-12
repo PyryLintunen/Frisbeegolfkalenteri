@@ -324,17 +324,24 @@
       // 2. Kuntasuodatus
       let matchesCity = true;
       if (selectedCity !== "all") {
-        const normalizedEventTitle = normalize(event.title);
-        // Etsitään radan tiedot vertaamalla molempia nimiä normalisoituna
-        const courseInfo = allCourses.find(c => normalize(c.name) === normalizedEventTitle);
+        const eventTitleNormalized = normalize(event.title);
         
-        const eventCity = courseInfo ? courseInfo.city : "";
+        // Etsitään kaikki kaupungit, jotka ovat "sallittuja" (valittu + naapurit)
         let targetCities = [selectedCity];
-        
         if (includeNeighbors && neighbors[selectedCity]) {
           targetCities = [selectedCity, ...neighbors[selectedCity]];
         }
-        
+
+        // Tarkistetaan löytyykö kalenteritapahtumalle vastinetta ratalistasta, 
+        // joka kuuluu johonkin sallituista kaupungeista.
+        const courseInfo = allCourses.find(c => {
+          const courseNameNormalized = normalize(c.name);
+          return courseNameNormalized === eventTitleNormalized || 
+                 eventTitleNormalized.includes(courseNameNormalized) ||
+                 courseNameNormalized.includes(eventTitleNormalized);
+        });
+
+        const eventCity = courseInfo ? courseInfo.city : "";
         matchesCity = targetCities.includes(eventCity);
       }
       
@@ -353,8 +360,8 @@
     return allCourses.filter(c => {
       if (selectedCity !== "all" && c.city !== selectedCity) return false;
       const normalizedName = normalize(c.name);
-      // Rata on varattu, jos sen normalisoitu nimi löytyy busy-listalta
-      return !busy.includes(normalizedName);
+      // Rata on varattu, jos sen nimi on busy-listalla
+      return !busy.some(b => b === normalizedName || b.includes(normalizedName) || normalizedName.includes(b));
     });
   }
 
