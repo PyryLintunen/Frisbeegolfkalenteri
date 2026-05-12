@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vapaat Radat</title>
+  <link rel="icon" href="favicon.png">
+  <meta property="og:title" content="Vapaat Radat">
+  <meta property="og:description" content="Frisbeegolfkisat kartalla — löydä vapaat radat läheltäsi">
+  <meta property="og:image" content="og-image.png">
+  <meta property="og:url" content="https://vapaatradat.fi">
+  <meta name="twitter:card" content="summary_large_image">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', Arial, sans-serif; background: #f0f4f0; color: #1a2e1a; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, #1a5c2a 0%, #2d8c3e 100%);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 62px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; color: white; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.3px; }
+  .logo-icon { width: 34px; height: 34px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .logo-text { display: flex; flex-direction: column; }
+  .logo-sub { font-size: 0.68rem; font-weight: 400; color: rgba(255,255,255,0.65); letter-spacing: 0.3px; }
+  .header-badge { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); font-size: 0.72rem; padding: 4px 11px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); white-space: nowrap; }
+
+  /* ===== LAYOUT ===== */
+  .main {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    max-width: 98%;
+    margin: 20px auto;
+    align-items: flex-start;
+    padding: 0 16px;
+  }
+  #calendar {
+    flex: 4;
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    min-height: 800px;
+  }
+  .side {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: sticky;
+    top: 20px;
+  }
+
+  /* ===== PANEL CARDS ===== */
+  .panel {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    overflow: hidden;
+  }
+  .panel-head {
+    background: linear-gradient(135deg, #1a5c2a, #2d8c3e);
+    color: white;
+    padding: 11px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .panel-body { padding: 14px 16px; }
+
+  /* ===== FORM ELEMENTS ===== */
+  .field-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #7a9a7a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+  }
+  .field-select {
+    width: 100%;
+    padding: 9px 34px 9px 12px;
+    border: 1.5px solid #d0e4d0;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: #1a2e1a;
+    background: #fafefa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232d8c3e' d='M6 8L1h10z'/%3E%3C/svg%3E") no-repeat right 10px center;
+    appearance: none;
+    -webkit-appearance: none;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .field-select:focus { outline: none; border-color: #2d8c3e; box-shadow: 0 0 0 3px rgba(45,140,62,0.12); }
+  .check-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; cursor: pointer; font-size: 0.85rem; color: #3a5a3a; }
+  .search-input { width: 100%; padding: 9px 12px; border: 1.5px solid #d0e4d0; border-radius: 8px; font-size: 0.88rem; font-family: inherit; color: #1a2e1a; background: #fafefa; margin-bottom: 12px; }
+  .search-input:focus { outline: none; border-color: #2d8c3e; box-shadow: 0 0 0 3px rgba(45,140,62,0.12); }
+  .city-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; min-height: 22px; }
+  .city-tag { display: inline-flex; align-items: center; gap: 4px; background: #e8f5e9; color: #1a5c2a; border: 1px solid #a5d6a7; border-radius: 20px; padding: 3px 10px; font-size: 0.78rem; font-weight: 500; }
+  .city-tag-remove { background: none; border: none; cursor: pointer; color: #1a5c2a; font-size: 1rem; padding: 0; line-height: 1; margin-left: 2px; }
+  .city-tag-remove:hover { color: #c62828; }
+  .no-cities-label { font-size: 0.78rem; color: #7a9a7a; }
+  .tier-checks { display: flex; flex-direction: column; gap: 0; margin-bottom: 12px; }
+  .deadline-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; vertical-align: middle; flex-shrink: 0; }
+  .deadline-soon { background: #ff9800; }
+  .deadline-closed { background: #bdbdbd; }
+
+  /* ===== BUTTONS ===== */
+  .btn {
+    display: flex;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 9px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 8px;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn:last-child { margin-bottom: 0; }
+  .btn-primary { background: #1a5c2a; color: white; }
+  .btn-secondary { background: #e8f5e9; color: #1a5c2a; border: 1.5px solid #a5d6a7; }
+
+  /* ===== LEGEND ===== */
+  .legend { display: flex; flex-direction: column; gap: 7px; }
+  .legend-item { display: flex; align-items: center; gap: 9px; font-size: 0.8rem; color: #3a5a3a; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* ===== INFO PANEL ===== */
+  .info-date { font-size: 0.72rem; color: #7a9a7a; font-weight: 500; margin-bottom: 7px; }
+  .info-text { font-size: 0.82rem; color: #4a6a4a; line-height: 1.55; }
+
+  /* ===== FREE COURSES LIST ===== */
+  #freeCoursesList { margin-top: 4px; }
+  #freeCoursesList h2 { font-size: 0.95rem; color: #1a2e1a; margin-bottom: 8px; margin-top: 16px; }
+  #freeCoursesList h3 { font-size: 0.85rem; color: #2d5a2d; margin: 10px 0 5px; }
+  #freeCoursesList h4 { font-size: 0.8rem; color: #4a6a4a; margin: 8px 0 4px; }
+
+  /* ===== EVENT COLORS (FullCalendar overrides) ===== */
+  .fc-event { border: none !important; font-size: 0.75rem; font-weight: 500; }
+  .ev-b,  .ev-b  .fc-event-title, .ev-b  .fc-event-time { background-color: #fce4ec !important; color: #c62828 !important; }
+  .ev-l,  .ev-l  .fc-event-title, .ev-l  .fc-event-time { background-color: #e3f2fd !important; color: #1565c0 !important; }
+  .ev-c,  .ev-c  .fc-event-title, .ev-c  .fc-event-time { background-color: #fff8e1 !important; color: #e65100 !important; }
+  .ev-weekly, .ev-weekly .fc-event-title, .ev-weekly .fc-event-time { background-color: #e8f5e9 !important; color: #2d6a2d !important; }
+  .ev-default, .ev-default .fc-event-title, .ev-default .fc-event-time { background-color: #f3e5f5 !important; color: #6a1b9a !important; }
+
+  /* ===== MODAL ===== */
+  .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); backdrop-filter: blur(3px); }
+  .modal-content { background: white; margin: 12% auto; padding: 24px; width: 90%; max-width: 420px; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+  .close { float: right; font-size: 24px; cursor: pointer; color: #7a9a7a; line-height: 1; }
+  .close:hover { color: #1a2e1a; }
+  .modal-tier-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; margin-bottom: 10px; }
+  .modal-field { font-size: 0.88rem; color: #3a5a3a; margin-top: 7px; line-height: 1.5; }
+  .modal-field strong { color: #1a2e1a; }
+
+  /* ===== FOOTER ===== */
+  .footer { background: #1a5c2a; color: rgba(255,255,255,0.75); text-align: center; padding: 18px 24px; font-size: 0.8rem; line-height: 1.8; margin-top: 24px; }
+  .footer a { color: rgba(255,255,255,0.9); text-decoration: underline; }
+  .footer a:hover { color: #ffffff; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1100px) {
+    .main { flex-direction: column; padding: 0 8px; }
+    .side { width: 100%; position: static; }
+    #calendar { width: 100%; min-height: 500px; }
+  }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🌲</div>
+    <div class="logo-text">
+      Vapaat Radat
+      <span class="logo-sub">vapaatradat.fi</span>
+    </div>
+  </div>
+  <div class="header-badge">Päivitetty 6.5.2026</div>
+</header>
+
+<div class="main">
+  <div id="calendar"></div>
+
+  <div class="side">
+
+    <!-- FILTERS PANEL -->
+    <div class="panel">
+      <div class="panel-head">📍 Suodatus</div>
+      <div class="panel-body">
+        <label class="field-label">Haku</label>
+        <input type="text" id="searchInput" class="search-input" placeholder="Etsi tapahtumaa..." oninput="applyFilters()">
+
+        <label class="field-label" for="regionFilter">Maakunta</label>
+        <select id="regionFilter" class="field-select" onchange="updateCityFilter()">
+          <option value="all">Kaikki maakunnat</option>
+          <option value="Kanta-Häme">Kanta-Häme</option>
+          <option value="Uusimaa">Uusimaa</option>
+          <option value="Varsinais-Suomi">Varsinais-Suomi</option>
+        </select>
+
+        <label class="field-label" for="cityFilter">Lisää kunta</label>
+        <select id="cityFilter" class="field-select" onchange="addCityFromSelect()">
+          <option value="">Valitse kunta...</option>
+        </select>
+        <div id="cityTags" class="city-tags"><span class="no-cities-label">Kaikki kunnat</span></div>
+
+        <div class="check-row">
+          <input type="checkbox" id="includeNeighbors" checked onchange="applyFilters()">
+          <label for="includeNeighbors">Näytä myös naapurikunnat</label>
+        </div>
+
+        <label class="field-label" style="margin-top:6px;">Kilpailutaso</label>
+        <div class="tier-checks">
+          <label class="check-row"><input type="checkbox" class="tier-cb" value="weekly" checked onchange="applyFilters()"> Viikkokilpailu</label>
+          <label class="check-row"><input type="checkbox" class="tier-cb" value="c" checked onchange="applyFilters()"> C-tier</label>
+          <label class="check-row"><input type="checkbox" class="tier-cb" value="b" checked onchange="applyFilters()"> B-tier</label>
+          <label class="check-row"><input type="checkbox" class="tier-cb" value="l" checked onchange="applyFilters()"> L-liiga</label>
+          <label class="check-row"><input type="checkbox" class="tier-cb" value="default" checked onchange="applyFilters()"> Muu kisa</label>
+        </div>
+
+        <button class="btn btn-primary" onclick="showFreeToday()">🌿 Hae vapaat radat tänään</button>
+        <button id="viewToggleBtn" class="btn btn-secondary" onclick="toggleView()">📅 Viikkonäkymä</button>
+        <button class="btn btn-secondary" onclick="applyFilters()">Päivitä kalenteri</button>
+        <div id="freeCoursesList"></div>
+      </div>
+    </div>
+
+    <!-- LEGEND PANEL -->
+    <div class="panel">
+      <div class="panel-head">🏷 Kisojen tyypit</div>
+      <div class="panel-body">
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#e8f5e9; border:1px solid #a5d6a7;"></div> Viikkokilpailu</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fff8e1; border:1px solid #ffe082;"></div> PDGA C-tier</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fce4ec; border:1px solid #f48fb1;"></div> PDGA B-tier</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e3f2fd; border:1px solid #90caf9;"></div> PDGA L-liiga</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f3e5f5; border:1px solid #ce93d8;"></div> Muu kisa</div>
+        </div>
+        <div style="margin-top:10px; padding-top:10px; border-top:1px solid #e8f0e8;">
+          <div class="legend-item"><span class="deadline-dot deadline-soon" style="position:static;"></span> Ilmoittautuminen päättyy pian</div>
+          <div class="legend-item" style="margin-top:5px;"><span class="deadline-dot deadline-closed" style="position:static;"></span> Ilmoittautuminen päättynyt</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO PANEL -->
+    <div class="panel">
+      <div class="panel-body">
+        <div class="info-date">🔄 Päivitetty 6.5.2026</div>
+        <div class="info-text">Suodata kisoja maakunnan tai kunnan mukaan. <em>Hae vapaat radat</em> -toiminto näyttää radat joilla ei ole kisoja valittuna päivänä.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3 id="modalTitle" style="margin-bottom:8px; font-size:1rem; padding-right:24px;"></h3>
+    <span id="modalTierBadge" class="modal-tier-badge"></span>
+    <div id="modalInfo"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  Kehitysehdotuksia tai yhteistyökuvioita mielessä? <a href="mailto:vapaatradat@gmail.com">Laita viestiä</a>
+  <br>© 2026 Pyry Lintunen
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script>
+let calendar;
+let events = [];
+let selectedCities = [];
+
+const allCourses = [
+  // KANTA-HÄME
+  { name: "Hunnari DiscGolfPark", city: "Forssa", region: "Kanta-Häme" },
+  { name: "Hattula DiscGolfPark", city: "Hattula", region: "Kanta-Häme" },
+  { name: "Hausjärvi DiscGolfPark", city: "Hausjärvi", region: "Kanta-Häme" },
+  { name: "Ykslammi DiscGolfPark", city: "Hausjärvi", region: "Kanta-Häme" },
+  { name: "Hämeenlinnan Frisbeegolfrata", city: "Hämeenlinna", region: "Kanta-Häme" },
+  { name: "Härkälinnan Frisbeegolfrata", city: "Hämeenlinna", region: "Kanta-Häme" },
+  { name: "Kantola Urban DiscGolfPark", city: "Hämeenlinna", region: "Kanta-Häme" },
+  { name: "Pirtin kentän Frisbeegolfrata", city: "Hämeenlinna", region: "Kanta-Häme" },
+  { name: "Kiipulasäätiön Frisbeegolfrata", city: "Janakkala", region: "Kanta-Häme" },
+  { name: "Lastujärvi, Turenki", city: "Janakkala", region: "Kanta-Häme" },
+  { name: "Tervakoski Frisbeegolf", city: "Janakkala", region: "Kanta-Häme" },
+  { name: "Jokioinen DiscGolfPark", city: "Jokioinen", region: "Kanta-Häme" },
+  { name: "Launonen DiscGolfPark", city: "Loppi", region: "Kanta-Häme" },
+  { name: "Loppi DiscGolfPark", city: "Loppi", region: "Kanta-Häme" },
+  { name: "Riutta DiscGolfPark", city: "Riihimäki", region: "Kanta-Häme" },
+  { name: "Eerikkilä DGP", city: "Tammela", region: "Kanta-Häme" },
+  { name: "Tammela DiscGolfPark", city: "Tammela", region: "Kanta-Häme" },
+  // UUSIMAA
+  { name: "Lakisto frisbeepark", city: "Espoo", region: "Uusimaa" },
+  { name: "Oittaan ulkoilualue, Espoo (Camping)", city: "Espoo", region: "Uusimaa" },
+  { name: "Oittaan ulkoilualue, Espoo (Kalliometsä)", city: "Espoo", region: "Uusimaa" },
+  { name: "Puolarmaari", city: "Espoo", region: "Uusimaa" },
+  { name: "Velskolan", city: "Espoo", region: "Uusimaa" },
+  { name: "Äijänpelto", city: "Espoo", region: "Uusimaa" },
+  { name: "Lappohja", city: "Hanko", region: "Uusimaa" },
+  { name: "Lillmärsanin metsä", city: "Hanko", region: "Uusimaa" },
+  { name: "Kivikon frisbeegolfrata", city: "Helsinki", region: "Uusimaa" },
+  { name: "Paloheinän frisbeegolfrata", city: "Helsinki", region: "Uusimaa" },
+  { name: "Siltamäki", city: "Helsinki", region: "Uusimaa" },
+  { name: "Talin frisbeegolfpuisto", city: "Helsinki", region: "Uusimaa" },
+  { name: "Nummenmäki DiscGolfPark", city: "Hyvinkää", region: "Uusimaa" },
+  { name: "Sahanmäki DGP", city: "Hyvinkää", region: "Uusimaa" },
+  { name: "Inkoo discgolf", city: "Inkoo", region: "Uusimaa" },
+  { name: "Lemmenlaakso", city: "Järvenpää", region: "Uusimaa" },
+  { name: "Karkkilan frisbeegolfrata", city: "Karkkila", region: "Uusimaa" },
+  { name: "Keinukallio", city: "Kerava", region: "Uusimaa" },
+  { name: "Kirkkonummen frisbeegolfrata", city: "Kirkkonummi", region: "Uusimaa" },
+  { name: "Veikkolan frisbeegolfrata", city: "Kirkkonummi", region: "Uusimaa" },
+  { name: "Kantarelli", city: "Lohja", region: "Uusimaa" },
+  { name: "Laakspohja", city: "Lohja", region: "Uusimaa" },
+  { name: "Sammatti", city: "Lohja", region: "Uusimaa" },
+  { name: "Liljendal frisbeegolf", city: "Loviisa", region: "Uusimaa" },
+  { name: "Loviisan frisbeegolfrata", city: "Loviisa", region: "Uusimaa" },
+  { name: "Pernå", city: "Loviisa", region: "Uusimaa" },
+  { name: "Mäntsälän frisbeegolfpuisto", city: "Mäntsälä", region: "Uusimaa" },
+  { name: "Herusten frisbeegolfrata", city: "Nurmijärvi", region: "Uusimaa" },
+  { name: "Nukarin frisbeegolfrata", city: "Nurmijärvi", region: "Uusimaa" },
+  { name: "Nurmijärven frisbeegolfrata (Maaniitty-Ihantola)", city: "Nurmijärvi", region: "Uusimaa" },
+  { name: "Nurmijärvi Golf", city: "Nurmijärvi", region: "Uusimaa" },
+  { name: "Virvik", city: "Porvoo", region: "Uusimaa" },
+  { name: "Gumnäs", city: "Raasepori", region: "Uusimaa" },
+  { name: "Härkävuori", city: "Raasepori", region: "Uusimaa" },
+  { name: "Karjaan frisbeegolfrata", city: "Raasepori", region: "Uusimaa" },
+  { name: "Lande", city: "Raasepori", region: "Uusimaa" },
+  { name: "Skogby", city: "Raasepori", region: "Uusimaa" },
+  { name: "Västerby", city: "Raasepori", region: "Uusimaa" },
+  { name: "Pornainen DGP", city: "Sipoo", region: "Uusimaa" },
+  { name: "Sibbe Disc Golf", city: "Sipoo", region: "Uusimaa" },
+  { name: "Talma DGP", city: "Sipoo", region: "Uusimaa" },
+  { name: "Ford Amateur", city: "Tuusula", region: "Uusimaa" },
+  { name: "Ford DiscGolfPark", city: "Tuusula", region: "Uusimaa" },
+  { name: "Varistonniitty", city: "Vantaa", region: "Uusimaa" },
+  { name: "Kaatis", city: "Vihti", region: "Uusimaa" },
+  { name: "Nummelanharju", city: "Vihti", region: "Uusimaa" },
+  { name: "Rock Valley", city: "Vihti", region: "Uusimaa" },
+  // VARSINAIS-SUOMI
+  { name: "Nunnan Frisbeegolfrata", city: "Kaarina", region: "Varsinais-Suomi" },
+  { name: "Frisbeegolf Hevonlinna", city: "Koski Tl", region: "Varsinais-Suomi" },
+  { name: "Kustavin Frisbeegolfrata", city: "Kustavi", region: "Varsinais-Suomi" },
+  { name: "Peterzèns DiscGolfPark", city: "Kustavi", region: "Varsinais-Suomi" },
+  { name: "Laitilan Frisbeegolfrata", city: "Laitila", region: "Varsinais-Suomi" },
+  { name: "Liedon Frisbeegolfrata", city: "Lieto", region: "Varsinais-Suomi" },
+  { name: "Yliskulman Frisbeegolfrata", city: "Lieto", region: "Varsinais-Suomi" },
+  { name: "Loimaan frisbeegolfrata", city: "Loimaa", region: "Varsinais-Suomi" },
+  { name: "Mellilänjärven DiscGolfPark", city: "Loimaa", region: "Varsinais-Suomi" },
+  { name: "Marttila DiscGolfPark", city: "Marttila", region: "Varsinais-Suomi" },
+  { name: "Maskun Frisbeegolfrata", city: "Masku", region: "Varsinais-Suomi" },
+  { name: "Mynämäki DiscGolfPark", city: "Mynämäki", region: "Varsinais-Suomi" },
+  { name: "Haijainen DiscGolfPark", city: "Naantali", region: "Varsinais-Suomi" },
+  { name: "Suopelto DiscGolfPark", city: "Naantali", region: "Varsinais-Suomi" },
+  { name: "Mikko Rantasen Frisbeegolfrata", city: "Nousiainen", region: "Varsinais-Suomi" },
+  { name: "Oripään OKRA-rata", city: "Oripää", region: "Varsinais-Suomi" },
+  { name: "Vampulan Frisbeegolfrata", city: "Oripää", region: "Varsinais-Suomi" },
+  { name: "Paimio DiscGolfPark", city: "Paimio", region: "Varsinais-Suomi" },
+  { name: "Kirikallio DiscGolfPark", city: "Pyhäranta", region: "Varsinais-Suomi" },
+  { name: "Pyhäranta DiscGolfPark", city: "Pyhäranta", region: "Varsinais-Suomi" },
+  { name: "Haukkavuori DiscGolfPark", city: "Pöytyä", region: "Varsinais-Suomi" },
+  { name: "Hauninen DiscGolfPark", city: "Raisio", region: "Varsinais-Suomi" },
+  { name: "Vahdon frisbeegolfrata", city: "Rusko", region: "Varsinais-Suomi" },
+  { name: "Halikon Frisbeegolfrata", city: "Salo", region: "Varsinais-Suomi" },
+  { name: "Märynummen Frisbeegolfrata", city: "Salo", region: "Varsinais-Suomi" },
+  { name: "Tupurin Frisbeegolfrata", city: "Salo", region: "Varsinais-Suomi" },
+  { name: "Somero Disc Golf Park", city: "Somero", region: "Varsinais-Suomi" },
+  { name: "Taivassalon Frisbeegolfkeskus", city: "Taivassalo", region: "Varsinais-Suomi" },
+  { name: "Lausteen Frisbeegolfpuisto", city: "Turku", region: "Varsinais-Suomi" },
+  { name: "Luolavuoren Frisbeegolfpuisto", city: "Turku", region: "Varsinais-Suomi" },
+  { name: "Green Disc Golf", city: "Uusikaupunki", region: "Varsinais-Suomi" },
+  { name: "Kalannin Frisbeegolfrata", city: "Uusikaupunki", region: "Varsinais-Suomi" },
+  { name: "Lokalahden Frisbeegolfrata", city: "Uusikaupunki", region: "Varsinais-Suomi" },
+  { name: "Pyhämaa DiscGolfPark", city: "Uusikaupunki", region: "Varsinais-Suomi" },
+  { name: "Sorvakon Frisbeegolfrata", city: "Uusikaupunki", region: "Varsinais-Suomi" },
+  { name: "Rairanta FG", city: "Uusikaupunki", region: "Varsinais-Suomi" },
+  { name: "Vehmaa DiscGolfPark", city: "Vehmaa", region: "Varsinais-Suomi" }
+];
+
+const neighbors = {
+  "Forssa": ["Jokioinen", "Tammela", "Somero"],
+  "Hattula": ["Hämeenlinna"],
+  "Hausjärvi": ["Riihimäki", "Hämeenlinna", "Janakkala", "Hyvinkää", "Mäntsälä"],
+  "Hämeenlinna": ["Hattula", "Janakkala", "Hausjärvi", "Loppi"],
+  "Janakkala": ["Hämeenlinna", "Hausjärvi", "Loppi", "Riihimäki"],
+  "Jokioinen": ["Forssa", "Tammela"],
+  "Loppi": ["Hämeenlinna", "Janakkala", "Riihimäki", "Vihti", "Hyvinkää"],
+  "Riihimäki": ["Hausjärvi", "Janakkala", "Loppi", "Hyvinkää"],
+  "Tammela": ["Forssa", "Jokioinen", "Somero", "Lohja", "Vihti"],
+  "Espoo": ["Helsinki", "Vantaa", "Kirkkonummi", "Vihti", "Kauniainen"],
+  "Hanko": ["Raasepori"],
+  "Helsinki": ["Espoo", "Vantaa", "Sipoo"],
+  "Hyvinkää": ["Tuusula", "Nurmijärvi", "Vihti", "Mäntsälä", "Riihimäki", "Hausjärvi", "Loppi"],
+  "Inkoo": ["Raasepori", "Lohja", "Kirkkonummi", "Siuntio"],
+  "Järvenpää": ["Tuusula", "Sipoo", "Mäntsälä", "Kerava"],
+  "Karkkila": ["Vihti", "Lohja", "Tammela", "Loppi"],
+  "Kerava": ["Tuusula", "Vantaa", "Sipoo", "Järvenpää"],
+  "Kirkkonummi": ["Espoo", "Inkoo", "Vihti", "Siuntio"],
+  "Lohja": ["Vihti", "Raasepori", "Inkoo", "Karkkila", "Salo", "Siuntio", "Somero", "Tammela"],
+  "Loviisa": ["Porvoo", "Lapinjärvi", "Pyhtää", "Kouvola", "Iitti"],
+  "Mäntsälä": ["Hyvinkää", "Järvenpää", "Tuusula", "Hausjärvi", "Kärkölä", "Orimattila", "Pukkila", "Askola"],
+  "Nurmijärvi": ["Vantaa", "Espoo", "Vihti", "Hyvinkää", "Tuusula"],
+  "Porvoo": ["Sipoo", "Loviisa", "Askola", "Pornainen", "Myrskylä"],
+  "Raasepori": ["Lohja", "Hanko", "Inkoo", "Salo", "Kemiönsaari"],
+  "Sipoo": ["Helsinki", "Vantaa", "Porvoo", "Kerava", "Järvenpää", "Pornainen"],
+  "Tuusula": ["Vantaa", "Kerava", "Järvenpää", "Nurmijärvi", "Hyvinkää", "Sipoo"],
+  "Vantaa": ["Helsinki", "Espoo", "Tuusula", "Kerava", "Sipoo", "Nurmijärvi"],
+  "Vihti": ["Espoo", "Lohja", "Karkkila", "Hyvinkää", "Nurmijärvi", "Kirkkonummi", "Loppi", "Tammela"],
+  "Turku": ["Kaarina", "Lieto", "Naantali", "Raisio", "Rusko", "Parainen"],
+  "Kaarina": ["Turku", "Lieto", "Parainen", "Paimio"],
+  "Lieto": ["Turku", "Kaarina", "Paimio", "Marttila", "Pöytyä", "Rusko"],
+  "Raisio": ["Turku", "Naantali", "Rusko", "Masku"],
+  "Naantali": ["Turku", "Raisio", "Masku", "Taivassalo"],
+  "Rusko": ["Turku", "Raisio", "Masku", "Nousiainen", "Lieto"],
+  "Masku": ["Raisio", "Rusko", "Nousiainen", "Mynämäki", "Naantali"],
+  "Nousiainen": ["Masku", "Rusko", "Mynämäki", "Pöytyä"],
+  "Mynämäki": ["Masku", "Nousiainen", "Vehmaa", "Laitila", "Pöytyä"],
+  "Paimio": ["Kaarina", "Lieto", "Salo", "Marttila"],
+  "Salo": ["Paimio", "Marttila", "Somero", "Lohja", "Raasepori"],
+  "Marttila": ["Paimio", "Salo", "Koski Tl", "Lieto", "Pöytyä"],
+  "Koski Tl": ["Marttila", "Loimaa", "Pöytyä", "Somero"],
+  "Loimaa": ["Koski Tl", "Pöytyä", "Oripää", "Somero"],
+  "Pöytyä": ["Lieto", "Marttila", "Koski Tl", "Loimaa", "Oripää", "Nousiainen", "Mynämäki"],
+  "Oripää": ["Pöytyä", "Loimaa"],
+  "Somero": ["Salo", "Koski Tl", "Loimaa", "Lohja", "Forssa", "Tammela"],
+  "Laitila": ["Mynämäki", "Uusikaupunki", "Pyhäranta", "Vehmaa"],
+  "Vehmaa": ["Mynämäki", "Laitila", "Uusikaupunki", "Taivassalo"],
+  "Uusikaupunki": ["Laitila", "Pyhäranta", "Vehmaa", "Taivassalo"],
+  "Pyhäranta": ["Laitila", "Uusikaupunki"],
+  "Taivassalo": ["Uusikaupunki", "Vehmaa", "Kustavi", "Naantali"],
+  "Kustavi": ["Taivassalo"],
+  "Parainen": ["Turku", "Kaarina"]
+};
+
+function normalize(str) {
+  if (!str) return "";
+  return str.toLowerCase()
+    .replace(/frisbeegolfrata|frisbeegolfpuisto|disc golf|dgp|\[.*?\]/g, "")
+    .replace(/\s+/g, "")
+    .trim();
+}
+
+function updateCityFilter() {
+  const region = document.getElementById("regionFilter").value;
+  const citySelect = document.getElementById("cityFilter");
+  const uniqueCities = [...new Set(allCourses
+    .filter(c => region === "all" || c.region === region)
+    .map(c => c.city))].sort();
+  citySelect.innerHTML = '<option value="">Valitse kunta...</option>';
+  uniqueCities.forEach(city => {
+    citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+  });
+  selectedCities = selectedCities.filter(c => region === "all" || uniqueCities.includes(c));
+  renderCityTags();
+  applyFilters();
+}
+
+function addCityFromSelect() {
+  const select = document.getElementById("cityFilter");
+  const city = select.value;
+  if (!city || selectedCities.includes(city)) { select.value = ""; return; }
+  selectedCities.push(city);
+  select.value = "";
+  renderCityTags();
+  applyFilters();
+}
+
+function removeCity(city) {
+  selectedCities = selectedCities.filter(c => c !== city);
+  renderCityTags();
+  applyFilters();
+}
+
+function renderCityTags() {
+  const container = document.getElementById("cityTags");
+  if (selectedCities.length === 0) {
+    container.innerHTML = '<span class="no-cities-label">Kaikki kunnat</span>';
+  } else {
+    container.innerHTML = selectedCities.map(c =>
+      `<span class="city-tag">${c} <button class="city-tag-remove" onclick="removeCity('${c.replace(/'/g, "\\'")}')">×</button></span>`
+    ).join("");
+  }
+}
+
+function toggleView() {
+  const btn = document.getElementById("viewToggleBtn");
+  if (calendar.view.type === "dayGridMonth") {
+    const now = new Date();
+    const day = now.getDay();
+    const daysToSat = day === 6 ? 0 : (6 - day);
+    const sat = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysToSat);
+    calendar.changeView("dayGridWeek");
+    calendar.gotoDate(sat);
+    btn.textContent = "📆 Kuukausinäkymä";
+  } else {
+    calendar.changeView("dayGridMonth");
+    btn.textContent = "📅 Viikkonäkymä";
+  }
+}
+
+function applyFilters() {
+  const selectedRegion = document.getElementById("regionFilter").value;
+  const includeNeighbors = document.getElementById("includeNeighbors").checked;
+  const activeTiers = [...document.querySelectorAll(".tier-cb:checked")].map(cb => cb.value);
+  const searchTerm = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+
+  const filteredEvents = events.filter(event => {
+    if (selectedRegion !== "all" && event.extendedProps.region !== selectedRegion) return false;
+    if (!activeTiers.includes(event.extendedProps.tier)) return false;
+    if (searchTerm && !event.title.toLowerCase().includes(searchTerm)) return false;
+    if (selectedCities.length > 0) {
+      let targetCities = [...selectedCities];
+      if (includeNeighbors) {
+        selectedCities.forEach(city => {
+          if (neighbors[city]) targetCities = targetCities.concat(neighbors[city]);
+        });
+      }
+      const eventTitleNormalized = normalize(event.title);
+      const courseInfo = allCourses.find(c => {
+        const n = normalize(c.name);
+        return n === eventTitleNormalized || eventTitleNormalized.includes(n) || n.includes(eventTitleNormalized);
+      });
+      if (!targetCities.includes(courseInfo ? courseInfo.city : "")) return false;
+    }
+    return true;
+  });
+  calendar.removeAllEvents();
+  calendar.addEventSource(filteredEvents);
+}
+
+function getFreeCourses(dateStr, selectedCity) {
+  const busy = events
+    .filter(e => e.start.startsWith(dateStr))
+    .map(e => normalize(e.title));
+  return allCourses.filter(c => {
+    if (selectedCity !== "all" && c.city !== selectedCity) return false;
+    const normalizedName = normalize(c.name);
+    return !busy.some(b => b === normalizedName || b.includes(normalizedName) || normalizedName.includes(b));
+  });
+}
+
+function showFreeToday() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset() * 60000;
+  const today = new Date(now - offset).toISOString().split("T")[0];
+  const selectedRegion = document.getElementById("regionFilter").value;
+  const selectedCity = document.getElementById("cityFilter").value;
+  const container = document.getElementById("freeCoursesList");
+  let html = `<h2>Vapaat radat ${today}</h2>`;
+  if (selectedCity !== "all") {
+    const freeMain = getFreeCourses(today, selectedCity);
+    html += `<h3>📍 ${selectedCity}</h3>`;
+    if (freeMain.length === 0) {
+      html += "<p style='font-size:0.82rem;color:#7a9a7a;'>Ei täysin vapaita ratoja.</p>";
+    } else {
+      freeMain.forEach(c => {
+        html += `<div style="padding:5px 8px; background:#e8f5e9; margin-bottom:4px; border-left:3px solid #2d8c3e; border-radius:4px; font-size:0.82rem;">✅ ${c.name}</div>`;
+      });
+    }
+    const myNeighbors = neighbors[selectedCity] || [];
+    let neighborHtml = "";
+    myNeighbors.forEach(nCity => {
+      const freeInNeighbor = getFreeCourses(today, nCity);
+      if (freeInNeighbor.length > 0) {
+        neighborHtml += `<p style='font-size:0.82rem;margin-top:4px;'><strong>${nCity}:</strong> ${freeInNeighbor.map(c => c.name).join(", ")}</p>`;
+      }
+    });
+    if (neighborHtml) html += "<hr style='margin:8px 0;border-color:#e0ede0;'><h4>Naapurikunnat:</h4>" + neighborHtml;
+  } else {
+    if (selectedRegion === "all") {
+      html += "<p style='font-size:0.82rem;color:#7a9a7a;'>Valitse maakunta nähdäksesi vapaat radat.</p>";
+    } else {
+      html += `<h3>🌍 ${selectedRegion}</h3>`;
+      const citiesInRegion = [...new Set(allCourses
+        .filter(c => c.region === selectedRegion)
+        .map(c => c.city))].sort();
+      citiesInRegion.forEach(city => {
+        const freeInCity = getFreeCourses(today, city);
+        if (freeInCity.length > 0) {
+          html += `<div style="margin-top:8px;"><strong style="font-size:0.82rem;">${city}:</strong><br>`;
+          html += freeInCity.map(c => `<span style="display:inline-block;background:#e8f5e9;padding:2px 8px;margin:2px;border-radius:4px;font-size:0.78rem;">${c.name}</span>`).join(" ");
+          html += `</div>`;
+        }
+      });
+    }
+  }
+  container.innerHTML = html;
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const rawData = `Uusimaa, Raasepori	11/05/2026 - 08/06/2026	Viikoittain	Karjaan Frisbeegolf Park → Selcast - (etutiit)	7	MJ15 MJ12	Ilmainen viikkokisa kaikille junnuille.
+Karjaan juniors viikkokisa → 1. Kierros
+Uusimaa, Raasepori	11/05/2026	18:00	Karjaan Frisbeegolf Park → Selcast - (etutiit)	6	MJ15 MJ12	Ilmainen viikkokisa. Ilmoittautuminen avoinna
+Karkkilan viikkokilpailut 2026 → 11.5
+Uusimaa, Karkkila	11/05/2026	18:00	Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	3	Metrix rating alle 870	Metrix rating 870-935	Metrix rating yli 935	Alku: 04/05/2026 21:00	Päättyy: 11/05/2026 17:00
+Kantarelli DGP Viikkokilpailut by Sweetspot ry → 4. Kierros
+Uusimaa, Lohja	11/05/2026	18:00	Viikoittain	Kantarelli DGC	2	1-859 860-909 910+	Alku: 14/04/2026 14:00	Päättyy: 11/05/2026 17:00
+Länsi-Uusimaan FribbeTour 2026 → Västerby: B-Rata
+Uusimaa, Hanko	11/05/2026	18:00	L - PDGA	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	1	RPA RAD RAE RAF	Alku: 28/04/2026 00:00	Päättyy: 11/05/2026 17:00
+Nummenmäki PDGA-Liiga → Liiga #2
+Uusimaa, Hyvinkää	11/05/2026	18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG	Alku: 05/05/2026 16:00	Päättyy: 12/05/2026 16:30
+VIIKKOKISAT 2026 → Inkoo viikkokisat2026 nmc
+Uusimaa, Inkoo	12/05/2026	18:00	Inkoo discgolf → Inkoo discgolf 2021	0	Pro 0 ja 930+ semi 860-929 Harraste 1-859	Alku: 05/04/2026 20:11	Päättyy: 12/05/2026 16:00
+Karjaan parikisa 2026 → 5. Kierros
+Uusimaa, Raasepori	12/05/2026	18:00	Parikilpailu	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin	Päättyy: 12/05/2026 16:30
+Lohi viikkokisat → 5. Kierros
+Uusimaa, Hanko	12/05/2026	18:00	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	MPO MP40 HaHy	Päättyy: 12/05/2026 17:30
+Paloheinän viikkisliiga 1/2026 → Osakilpailu 4/8
+Uusimaa, Helsinki	12/05/2026	07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin	Päättyy: 12/05/2026 22:00
+Scouting Tour → Rock Valley
+Uusimaa, Vihti	13/05/2026	16:30	Rock Valley Premium Disc Golf Resort → Amateur	96	Avoin Naiset Masterit Juniorit	Alku: 20/04/2026 21:00	Päättyy: 11/05/2026 22:00
+Sibbe Liiga #1 → 1/6 Keltainen
+Uusimaa, Sipoo	13/05/2026	17:30	L - PDGA	Sibbe Disc Golf → Yellow 2025	0	RPA RAE RAF	Alku: 06/05/2026 21:00	Päättyy: 13/05/2026 16:00
+Mäntsälän viikkokisat 2026 → ProMäny
+Uusimaa, Mäntsälä	13/05/2026	18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → Pro-Mäny 2021	0	0-rating Juniorit Rating 1-850	Alku: 06/05/2026 21:00	Päättyy: 13/05/2026 17:00
+Puolarmaarin viikkokilpailut 2026 → 13.5
+Uusimaa, Espoo	13/05/2026	18:00	Viikoittain	Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	0	Metrix rating 1-839	Alku: 06/05/2026 08:00	Päättyy: 13/05/2026 16:00
+NBDG One Round Keinukallio
+Uusimaa, Kerava	14/05/2026	09:00	C - PDGA	Keinukallio 2024 → Normaali layout	110	MPO FPO MP40 FP40 MA2 FA2 MA3 FA3	Alku: 11/03/2026 19:00	Päättyy: 12/05/2026 23:00
+Skogby Amatöörit 2026
+Uusimaa, Raasepori	14/05/2026	10:00	C - PDGA	Skogby, → Skogby-18 kisarata	26	FA1 FA2 FA3 FA4 MA1 MA2 MA3 MA4	Alku: 01/03/2026 18:00	Päättyy: 13/05/2026 18:00
+Pääkaupunkiseudun junior cup 2026 → Osakilpailu #2
+Uusimaa, Kirkkonummi	14/05/2026	13:00	Kirkkonummen frisbeegolfrata → Kirkkonummen Frisbeegolf Layout A	14	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12
+Karjaan viikkokilpailut 2026 → 5. Kierros
+Uusimaa, Raasepori	14/05/2026	18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Rating <900 Rating <830 MJ15	Päättyy: 14/05/2026 16:30
+Ahven viikkokilpailu → 5. Kierros
+Uusimaa, Hanko	14/05/2026	18:00	Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40 HaHy	Päättyy: 14/05/2026 17:30
+Veikkolan viikkokisat 2026 → 15.5.2026
+Uusimaa, Kirkkonummi	15/05/2026	18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	Päättyy: 15/05/2026 17:00
+Paperiliiton frisbeegolfkilpailu 2026
+Uusimaa, Karkkila	16/05/2026	10:00	Karkkilan frisbeegolfrata → Gold (2024-)	75	Kilpasarja Harrastesarja Naisten sarja
+Junioreiden SM-karsinnat 2026 → Espoo
+Uusimaa, Espoo	16/05/2026		C - PDGA	Äijänpelto → Äijänpelto Frisbeegolf (2021)	61	MPO FPO MJ15 FJ15	Päättyy: 14/05/2026 18:00
+Sepän Heitto 2026
+Uusimaa, Mäntsälä	16/05/2026	10:00	C - PDGA	Mäntsälän frisbeegolfpuisto → Pro-Mäny 2021	35	RPA RAH RAD RAE RAF RAG	Päättyy: 08/05/2026 23:59
+Sammon Ryöstö 2026
+Uusimaa, Lohja	16/05/2026	10:00	C - PDGA	Sammatin frisbeegolfrata → Sammatin frisbeegolfrata	23	RPA RAH RAD RAE RAF	Päättyy: 11/05/2026 23:59
+Takaysi, Västerby
+Uusimaa, Raasepori	17/05/2026	10:05	C - PDGA	Västerby, Tammisaari → B-18 (2025)	31	MPO FPO MA2 FA2 MA3 FA3 MA4 FA4 MA40 FA40	Päättyy: 12/05/2026 23:59
+Ford AM By Fribakisat.fi
+Uusimaa, Tuusula	17/05/2026	10:00	C - PDGA	Ford Amateur DiscGolfPark (A1) → 1	23	MA1 FA1 MA2 FA2 MA3 FA3 MA4 FA4	Päättyy: 14/05/2026 18:00
+Karjaan juniors viikkokisa → 2. Kierros
+Uusimaa, Raasepori	18/05/2026	18:00	Karjaan Frisbeegolf Park → Selcast - (etutiit)	1	MJ15 MJ12	Ilmoittautuminen avoinna
+Nummenmäki PDGA-Liiga → Liiga #3
+Uusimaa, Hyvinkää	18/05/2026	18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG
+Karkkilan viikkokilpailut 2026 → 18.5
+Uusimaa, Karkkila	18/05/2026	18:00	Viikoittain	Karkkilan frisbeegolfrata → Gold (2024-)	0	Metrix rating alle 870	Päättyy: 18/05/2026 17:00
+Karjaan parikisa 2026 → 6. Kierros
+Uusimaa, Raasepori	19/05/2026	18:00	Parikilpailu	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin	Päättyy: 19/05/2026 16:30
+Lohi viikkokisat → 6. Kierros
+Uusimaa, Hanko	19/05/2026	18:00	Lillmärsanin metsä → Hanko Lillmärsan etu-lohi 2018	0	MPO MP40 HaHy	Päättyy: 19/05/2026 17:30
+Paloheinän viikkisliiga 1/2026 → Osakilpailu 5/8
+Uusimaa, Helsinki	19/05/2026	07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin
+NBDG Extra Sahanmäki
+Uusimaa, Hyvinkää	20/05/2026	18:00	C - PDGA	Sahanmäki DGP → Sahanmäki 2023	39	RPA RAD RAE RAF RAG	Päättyy: 20/05/2026 15:00
+Sibbe Liiga #1 → 2/6 Sininen
+Uusimaa, Sipoo	20/05/2026	17:30	L - PDGA	Sibbe Disc Golf → Blue 2025	0	RPA RAE RAF	Päättyy: 20/05/2026 16:00
+Mäntsälän viikkokisat 2026 → MiniMörri
+Uusimaa, Mäntsälä	20/05/2026	18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → MIniMörri 2021	0	0-rating Juniorit Rating 1-850	Päättyy: 20/05/2026 17:00
+Karjaan viikkokilpailut 2026 → 6. Kierros
+Uusimaa, Raasepori	21/05/2026	18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Rating <900	Päättyy: 21/05/2026 16:30
+Ahven viikkokilpailu → 6. Kierros
+Uusimaa, Hanko	21/05/2026	18:00	Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40 HaHy	Päättyy: 21/05/2026 17:30
+Veikkolan viikkokisat 2026 → 22.5.2026
+Uusimaa, Kirkkonummi	22/05/2026	18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	Päättyy: 22/05/2026 17:00
+Battle of the Three Forests 2026 → Kierros1
+Uusimaa, Raasepori	23/05/2026	10:00	B - PDGA	Skogby, → Skogby-18 kisarata 2025	83	MPO MP40 MP50 FPO FP40 FP50	Päättyy: 20/05/2026 21:00
+Battle of the Three Forests 2026 → Kierros2
+Uusimaa, Inkoo	23/05/2026	14:30	B - PDGA	Inkoo discgolf → Inkoo discgolf 2021	0	MPO MP40 MP50 FPO FP40 FP50
+Battle of the Three Forests 2026 → Kierros3
+Uusimaa, Lohja	24/05/2026	09:00	B - PDGA	Kantarelli DGC	0	MPO MP40 MP50 FPO FP40 FP50
+Pääkaupunkiseudun junior cup → Osakilpailu #3
+Uusimaa, Espoo	23/05/2026	13:00	Puolarmaarin frisbeegolfrata → Puolarmaarin viikkokisa layout	5	MJ18 MJ15 MJ12 FJ18 FJ15 FJ12	Päättyy: 23/05/2026 12:00
+Nummenmäki PDGA-Liiga → Liiga #4
+Uusimaa, Hyvinkää	25/05/2026	18:00	L - PDGA	Nummenmäki DiscGolfPark → DGP-21 (2017)	0	RPA RAD RAE RAF RAG
+Karjaan parikisa 2026 → 7. Kierros
+Uusimaa, Raasepori	26/05/2026	18:00	Parikilpailu	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin	Päättyy: 26/05/2026 16:30
+Lohi viikkokisat → 7. Kierros
+Uusimaa, Hanko	26/05/2026	18:00	Lillmärsanin metsä → Hanko - Taka-lohi 2019	0	MPO MP40 HaHy	Päättyy: 26/05/2026 17:30
+Paloheinän viikkisliiga 1/2026 → Osakilpailu 6/8
+Uusimaa, Helsinki	26/05/2026	07:00	Viikoittain	Paloheinän frisbeegolfrata → 18 - Par 54 (2025)	0	Alle 840 Alle 930 Avoin
+Sibbe Liiga #1 → 3/6 Musta
+Uusimaa, Sipoo	27/05/2026	17:30	L - PDGA	Sibbe Disc Golf → Black 2025	0	RPA RAE RAF	Päättyy: 27/05/2026 16:00
+Mäntsälän viikkokisat 2026 → MegaMäny
+Uusimaa, Mäntsälä	27/05/2026	18:00	Viikoittain	Mäntsälän frisbeegolfpuisto → MegaMäny 2021	0	0-rating Juniorit Rating 1-850	Päättyy: 27/05/2026 17:00
+Karjaan viikkokilpailut 2026 → 7. Kierros
+Uusimaa, Raasepori	28/05/2026	18:00	Viikoittain	Karjaan Frisbeegolf Park → Maasilta 2021 (takatii)	0	Avoin Rating <900	Päättyy: 28/05/2026 16:30
+Ahven viikkokilpailu → 7. Kierros
+Uusimaa, Hanko	28/05/2026	18:00	Lillmärsanin metsä → Hanko Lill-Märsan Ahven	0	MPO MP40 HaHy	Päättyy: 28/05/2026 17:30
+Veikkolan viikkokisat 2026 → 29.5.2026
+Uusimaa, Kirkkonummi	29/05/2026	18:00	Viikoittain	Veikkolan frisbeegolfrata → Veikkola 2024	0	Avoin Haastajat Juniorit	Päättyy: 29/05/2026 17:00
+Amatöörien SM-karsinnat → Lemmenlaakso
+Uusimaa, Järvenpää	30/05/2026	11:22	C - PDGA	Lemmenlaakson frisbeegolfrata → Lemmenlaakso 05/2023	131	MA1 FA1 MA40 FA40 MA50 FA50 MA60 FA60	Päättyy: 26/04/2026 23:00
+NBDG Amateurs Oittaa
+Uusimaa, Espoo	31/05/2026	10:00	C - PDGA	Oittaan ulkoilualue, Espoo → Kalliometsä (4/2021)	33	MA1 FA1 MA40 FA40 MA50 FA50 MA3 FA3 MJ18 FJ18	Päättyy: 27/05/2026 23:00
+PFGS Viikkokilpailut → Parikisa #1
+Varsinais-Suomi, Paimio	11/05/2026	18:00	Parikilpailu	Paimio DGP → Viikkokisat Paimio 18	5	Jono Parin paremman rating 1-900	Päättyy: 11/05/2026 16:00
+Laitilan viikkokisat → 6. Kierros
+Varsinais-Suomi, Laitila	11/05/2026	18:00	Viikoittain	Laitilan frisbeegolfrata → Sininen 2026 - 24 väylää	4	950+ 900+ 850+ 800+ Alle 800 0 rating	Päättyy: 11/05/2026 17:00
+FOREN KESÄ 2026 → FOREN KESÄ #2
+Varsinais-Suomi, Turku	12/05/2026	18:00	Viikoittain	Luolavuoren Frisbeegolfpuisto → Pro 2025 (Sininen)	13	RATING YLI 960	Päättyy: 12/05/2026 17:15
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #2
+Varsinais-Suomi, Turku	13/05/2026	18:00	Viikoittain	Lausteen frisbeegolfpuisto → Tommis Special	1	>960 920-959 880-919 830-879 <830	Päättyy: 13/05/2026 17:15
+KaPa Disc Golf viikkokisat → 2. Kierros
+Varsinais-Suomi, Vehmaa	13/05/2026	18:30	Vehmaa DiscGolfPark → DGP-18 (2014)	0	1-799 800-849 850-899 950+ 0	Päättyy: 13/05/2026 17:30
+Frisbeegolfseura 7k → Ace Hela Race
+Varsinais-Suomi, Turku	14/05/2026	12:00	Lausteen frisbeegolfpuisto → Täysi kierros 24 väylää	8	Metrix-rating yli 940	Päättyy: 14/05/2026 11:00
+Frisbeegolfseura 7k → Lausteen Joukkuekisa #1
+Varsinais-Suomi, Turku	18/05/2026	18:00	Parikilpailu	Viikoittain	Lausteen frisbeegolfpuisto → Tulos-layout 24 väylää	5	Rating ka >930	Päättyy: 18/05/2026 17:30
+KaPa Disc Golf viikkokisat → 3. Kierros
+Varsinais-Suomi, Uusikaupunki	20/05/2026	18:30	Kalannin Frisbeegolfrata → 2025	0	1-799 800-849 850-899 950+ 0	Päättyy: 20/05/2026 17:30
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #3
+Varsinais-Suomi, Turku	20/05/2026	18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros 24 väylää	0	>960 920-959 880-919 830-879 <830	Päättyy: 20/05/2026 17:00
+Scouting Tour → Yliskulma DGC
+Varsinais-Suomi, Lieto	21/05/2026	16:30	Yliskulma FGR → Alkuperäinen2021	86	Avoin Naiset Masterit Juniorit	Päättyy: 19/05/2026 22:00
+NBDG Extra Laitila
+Varsinais-Suomi, Laitila	23/05/2026	11:00	C - PDGA	Laitilan frisbeegolfrata → Keltainen 2026 - 18 väylää	20	RPA RAD RAE RAF RAG	Päättyy: 20/05/2026 23:00
+KaPa Disc Golf joukkuekisat → Teamwork
+Varsinais-Suomi, Uusikaupunki	23/05/2026	10:00	Kalannin Frisbeegolfrata → 2025	0	Yhteisrating 1750+	Päättyy: 20/05/2026 17:30
+KaPa Disc Golf viikkokisat → 4. Kierros
+Varsinais-Suomi, Uusikaupunki	27/05/2026	18:30	Kalannin Frisbeegolfrata → Kalannin Urheilukenttä	0	1-799 800-849 850-899 950+ 0	Päättyy: 20/05/2026 17:30
+7k - Viikkokisat 2026 → Lausteen viikkokilpailu #4
+Varsinais-Suomi, Turku	27/05/2026	18:00	Viikoittain	Lausteen frisbeegolfpuisto → Täysi kierros 24 väylää	0	>960 920-959 880-919 830-879 <830
+Teemu Lampaisen fundraiser - parikisa
+Varsinais-Suomi, Turku	31/05/2026	09:00	Parikilpailu	Viikoittain	Luolavuori Teemun fundraiser → Luolavuori Teemun fundraiser (Blue)	12	Rating yhteensä yli 1800	Päättyy: 30/05/2026 23:00
+Pirtin kentän maanantaiviikkarit → #1
+Kanta-Häme, Hämeenlinna	11/05/2026	18:00	Viikoittain	Pirtin kentän Frisbeegolfrata → 18-väylää (2026)	17	Avoin	Päättyy: 11/05/2026 16:00
+Ehtoorundi tour -26 → Hattula
+Kanta-Häme, Hattula	12/05/2026	18:00	C - PDGA	Hattula DiscGolfPark → DGP-18 (2014)	45	RPA RAH RAD RAE RAF RAG	Päättyy: 11/05/2026 18:00
+ReTee viikkokisat 2026 → Lastujärven frisbeegolfrata
+Kanta-Häme, Janakkala	12/05/2026	18:00	Viikoittain	Lastujärvi, Turenki	3	Ei ratingia Amatöörit Semipro Avoin	Päättyy: 12/05/2026 15:00
+FBG Forssa yksilökisat 2026 → Jokioinen
+Kanta-Häme, Jokioinen	13/05/2026	18:00	Viikoittain	Jokioinen DiscGolfPark → Jokioinen DGP	9	Metrix rating +920 Metrix rating 850-919	Päättyy: 13/05/2026 16:00
+Viisarin viikkokisat → 13.05.26
+Kanta-Häme, Hämeenlinna	13/05/2026	18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	4	Avoin MAX930 MAX850	Päättyy: 13/05/2026 15:00
+ReTee viikkoparikisat 2026 → Lastujärven frisbeegolfrata
+Kanta-Häme, Janakkala	15/05/2026	18:00	Parikilpailu	Viikoittain	Lastujärvi, Turenki	0	Amatöörit Avoin	Päättyy: 15/05/2026 15:00
+RFG viikkokisat → Yksilökisat
+Kanta-Häme, Riihimäki	17/05/2026	16:00	Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	Ei ratingia Alle 860 860-930 Yli 930	Päättyy: 03/05/2026 15:00
+Viisarin viikkokisat → 20.5.26
+Kanta-Häme, Hämeenlinna	20/05/2026	18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	0	Avoin MAX930 MAX850	Päättyy: 20/05/2026 15:00
+Ehtoorundi tour -26 → Kiipula
+Kanta-Häme, Janakkala	26/05/2026	18:00	C - PDGA	Kiipulasäätiön frisbeegolfrata → 22 -par 70 (2023)	10	RPA RAH RAD RAE RAF RAG	Päättyy: 25/05/2026 12:00
+Viisarin viikkokisat → 27.05.26
+Kanta-Häme, Hämeenlinna	27/05/2026	18:00	Viikoittain	Hämeenlinnan frisbeegolfrata → Viisari kesä -22	0	Avoin MAX930 MAX850	Päättyy: 27/05/2026 15:00
+Game of Throws 11
+Kanta-Häme, Riihimäki	31/05/2026	10:00	C - PDGA	Riutta DiscGolfPark → DPG-19 (2024)	14	FPO MPO FJ18 MJ18 FJ15 MJ15 FA2 MA2 FA40 MA40	Päättyy: 30/05/2026 15:00`;
+
+  const lines = rawData.trim().split("\n");
+  lines.forEach(line => {
+    if (!line.trim()) return;
+    const parts = line.split("\t");
+    if (parts.length < 2) return;
+
+    const locationPart = parts[0];
+    const region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "Uusimaa";
+
+    // Find date field (DD/MM/YYYY format)
+    let dateStr = "";
+    let timeStr = "";
+    for (let i = 1; i < parts.length; i++) {
+      const m = parts[i].match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+      if (m) {
+        dateStr = `${m[3]}-${m[2]}-${m[1]}`;
+        const timePart = parts[i].replace(/^\d{2}\/\d{2}\/\d{4}\s*-\s*\d{2}\/\d{2}\/\d{4}/, "").trim();
+        if (!timePart && i + 1 < parts.length && parts[i+1].match(/^\d{2}:\d{2}/)) {
+          timeStr = parts[i+1].trim();
+        }
+        break;
+      }
+    }
+    if (!dateStr) return;
+
+    // Title from the line (last meaningful text part or first line if multi-line)
+    const titleLine = line.split("\n")[0];
+    // Course/layout is in the field containing "→"
+    const coursePart = parts.find(p => p.includes("→")) || "";
+    const layoutParts = coursePart.split("→");
+    const courseName = layoutParts[0].trim();
+    const layout = layoutParts.length > 1 ? layoutParts[1].trim() : "";
+
+    // Title: use course name as event title
+    const title = courseName || parts[1] || "Tapahtuma";
+
+    // Tier detection
+    let tier = "default";
+    if (line.includes("B - PDGA")) tier = "b";
+    else if (line.includes("L - PDGA")) tier = "l";
+    else if (line.includes("C - PDGA")) tier = "c";
+    else if (line.includes("Viikoittain")) tier = "weekly";
+
+    // Deadline
+    const dlMatch = line.match(/Päättyy:\s*(\S+\s+\S+)/);
+    const deadline = dlMatch ? dlMatch[1] : "";
+
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const eventDate = new Date(dateStr);
+    if (eventDate >= todayStart) {
+      events.push({
+        title: title,
+        start: timeStr ? `${dateStr}T${timeStr}` : dateStr,
+        extendedProps: { region, time: timeStr, tier, layout, deadline }
+      });
+    }
+  });
+
+  const calendarEl = document.getElementById("calendar");
+  calendar = new FullCalendar.Calendar(calendarEl, {
+    locale: "fi",
+    firstDay: 1,
+    weekNumbers: true,
+    weekText: "vk",
+    nowIndicator: true,
+    initialView: window.innerWidth < 768 ? "listMonth" : "dayGridMonth",
+    events: events,
+    eventClassNames: function(arg) {
+      return ["ev-" + arg.event.extendedProps.tier];
+    },
+    eventDidMount: function(info) {
+      const deadline = info.event.extendedProps.deadline;
+      if (!deadline) return;
+      const [datePart, timePart] = deadline.split(" ");
+      const dp = (datePart || "").split("/");
+      if (dp.length < 3) return;
+      const deadlineDate = new Date(`${dp[2]}-${dp[1]}-${dp[0]}T${timePart || "23:59"}`);
+      const diffMs = deadlineDate - new Date();
+      if (diffMs > 3 * 24 * 60 * 60 * 1000) return;
+      const titleEl = info.el.querySelector(".fc-event-title");
+      if (!titleEl) return;
+      const dot = document.createElement("span");
+      dot.className = "deadline-dot " + (diffMs < 0 ? "deadline-closed" : "deadline-soon");
+      dot.title = diffMs < 0 ? "Ilmoittautuminen päättynyt" : `Deadline: ${deadline}`;
+      titleEl.prepend(dot);
+    },
+    eventClick: function(info) {
+      const props = info.event.extendedProps;
+      const tierLabels = { b: "B-tier", l: "L-liiga", c: "C-tier", weekly: "Viikkokilpailu", default: "Kisa" };
+      const badge = document.getElementById("modalTierBadge");
+      badge.textContent = tierLabels[props.tier] || "Kisa";
+      badge.className = "modal-tier-badge ev-" + (props.tier || "default");
+      document.getElementById("modalTitle").innerText = info.event.title;
+      let html = `<div class="modal-field"><strong>Maakunta:</strong> ${props.region}</div>`;
+      if (props.time) html += `<div class="modal-field"><strong>Aika:</strong> ${props.time}</div>`;
+      if (props.layout) html += `<div class="modal-field"><strong>Layout:</strong> ${props.layout}</div>`;
+      if (props.deadline) html += `<div class="modal-field"><strong>Ilmoittautuminen päättyy:</strong> ${props.deadline}</div>`;
+      document.getElementById("modalInfo").innerHTML = html;
+      document.getElementById("modal").style.display = "block";
+    }
+  });
+  calendar.render();
+  updateCityFilter();
+});
+</script>
+</body>
+</html>
