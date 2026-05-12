@@ -324,13 +324,13 @@
       // 2. Kuntasuodatus
       let matchesCity = true;
       if (selectedCity !== "all") {
-        // Etsitään radan tiedot normalisoidun nimen perusteella
         const normalizedEventTitle = normalize(event.title);
+        // Etsitään radan tiedot vertaamalla molempia nimiä normalisoituna
         const courseInfo = allCourses.find(c => normalize(c.name) === normalizedEventTitle);
         
         const eventCity = courseInfo ? courseInfo.city : "";
-        
         let targetCities = [selectedCity];
+        
         if (includeNeighbors && neighbors[selectedCity]) {
           targetCities = [selectedCity, ...neighbors[selectedCity]];
         }
