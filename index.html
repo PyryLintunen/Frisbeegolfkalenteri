@@ -290,7 +290,10 @@
   // 3. APUFUNKTIOT
   function normalize(str) {
     if (!str) return "";
-    return str.toLowerCase().replace(/frisbeegolfrata|frisbeegolfpuisto|disc golf|dgp|[()]/g, "").trim();
+    return str.toLowerCase()
+      .replace(/frisbeegolfrata|frisbeegolfpuisto|disc golf|dgp|[()]/g, "")
+      .replace(/\s+/g, "") // Poistaa kaikki välilyönnit
+      .trim();
   }
 
   function updateCityFilter() {
@@ -334,10 +337,19 @@
   }
 
   function getFreeCourses(dateStr, selectedCity) {
-    const busy = events.filter(e => e.start.startsWith(dateStr)).map(e => normalize(e.title));
+    // 1. Kerätään päivän varatut radat ja normalisoidaan niiden nimet
+    const busy = events
+      .filter(e => e.start.startsWith(dateStr))
+      .map(e => normalize(e.title));
+
+    // 2. Suodatetaan allCourses-listasta ne, joiden nimeä EI löydy busy-listalta
     return allCourses.filter(c => {
       if (selectedCity !== "all" && c.city !== selectedCity) return false;
-      return !busy.some(b => b.includes(normalize(c.name)) || normalize(c.name).includes(b));
+      
+      const normalizedName = normalize(c.name);
+      
+      // Palautetaan true (eli rata on vapaa), jos nimeä ei löydy varattujen listalta
+      return !busy.some(b => b === normalizedName);
     });
   }
 
@@ -659,11 +671,13 @@ Kanta-Häme, Riihimäki	31/05/2026 10:00	C - PDGA	Riutta DiscGolfPark → DPG-19
       const todayStart = new Date();
       todayStart.setHours(0, 0, 0, 0); // Asetetaan kello päivän alkuun
 
+      const formattedTitle = coursePart.includes("→") 
+        ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
+        : coursePart.trim();
+
       if (eventDate >= todayStart) {
         events.push({
-          title: coursePart.includes("→") 
-        ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
-        : coursePart.trim(),
+          title: formattedTitle,
           start: `${y}-${m}-${d}T${time}`,
           extendedProps: { region: region, time: time }
         });
