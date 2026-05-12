@@ -773,9 +773,11 @@ Kanta-Häme, Hämeenlinna	27/05/2026	18:00	Viikoittain	Hämeenlinnan frisbeegolf
 Game of Throws 11
 Kanta-Häme, Riihimäki	31/05/2026	10:00	C - PDGA	Riutta DiscGolfPark → DPG-19 (2024)	14	FPO MPO FJ18 MJ18 FJ15 MJ15 FA2 MA2 FA40 MA40	Päättyy: 30/05/2026 15:00`;
 
+  const skipField = /^(\d{2}:\d{2}|\d+$|C - PDGA|B - PDGA|L - PDGA|Viikoittain|Parikilpailu)/;
+
   const lines = rawData.trim().split("\n");
   lines.forEach(line => {
-    if (!line.trim()) return;
+    if (!line.trim() || !line.includes("\t")) return;
     const parts = line.split("\t");
     if (parts.length < 2) return;
 
@@ -785,12 +787,13 @@ Kanta-Häme, Riihimäki	31/05/2026	10:00	C - PDGA	Riutta DiscGolfPark → DPG-19
     // Find date field (DD/MM/YYYY format)
     let dateStr = "";
     let timeStr = "";
+    let dateIdx = -1;
     for (let i = 1; i < parts.length; i++) {
       const m = parts[i].match(/^(\d{2})\/(\d{2})\/(\d{4})/);
       if (m) {
         dateStr = `${m[3]}-${m[2]}-${m[1]}`;
-        const timePart = parts[i].replace(/^\d{2}\/\d{2}\/\d{4}\s*-\s*\d{2}\/\d{2}\/\d{4}/, "").trim();
-        if (!timePart && i + 1 < parts.length && parts[i+1].match(/^\d{2}:\d{2}/)) {
+        dateIdx = i;
+        if (i + 1 < parts.length && /^\d{2}:\d{2}/.test(parts[i+1])) {
           timeStr = parts[i+1].trim();
         }
         break;
@@ -798,16 +801,24 @@ Kanta-Häme, Riihimäki	31/05/2026	10:00	C - PDGA	Riutta DiscGolfPark → DPG-19
     }
     if (!dateStr) return;
 
-    // Title from the line (last meaningful text part or first line if multi-line)
-    const titleLine = line.split("\n")[0];
-    // Course/layout is in the field containing "→"
-    const coursePart = parts.find(p => p.includes("→")) || "";
-    const layoutParts = coursePart.split("→");
-    const courseName = layoutParts[0].trim();
-    const layout = layoutParts.length > 1 ? layoutParts[1].trim() : "";
+    // Find course field: first field after date that is not time/type/number
+    let coursePart = "";
+    for (let i = dateIdx + 1; i < parts.length; i++) {
+      const p = parts[i].trim();
+      if (p && !skipField.test(p)) { coursePart = p; break; }
+    }
 
-    // Title: use course name as event title
-    const title = courseName || parts[1] || "Tapahtuma";
+    let courseName, layout;
+    if (coursePart.includes("→")) {
+      const arrow = coursePart.indexOf("→");
+      courseName = coursePart.slice(0, arrow).replace(/,\s*$/, "").trim();
+      layout = coursePart.slice(arrow + 1).trim();
+    } else {
+      courseName = coursePart.trim();
+      layout = "";
+    }
+
+    const title = courseName || "Tapahtuma";
 
     // Tier detection
     let tier = "default";
