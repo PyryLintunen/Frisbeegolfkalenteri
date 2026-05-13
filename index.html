@@ -2140,22 +2140,29 @@ RFG viikkokisat → Parikisat
 Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	1200-1820 Alle 1200 tai yli 1820	Lukekaa ohjeet maksamisesta. Holaripotti on XX €.	Alku: 17/05/2026 Päättyy: 07/06/2026 15:00
     `;
 
-    const lines = rawData.trim().split("\n");
-    lines.forEach(line => {
-      if (line.startsWith("#") || !line.trim()) return;
-      const parts = line.split("\t");
-      if (parts.length < 4) return;
-      const locationPart = parts[0];
-      const dateTime = parts[1];
-      const coursePart = parts[3];
+    // 1. Haetaan maakunta Metrix-datasta tai yritetään päätellä se
+      let region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "";
       
-      const region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "Uusimaa";
+      // 2. Haetaan kaupunki (yleensä pilkun jälkeen, esim. "Uusimaa, Tuusula")
+      const city = locationPart.includes(",") ? locationPart.split(",")[1].trim() : locationPart.trim();
+
+      // 3. VARAVENTTIILI: Jos maakunta puuttuu (kuten Teiskon tapauksessa)
+      if (!region || region === "") {
+        const foundCourse = allCourses.find(c => normalize(c.city) === normalize(city));
+        if (foundCourse) {
+          region = foundCourse.region;
+        } else {
+          // Jos vieläkään ei löydy, laitetaan vasta sitten oletus tai "Määrittelemätön"
+          region = "Uusimaa"; 
+        }
+      }
+
       const [date, time] = dateTime.split(" ");
       const [d, m, y] = date.split("/");
       
       const eventDate = new Date(`${y}-${m}-${d}T${time}`);
       const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0); // Asetetaan kello päivän alkuun
+      todayStart.setHours(0, 0, 0, 0);
 
       const formattedTitle = coursePart.includes("→") 
         ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
@@ -2165,11 +2172,13 @@ Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGol
         events.push({
           title: formattedTitle,
           start: `${y}-${m}-${d}T${time}`,
-          extendedProps: { region: region, time: time }
+          extendedProps: { 
+            region: region, 
+            time: time,
+            city: city // Lisätään kaupunki myös propsiksi, helpottaa debuggausta
+          }
         });
       }
-    });
-
     const calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
       locale: 'fi',
