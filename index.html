@@ -2140,85 +2140,86 @@ RFG viikkokisat → Parikisat
 Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	1200-1820 Alle 1200 tai yli 1820	Lukekaa ohjeet maksamisesta. Holaripotti on XX €.	Alku: 17/05/2026 Päättyy: 07/06/2026 15:00
     `;
 
-    // 1. Haetaan maakunta Metrix-datasta tai yritetään päätellä se
-      let region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "";
-      
-      // 2. Haetaan kaupunki (yleensä pilkun jälkeen, esim. "Uusimaa, Tuusula")
-      const city = locationPart.includes(",") ? locationPart.split(",")[1].trim() : locationPart.trim();
-
-      // 3. VARAVENTTIILI: Jos maakunta puuttuu (kuten Teiskon tapauksessa)
-      if (!region || region === "") {
-        const foundCourse = allCourses.find(c => normalize(c.city) === normalize(city));
-        if (foundCourse) {
-          region = foundCourse.region;
-        } else {
-          // Jos vieläkään ei löydy, laitetaan vasta sitten oletus tai "Määrittelemätön"
-          region = "Uusimaa"; 
-        }
-      }
-
-      const [date, time] = dateTime.split(" ");
-      const [d, m, y] = date.split("/");
-      
-      const eventDate = new Date(`${y}-${m}-${d}T${time}`);
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
-
-      const formattedTitle = coursePart.includes("→") 
-        ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
-        : coursePart.trim();
-
-      if (eventDate >= todayStart) {
-        events.push({
-          title: formattedTitle,
-          start: `${y}-${m}-${d}T${time}`,
-          extendedProps: { 
-            region: region, 
-            time: time,
-            city: city // Lisätään kaupunki myös propsiksi, helpottaa debuggausta
-          }
-        });
-      }
-    const calendarEl = document.getElementById('calendar');
-    calendar = new FullCalendar.Calendar(calendarEl, {
-      locale: 'fi',
-      firstDay: 1,
-      weekNumbers: true,
-      weekText: 'vk',
-      nowIndicator: true,
-      validRange: {
-        start: new Date().toISOString().split("T")[0]
-      },
-      initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
-      events: events,
-      eventClick: function(info) {
-        document.getElementById("modalTitle").innerText = info.event.title;
-        document.getElementById("modalInfo").innerHTML = `<b>Maakunta:</b> ${info.event.extendedProps.region}<br><b>Aika:</b> ${info.event.extendedProps.time}`;
-        document.getElementById("modal").style.display = "block";
-      }
-    });
-    calendar.render();
-    updateCityFilter();
+   // 1. Alustetaan kalenteri ensin tyhjänä
+  const calendarEl = document.getElementById('calendar');
+  calendar = new FullCalendar.Calendar(calendarEl, {
+    locale: 'fi',
+    firstDay: 1,
+    weekNumbers: true,
+    weekText: 'vk',
+    nowIndicator: true,
+    validRange: {
+      start: new Date().toISOString().split("T")[0]
+    },
+    initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth',
+    events: [], // Aluksi tyhjä
+    eventClick: function(info) {
+      document.getElementById("modalTitle").innerText = info.event.title;
+      document.getElementById("modalInfo").innerHTML = `<b>Maakunta:</b> ${info.event.extendedProps.region}<br><b>Aika:</b> ${info.event.extendedProps.time}`;
+      document.getElementById("modal").style.display = "block";
+    }
   });
+  calendar.render();
+
+  // 2. Haetaan data ja päivitetään kalenteri
+  fetch("data.json")
+    .then(response => response.text())
+    .then(rawData => {
+      const events = [];
+      const lines = rawData.trim().split("\n");
+
+      lines.forEach(line => {
+        if (line.startsWith("#") || !line.trim()) return;
+        const parts = line.split("\t");
+        if (parts.length < 4) return;
+
+        const locationPart = parts[0];
+        const dateTime = parts[1];
+        const coursePart = parts[3];
+
+        let region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "";
+        const city = locationPart.includes(",") ? locationPart.split(",")[1].trim() : locationPart.trim();
+
+        if (!region || region === "") {
+          const foundCourse = allCourses.find(c => normalize(c.city) === normalize(city));
+          if (foundCourse) {
+            region = foundCourse.region;
+          } else {
+            region = "Uusimaa"; 
+          }
+        }
+
+        const [date, time] = dateTime.split(" ");
+        const [d, m, y] = date.split("/");
+        const eventDate = new Date(`${y}-${m}-${d}T${time}`);
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+
+        const formattedTitle = coursePart.includes("→") 
+          ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
+          : coursePart.trim();
+
+        if (eventDate >= todayStart) {
+          events.push({
+            title: formattedTitle,
+            start: `${y}-${m}-${d}T${time}`,
+            extendedProps: { 
+              region: region, 
+              time: time,
+              city: city 
+            }
+          });
+        }
+      });
+
+      // Päivitetään kalenteri ja globaali events-muuttuja
+      window.events = events; 
+      calendar.addEventSource(events);
+      
+      // Päivitetään suodattimet ja listaukset
+      updateCityFilter();
+      showFreeToday(); 
+    })
+    .catch(err => console.error("Virhe ladattaessa dataa:", err));
+}); // Tämä sulkee koko scriptin alun DOMContentLoaded-osion
 </script>
-
-  <footer>
-    <div class="contact-form">
-        <h3>Ota yhteyttä</h3>
-        <p>Onko kalenterista puutteita tai haluatko antaa palautetta?</p>
-        <form action="https://formspree.io/f/xpqbbypz" method="POST">
-            <input type="email" name="email" placeholder="Sähköpostiosoitteesi" required>
-            <textarea name="message" placeholder="Viestisi..." rows="4" required></textarea>
-            <button type="submit">Lähetä viesti</button>
-        </form>
-    </div>
-    
-    <div class="copyright">
-        &copy; 2026 Vapaat Radat. Tiedot haetaan Metrix-palvelusta.
-    </div>
-    <script data-goatcounter="https://vapaatradatfi.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-</footer>
-
-</body>
-</html>
