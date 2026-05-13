@@ -949,30 +949,33 @@
     // 2. Kuntasuodatus
     let matchesCity = true;
     if (selectedCity !== "all") {
-      // Normalisoidaan kisan nimi ja poistetaan yleisimmät häiriötekijät
+      // Normalisoidaan kisan nimi ja poistetaan häiriötekijät, mukaan lukien sulut sisältöineen
       const eventTitleCleaned = normalize(event.title)
+        .replace(/\(.*\)/g, "") // POISTAA SULUT JA SISÄLLÖN (esim. "(18 - Par 59)")
         .replace("discgolfpark", "")
         .replace("dgp", "")
         .replace("frisbeegolfrata", "")
-        .replace(/n$/, "") // Poistaa genetiivin n-kirjaimen (esim. Huuhanmetsän -> Huuhanmetsä)
+        .replace("disc golf", "") // Lisätty myös tämä varmuuden vuoksi
+        .replace(/n$/, "") // Poistaa genetiivin n-kirjaimen
         .trim();
       
-      // Etsitään kaikki kaupungit, jotka ovat "sallittuja" (valittu + naapurit)
       let targetCities = [selectedCity];
       if (includeNeighbors && neighbors[selectedCity]) {
         targetCities = [selectedCity, ...neighbors[selectedCity]];
       }
 
-      // Etsitään vastaava rata ratalistasta
       const courseInfo = allCourses.find(c => {
         const courseNameCleaned = normalize(c.name)
+          .replace(/\(.*\)/g, "")
           .replace("discgolfpark", "")
           .replace("dgp", "")
           .replace("frisbeegolfrata", "")
+          .replace("disc golf", "")
           .replace(/n$/, "")
           .trim();
         
-        // Verrataan siivottuja nimiä ristiin
+        // Verrataan siivottuja nimiä
+        // Nyt "puijo" löytyy kohteesta "puijo"
         return eventTitleCleaned.includes(courseNameCleaned) || 
                courseNameCleaned.includes(eventTitleCleaned);
       });
