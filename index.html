@@ -995,10 +995,6 @@
   calendar.addEventSource(filteredEvents);
 }
 
-  calendar.removeAllEvents();
-  calendar.addEventSource(filteredEvents);
-}
-
   function getFreeCourses(dateStr, selectedCity) {
     const busy = events
       .filter(e => e.start.startsWith(dateStr))
