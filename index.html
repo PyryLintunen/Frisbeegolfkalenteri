@@ -2140,22 +2140,26 @@ RFG viikkokisat → Parikisat
 Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGolfPark → DPG-19 (2024)	0	1200-1820 Alle 1200 tai yli 1820	Lukekaa ohjeet maksamisesta. Holaripotti on XX €.	Alku: 17/05/2026 Päättyy: 07/06/2026 15:00
     `;
 
-   const lines = rawData.trim().split("\n");
-    lines.forEach(line => {
-      if (line.startsWith("#") || !line.trim()) return;
-      const parts = line.split("\t");
-      if (parts.length < 4) return;
-      const locationPart = parts[0];
+   const locationPart = parts[0];
       const dateTime = parts[1];
       const coursePart = parts[3];
       
-      const region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "Uusimaa";
+      // 1. Erotetaan maakunta ja kaupunki
+      let region = locationPart.includes(",") ? locationPart.split(",")[0].trim() : "";
+      const city = locationPart.includes(",") ? locationPart.split(",")[1].trim() : locationPart.trim();
+
+      // 2. Teisko-fix: Jos maakunta puuttuu, haetaan se ratalistasta
+      if (!region) {
+        const foundCourse = allCourses.find(c => normalize(c.city) === normalize(city));
+        region = foundCourse ? foundCourse.region : "Uusimaa";
+      }
+
       const [date, time] = dateTime.split(" ");
       const [d, m, y] = date.split("/");
       
       const eventDate = new Date(`${y}-${m}-${d}T${time}`);
       const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0); // Asetetaan kello päivän alkuun
+      todayStart.setHours(0, 0, 0, 0);
 
       const formattedTitle = coursePart.includes("→") 
         ? `${coursePart.split("→")[0].trim()} (${coursePart.split("→")[1].trim()})`
@@ -2165,10 +2169,13 @@ Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGol
         events.push({
           title: formattedTitle,
           start: `${y}-${m}-${d}T${time}`,
-          extendedProps: { region: region, time: time }
+          extendedProps: { 
+            region: region, 
+            time: time,
+            city: city // Tämä auttaa muita funktioita löytämään oikean kaupungin
+          }
         });
       }
-    });
 
     const calendarEl = document.getElementById('calendar');
     calendar = new FullCalendar.Calendar(calendarEl, {
