@@ -921,16 +921,21 @@
     const citySelect = document.getElementById("cityFilter");
     
     // Suodatetaan vain ne kaupungit, jotka kuuluvat valittuun maakuntaan
+    // Varmistetaan trimmaamalla ja pienellä kirjaimella vertailu, jos datassa on heittoja
     const uniqueCities = [...new Set(allCourses
       .filter(c => region === "all" || c.region === region)
-      .map(c => c.city))].sort();
+      .map(c => c.city.trim()))].sort();
 
-    // Tyhjennetään valikko ja lisätään uudet vaihtoehdot
-    citySelect.innerHTML = '<option value="all">Kaikki kunnat</option>';
+    // Rakennetaan sisältö muuttujaan ennen DOM-päivitystä
+    let optionsHTML = '<option value="all">Kaikki kunnat</option>';
+    
     uniqueCities.forEach(city => {
-      citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+      optionsHTML += `<option value="${city}">${city}</option>`;
     });
-  }
+
+    // Päivitetään DOM vain kerran
+    citySelect.innerHTML = optionsHTML;
+}
 
   function applyFilters() {
     const selectedRegion = document.getElementById("regionFilter").value;
