@@ -938,44 +938,55 @@
 }
 
   function applyFilters() {
-    const selectedRegion = document.getElementById("regionFilter").value;
-    const selectedCity = document.getElementById("cityFilter").value;
-    const includeNeighbors = document.getElementById("includeNeighbors").checked;
+  const selectedRegion = document.getElementById("regionFilter").value;
+  const selectedCity = document.getElementById("cityFilter").value;
+  const includeNeighbors = document.getElementById("includeNeighbors").checked;
 
-    const filteredEvents = events.filter(event => {
-      // 1. Maakuntasuodatus
-      const matchesRegion = (selectedRegion === "all" || event.extendedProps.region === selectedRegion);
+  const filteredEvents = events.filter(event => {
+    // 1. Maakuntasuodatus
+    const matchesRegion = (selectedRegion === "all" || event.extendedProps.region === selectedRegion);
+    
+    // 2. Kuntasuodatus
+    let matchesCity = true;
+    if (selectedCity !== "all") {
+      // Normalisoidaan kisan nimi ja poistetaan yleisimmät häiriötekijät
+      const eventTitleCleaned = normalize(event.title)
+        .replace("discgolfpark", "")
+        .replace("dgp", "")
+        .replace("frisbeegolfrata", "")
+        .replace(/n$/, "") // Poistaa genetiivin n-kirjaimen (esim. Huuhanmetsän -> Huuhanmetsä)
+        .trim();
       
-      // 2. Kuntasuodatus
-      let matchesCity = true;
-      if (selectedCity !== "all") {
-        const eventTitleNormalized = normalize(event.title);
-        
-        // Etsitään kaikki kaupungit, jotka ovat "sallittuja" (valittu + naapurit)
-        let targetCities = [selectedCity];
-        if (includeNeighbors && neighbors[selectedCity]) {
-          targetCities = [selectedCity, ...neighbors[selectedCity]];
-        }
-
-        // Tarkistetaan löytyykö kalenteritapahtumalle vastinetta ratalistasta, 
-        // joka kuuluu johonkin sallituista kaupungeista.
-        const courseInfo = allCourses.find(c => {
-          const courseNameNormalized = normalize(c.name);
-          return courseNameNormalized === eventTitleNormalized || 
-                 eventTitleNormalized.includes(courseNameNormalized) ||
-                 courseNameNormalized.includes(eventTitleNormalized);
-        });
-
-        const eventCity = courseInfo ? courseInfo.city : "";
-        matchesCity = targetCities.includes(eventCity);
+      // Etsitään kaikki kaupungit, jotka ovat "sallittuja" (valittu + naapurit)
+      let targetCities = [selectedCity];
+      if (includeNeighbors && neighbors[selectedCity]) {
+        targetCities = [selectedCity, ...neighbors[selectedCity]];
       }
-      
-      return matchesRegion && matchesCity;
-    });
 
-    calendar.removeAllEvents();
-    calendar.addEventSource(filteredEvents);
-  }
+      // Etsitään vastaava rata ratalistasta
+      const courseInfo = allCourses.find(c => {
+        const courseNameCleaned = normalize(c.name)
+          .replace("discgolfpark", "")
+          .replace("dgp", "")
+          .replace("frisbeegolfrata", "")
+          .replace(/n$/, "")
+          .trim();
+        
+        // Verrataan siivottuja nimiä ristiin
+        return eventTitleCleaned.includes(courseNameCleaned) || 
+               courseNameCleaned.includes(eventTitleCleaned);
+      });
+
+      const eventCity = courseInfo ? courseInfo.city : "";
+      matchesCity = targetCities.includes(eventCity);
+    }
+    
+    return matchesRegion && matchesCity;
+  });
+
+  calendar.removeAllEvents();
+  calendar.addEventSource(filteredEvents);
+}
 
   function getFreeCourses(dateStr, selectedCity) {
     const busy = events
