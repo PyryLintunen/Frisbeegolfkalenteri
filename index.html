@@ -911,10 +911,18 @@
  function normalize(str) {
     if (!str) return "";
     return str.toLowerCase()
-      .replace(/frisbeegolfrata|frisbeegolfpuisto|disc golf|dgp|[()]/g, "")
-      .replace(/\s+/g, "") // Poistaa välilyönnit
-      .trim();
-  }
+        .replace(/ä/g, "a")
+        .replace(/ö/g, "o")
+        // Poistetaan sulut ja kaikki niiden sisällä (kuten se par-luku)
+        .replace(/\(.*\)/g, "")
+        // Poistetaan yleisimmät sanat
+        .replace(/frisbeegolfrata|frisbeegolfpuisto|discgolfpark|discgolf|discgolf|dgp|disc/g, "")
+        // Poistetaan kaikki mikä ei ole kirjain tai numero (välilyönnit, viivat, pisteet)
+        .replace(/[^a-z0-9]/g, "")
+        // Poistetaan genetiivin n-kirjain lopusta
+        .replace(/n$/, "")
+        .trim();
+}
 
   function updateCityFilter() {
     const region = document.getElementById("regionFilter").value;
@@ -949,15 +957,7 @@
     // 2. Kuntasuodatus
     let matchesCity = true;
     if (selectedCity !== "all") {
-      // Normalisoidaan kisan nimi ja poistetaan häiriötekijät, mukaan lukien sulut sisältöineen
-      const eventTitleCleaned = normalize(event.title)
-        .replace(/\(.*\)/g, "") // POISTAA SULUT JA SISÄLLÖN (esim. "(18 - Par 59)")
-        .replace("discgolfpark", "")
-        .replace("dgp", "")
-        .replace("frisbeegolfrata", "")
-        .replace("disc golf", "") // Lisätty myös tämä varmuuden vuoksi
-        .replace(/n$/, "") // Poistaa genetiivin n-kirjaimen
-        .trim();
+      const eventTitleCleaned = normalize(event.title);
       
       let targetCities = [selectedCity];
       if (includeNeighbors && neighbors[selectedCity]) {
@@ -965,17 +965,9 @@
       }
 
       const courseInfo = allCourses.find(c => {
-        const courseNameCleaned = normalize(c.name)
-          .replace(/\(.*\)/g, "")
-          .replace("discgolfpark", "")
-          .replace("dgp", "")
-          .replace("frisbeegolfrata", "")
-          .replace("disc golf", "")
-          .replace(/n$/, "")
-          .trim();
+        const courseNameCleaned = normalize(c.name);
         
-        // Verrataan siivottuja nimiä
-        // Nyt "puijo" löytyy kohteesta "puijo"
+        // Nyt vertaillaan esimerkiksi "puijo" === "puijo"
         return eventTitleCleaned.includes(courseNameCleaned) || 
                courseNameCleaned.includes(eventTitleCleaned);
       });
