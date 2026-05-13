@@ -382,7 +382,7 @@
   { name: "Kemiran Frisbeegolfrata", city: "Sastamala", region: "Pirkanmaa" },
   { name: "Mouhi FG", city: "Sastamala", region: "Pirkanmaa" },
   { name: "Suodenniemen Frisbeegolf", city: "Sastamala", region: "Pirkanmaa" },
-  { name: "Tampereen Frisbeegolfkeskus", city: "Tampere", region: "Pirkanmaa" },
+  { name: "Tampere Frisbeegolfkeskus", city: "Tampere", region: "Pirkanmaa" },
   { name: "Korkeakangas DiscGolfPark", city: "Valkeakoski", region: "Pirkanmaa" },
   { name: "Pappilanniemi frisbeegolf", city: "Valkeakoski", region: "Pirkanmaa" },
   { name: "Anttilanvuori DiscGolfPark", city: "Vesilahti", region: "Pirkanmaa" },
@@ -913,14 +913,14 @@
     return str.toLowerCase()
         .replace(/ä/g, "a")
         .replace(/ö/g, "o")
-        // Poistetaan sulut ja kaikki niiden sisällä (kuten se par-luku)
+        // 1. Poistetaan sulut sisältöineen (tärkeää tehdä ennen erikoismerkkien poistoa)
         .replace(/\(.*\)/g, "")
-        // Poistetaan yleisimmät sanat
-        .replace(/frisbeegolfrata|frisbeegolfpuisto|discgolfpark|discgolf|discgolf|dgp|disc/g, "")
-        // Poistetaan kaikki mikä ei ole kirjain tai numero (välilyönnit, viivat, pisteet)
-        .replace(/[^a-z0-9]/g, "")
-        // Poistetaan genetiivin n-kirjain lopusta
+        // 2. Poistetaan yleiset sanat (lisätty center, keskus, golf)
+        .replace(/frisbeegolfkeskus|frisbeegolfpuisto|frisbeegolfrata|discgolfpark|discgolf|dgcenter|center|keskus|golf|dgp|dg/g, "")
+        // 3. Poistetaan genetiivi-n vain jos se on sanan lopussa
         .replace(/n$/, "")
+        // 4. Lopuksi vasta poistetaan välilyönnit ja kaikki muu "roska"
+        .replace(/[^a-z0-9]/g, "")
         .trim();
 }
 
