@@ -967,20 +967,33 @@
         targetCities = [selectedCity, ...neighbors[selectedCity]];
       }
 
-      const courseInfo = allCourses.find(c => {
+      // ETSITÄÄN KAIKKI MAHDOLLISET OSUMAT (esim. molemmat Fordit)
+      const potentialCourses = allCourses.filter(c => {
         const courseNameCleaned = normalize(c.name);
-        
-        // Nyt vertaillaan esimerkiksi "puijo" === "puijo"
         return eventTitleCleaned.includes(courseNameCleaned) || 
                courseNameCleaned.includes(eventTitleCleaned);
       });
 
-      const eventCity = courseInfo ? courseInfo.city : "";
+      let eventCity = "";
+
+      if (potentialCourses.length > 0) {
+        // VALITAAN PARAS OSUMA (se, jonka siivottu nimi on pisin/tarkin)
+        // Tämä estää "Ford":ia osumasta "Ford Amateur":iin, jos "Ford Amateur" on myös listalla
+        const bestMatch = potentialCourses.reduce((prev, current) => {
+          return (normalize(current.name).length > normalize(prev.name).length) ? current : prev;
+        });
+        eventCity = bestMatch.city;
+      }
+
       matchesCity = targetCities.includes(eventCity);
     }
     
     return matchesRegion && matchesCity;
   });
+
+  calendar.removeAllEvents();
+  calendar.addEventSource(filteredEvents);
+}
 
   calendar.removeAllEvents();
   calendar.addEventSource(filteredEvents);
