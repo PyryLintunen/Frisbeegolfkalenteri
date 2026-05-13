@@ -2161,11 +2161,11 @@ Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGol
   });
   calendar.render();
 
-  // 2. Haetaan data ja päivitetään kalenteri
+ // 1. Haetaan data
   fetch("data.json")
     .then(response => response.text())
     .then(rawData => {
-      const events = [];
+      const loadedEvents = []; // Käytetään eri nimeä selkeyden vuoksi
       const lines = rawData.trim().split("\n");
 
       lines.forEach(line => {
@@ -2200,7 +2200,7 @@ Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGol
           : coursePart.trim();
 
         if (eventDate >= todayStart) {
-          events.push({
+          loadedEvents.push({
             title: formattedTitle,
             start: `${y}-${m}-${d}T${time}`,
             extendedProps: { 
@@ -2212,14 +2212,19 @@ Kanta-Häme, Riihimäki	07/06/2026 16:00	Parikilpailu Viikoittain	Riutta DiscGol
         }
       });
 
-      // Päivitetään kalenteri ja globaali events-muuttuja
-      window.events = events; 
-      calendar.addEventSource(events);
+      // 2. Päivitetään globaali muuttuja filttereitä varten
+      window.events = loadedEvents; 
+
+      // 3. Lisätään kisat kalenteriin
+      calendar.addEventSource(window.events);
       
-      // Päivitetään suodattimet ja listaukset
+      // 4. Päivitetään kaupunkilista ja vapaat radat
       updateCityFilter();
-      showFreeToday(); 
+      if (typeof showFreeToday === "function") {
+          showFreeToday();
+      }
     })
-    .catch(err => console.error("Virhe ladattaessa dataa:", err));
-}); // Tämä sulkee koko scriptin alun DOMContentLoaded-osion
+    .catch(err => {
+      console.error("Virhe ladattaessa dataa:", err);
+    });
 </script>
