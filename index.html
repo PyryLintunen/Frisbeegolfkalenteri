@@ -995,18 +995,39 @@
   calendar.addEventSource(filteredEvents);
 }
 
-  function getFreeCourses(dateStr, selectedCity) {
-    const busy = events
-      .filter(e => e.start.startsWith(dateStr))
-      .map(e => normalize(e.title));
+  function getFreeCourses(dateStr, city) {
+  // 1. Haetaan kaikki kaupungin radat
+  const cityCourses = allCourses.filter(c => c.city === city);
+  
+  // 2. Haetaan kaikki tämän päivän tapahtumat (koko tapahtumalista)
+  const todaysEvents = events.filter(e => e.start.startsWith(dateStr));
 
-    return allCourses.filter(c => {
-      if (selectedCity !== "all" && c.city !== selectedCity) return false;
-      const normalizedName = normalize(c.name);
-      // Rata on varattu, jos sen nimi on busy-listalla
-      return !busy.some(b => b === normalizedName || b.includes(normalizedName) || normalizedName.includes(b));
+  // 3. Selvitetään mitkä radat ovat varattuja
+  const occupiedCourseNames = new Set();
+
+  todaysEvents.forEach(event => {
+    const eventTitleCleaned = normalize(event.title);
+    
+    // Etsitään kaikki mahdolliset radat, jotka voisivat täsmätä kisan nimeen
+    const potentialMatches = cityCourses.filter(c => {
+      const courseNameCleaned = normalize(c.name);
+      return eventTitleCleaned.includes(courseNameCleaned) || 
+             courseNameCleaned.includes(eventTitleCleaned);
     });
-  }
+
+    if (potentialMatches.length > 0) {
+      // VALITAAN PARAS OSUMA (se, jonka siivottu nimi on pisin/tarkin)
+      // Tämä estää "Ford":ia osumasta "Ford Amateur":iin, jos "Ford Amateur" on oikea kohde
+      const bestMatch = potentialMatches.reduce((prev, current) => {
+        return (normalize(current.name).length > normalize(prev.name).length) ? current : prev;
+      });
+      occupiedCourseNames.add(bestMatch.name);
+    }
+  });
+
+  // 4. Palautetaan radat, joiden nimeä ei löydy varattujen listalta
+  return cityCourses.filter(c => !occupiedCourseNames.has(c.name));
+}
 
   function showFreeToday() {
     const now = new Date();
